@@ -1,0 +1,18 @@
+hwi_oauth:
+    # https://github.com/hwi/HWIOAuthBundle/blob/master/docs/2-configuring_resource_owners.md
+    resource_owners:
+        keycloak:
+            type: keycloak
+            base_url: https://accounts.fablab-altmuehlfranken.de
+            realm: fablab
+            client_id: ausweis
+            client_secret: '%env(KEYCLOAK_CLIENT_SECRET)%'
+            options:
+                idp_hint: FabLab Account
+            paths:
+                identifier: preferred_username
+
+    connect:
+        account_connector: App\Security\OAuthConnector
+        registration_form: App\Form\RegistrationFormType
+        registration_form_handler: App\Security\FormHandler
