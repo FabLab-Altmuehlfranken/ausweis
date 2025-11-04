@@ -14,7 +14,7 @@ final class Version20251104192645 extends AbstractMigration
 {
     public function getDescription(): string
     {
-        return '';
+        return 'add user and initial messenger setup';
     }
 
     public function up(Schema $schema): void
