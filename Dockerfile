@@ -6,7 +6,6 @@ ENV APP_RUNTIME='Runtime\FrankenPhpSymfony\Runtime'
 
 ENV APP_ENV='prod'
 ENV APP_DEBUG='0'
-ENV APP_SECRET=''
 
 RUN apt-get update \
     && apt-get install -y --no-install-recommends git unzip \
@@ -24,6 +23,4 @@ COPY <<-EOF /usr/local/etc/php/conf.d/local.ini
 EOF
 
 COPY . /app
-#RUN composer install --no-dev --optimize-autoloader -d /app/
-
-#RUN install-php-extensions pcov && echo 'pcov.enabled = 1' > /usr/local/etc/php/conf.d/pcov.ini
+RUN composer install --no-dev --optimize-autoloader -d /app/
