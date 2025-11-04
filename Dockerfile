@@ -12,7 +12,7 @@ RUN apt-get update \
     && apt-get install -y --no-install-recommends git unzip \
     && rm -rf /var/lib/apt/lists/*
 
-RUN install-php-extensions apcu intl zip @composer
+RUN install-php-extensions apcu intl zip pdo_pgsql @composer
 
 RUN mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini"
 COPY <<-EOF /usr/local/etc/php/conf.d/local.ini
