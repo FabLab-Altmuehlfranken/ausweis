@@ -12,7 +12,9 @@ final readonly class FormHandler implements RegistrationFormHandlerInterface
 {
     public function process(Request $request, FormInterface $form, UserResponseInterface $userInformation): bool
     {
-        $user = new User();
+        $user = new User()
+            ->setUsername($userInformation->getUserIdentifier());
+
         $form->setData($user);
         $form->handleRequest($request);
 
