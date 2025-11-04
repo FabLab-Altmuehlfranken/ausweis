@@ -8,6 +8,7 @@ services:
     environment:
       - APP_ENV=dev
       - APP_DEBUG=true
+      - FRANKENPHP_CONFIG=
     depends_on:
       - database
 
