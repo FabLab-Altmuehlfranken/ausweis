@@ -94,13 +94,24 @@
             "@auto-scripts"
         ],
         "test": [
+            "@lint-yaml",
+            "@lint-container",
+            "@lint-twig",
             "@php-cs-fixer",
             "@phpstan",
-            "@rector"
+            "@rector",
+            "@security-check"
         ],
+        "lint-yaml": "bin/console lint:yaml --parse-tags *.yaml config/ tests/",
+        "lint-container": "bin/console lint:container",
+        "lint-twig": "bin/console lint:twig --show-deprecations templates/",
         "php-cs-fixer": "vendor/bin/php-cs-fixer fix --dry-run --using-cache=no --ansi --diff",
         "phpstan": "vendor/bin/phpstan analyse --ansi --memory-limit 256M",
-        "rector": "vendor/bin/rector process src --dry-run"
+        "rector": "vendor/bin/rector process src --dry-run",
+        "security-check": [
+            "composer audit --locked --no-dev",
+            "bin/console importmap:audit"
+        ]
     },
     "conflict": {
         "symfony/symfony": "*"
