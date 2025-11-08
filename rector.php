@@ -10,11 +10,9 @@ return RectorConfig::configure()
     ->withPreparedSets(
         deadCode: true,
         codeQuality: true,
-        codingStyle: true,
         typeDeclarations: true,
         typeDeclarationDocblocks: true,
         privatization: true,
-        naming: true,
         instanceOf: true,
         earlyReturn: true,
         rectorPreset: true,
