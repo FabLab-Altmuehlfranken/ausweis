@@ -21,10 +21,6 @@ class User implements UserInterface
     #[ORM\Column]
     private int $id;
 
-    #[ORM\Column(length: 180)]
-    #[Assert\Length(min: 3)]
-    private readonly string $username;
-
     /**
      * @var list<string> The user roles
      */
@@ -32,9 +28,10 @@ class User implements UserInterface
     private array $roles = [];
 
     public function __construct(
-        string $username,
+        #[Assert\Length(min: 3)]
+        #[ORM\Column(length: 180)]
+        private readonly string $username,
     ) {
-        $this->username = $username;
     }
 
     public function getId(): int
