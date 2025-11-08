@@ -6,7 +6,7 @@
     "minimum-stability": "stable",
     "prefer-stable": true,
     "require": {
-        "php": ">=8.2",
+        "php": "~8.4.0",
         "ext-ctype": "*",
         "ext-iconv": "*",
         "doctrine/dbal": "^3",
@@ -89,7 +89,11 @@
         ],
         "post-update-cmd": [
             "@auto-scripts"
-        ]
+        ],
+        "test": [
+            "@php-cs-fixer"
+        ],
+        "php-cs-fixer": "vendor/bin/php-cs-fixer fix --dry-run --using-cache=no --ansi --diff"
     },
     "conflict": {
         "symfony/symfony": "*"
@@ -101,6 +105,7 @@
         }
     },
     "require-dev": {
+        "friendsofphp/php-cs-fixer": "^3.89",
         "phpunit/phpunit": "^12.4",
         "symfony/browser-kit": "7.3.*",
         "symfony/css-selector": "7.3.*",
