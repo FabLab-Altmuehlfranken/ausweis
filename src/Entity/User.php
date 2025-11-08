@@ -5,8 +5,11 @@ declare(strict_types=1);
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Deprecated;
 use Doctrine\ORM\Mapping as ORM;
+use Override;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: '`user`')]
@@ -16,10 +19,11 @@ class User implements UserInterface
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    private ?int $id = null;
+    private int $id;
 
     #[ORM\Column(length: 180)]
-    private ?string $username = null;
+    #[Assert\Length(min: 3)]
+    private readonly string $username;
 
     /**
      * @var list<string> The user roles
@@ -27,36 +31,26 @@ class User implements UserInterface
     #[ORM\Column]
     private array $roles = [];
 
-    public function getId(): ?int
+    public function __construct(
+        string $username,
+    ) {
+        $this->username = $username;
+    }
+
+    public function getId(): int
     {
         return $this->id;
     }
 
-    public function getUsername(): ?string
+    #[Override]
+    public function getUserIdentifier(): string
     {
+        assert('' !== $this->username);
+
         return $this->username;
     }
 
-    public function setUsername(string $username): static
-    {
-        $this->username = $username;
-
-        return $this;
-    }
-
-    /**
-     * A visual identifier that represents this user.
-     *
-     * @see UserInterface
-     */
-    public function getUserIdentifier(): string
-    {
-        return (string) $this->username;
-    }
-
-    /**
-     * @see UserInterface
-     */
+    #[Override]
     public function getRoles(): array
     {
         $roles = $this->roles;
@@ -66,17 +60,8 @@ class User implements UserInterface
         return array_unique($roles);
     }
 
-    /**
-     * @param list<string> $roles
-     */
-    public function setRoles(array $roles): static
-    {
-        $this->roles = $roles;
-
-        return $this;
-    }
-
-    #[\Deprecated]
+    #[Deprecated]
+    #[Override]
     public function eraseCredentials(): void
     {
         // @deprecated, to be removed when upgrading to Symfony 8
