@@ -17,7 +17,6 @@ return RectorConfig::configure()
         naming: true,
         instanceOf: true,
         earlyReturn: true,
-        carbon: true,
         rectorPreset: true,
         doctrineCodeQuality: true,
         symfonyCodeQuality: true,
