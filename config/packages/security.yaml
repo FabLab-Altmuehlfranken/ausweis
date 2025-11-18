@@ -21,10 +21,10 @@ security:
                     keycloak: "/login/check"
                 login_path: /login
                 use_forward: false
-                failure_path: hwi_oauth_connect_registration
+                failure_path: /login
 
                 oauth_user_provider:
-                    service: hwi_oauth.user.provider.entity
+                    service: App\Security\UserProvider
 
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#the-firewall

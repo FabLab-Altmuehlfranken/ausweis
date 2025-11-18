@@ -57,10 +57,37 @@ class User implements UserInterface
         return array_unique($roles);
     }
 
+    /**
+     * @param non-empty-string[] $roles
+     */
+    public function setRoles(array $roles): self
+    {
+        $this->roles = $this->formatKeycloakRoles($roles);
+
+        return $this;
+    }
+
     #[Deprecated]
     #[Override]
     public function eraseCredentials(): void
     {
         // @deprecated, to be removed when upgrading to Symfony 8
+    }
+
+    /**
+     * @param string[] $roles
+     *
+     * @return list<non-empty-string>
+     */
+    protected function formatKeycloakRoles(array $roles): array
+    {
+        \Webmozart\Assert\Assert::allStringNotEmpty($roles);
+
+        return array_values(
+            array_map(
+                static fn (string $role): string => 'ROLE_'.strtoupper($role),
+                $roles,
+            ),
+        );
     }
 }

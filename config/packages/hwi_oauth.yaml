@@ -11,8 +11,3 @@ hwi_oauth:
                 idp_hint: FabLab Account
             paths:
                 identifier: preferred_username
-
-    connect:
-        account_connector: App\Security\OAuthConnector
-        registration_form: App\Form\RegistrationFormType
-        registration_form_handler: App\Security\FormHandler
