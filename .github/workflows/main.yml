@@ -1,0 +1,87 @@
+name: CI
+
+on:
+  push:
+  workflow_dispatch:
+
+env:
+  PHP_VERSION: 8.4
+  SYMFONY_DEPRECATIONS_HELPER: max[total]=0
+
+jobs:
+  lint-yaml:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ env.PHP_VERSION }}
+      - uses: ramsey/composer-install@v2
+      - run: composer lint-yaml
+
+  lint-container:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ env.PHP_VERSION }}
+      - uses: ramsey/composer-install@v2
+      - run: composer lint-container
+
+  lint-twig:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ env.PHP_VERSION }}
+      - uses: ramsey/composer-install@v2
+      - run: composer lint-twig
+
+  php-cs-fixer:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ env.PHP_VERSION }}
+      - uses: ramsey/composer-install@v2
+      - run: composer php-cs-fixer
+
+  phpstan:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ env.PHP_VERSION }}
+      - uses: ramsey/composer-install@v2
+      - run: composer phpstan
+
+  rector:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ env.PHP_VERSION }}
+      - uses: ramsey/composer-install@v2
+      - run: composer rector
+
+  security-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ env.PHP_VERSION }}
+      - uses: ramsey/composer-install@v2
+      - run: composer security-check
+
+  docker:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: docker/build-push-action@v4
+        with:
+          pull: true
