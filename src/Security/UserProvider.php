@@ -24,10 +24,17 @@ final readonly class UserProvider implements OAuthAwareUserProviderInterface
 
     public function loadUserByOAuthUserResponse(UserResponseInterface $response): UserInterface
     {
-        $user = $this->getUser($response);
-        $user->setRoles(
-            $this->getRoles($response),
-        );
+        return $this->getUser($response);
+    }
+
+    private function getUser(UserResponseInterface $response): User
+    {
+        $user = $this->getUserFromRepository($response)
+            ?? $this->createUserFromResponse($response);
+
+        $user->setRoles($this->getRoles($response))
+            ->setDisplayName($response->getRealName())
+            ->setMail($response->getEmail());
 
         $this->entityManager->persist($user);
         $this->entityManager->flush();
@@ -35,10 +42,20 @@ final readonly class UserProvider implements OAuthAwareUserProviderInterface
         return $user;
     }
 
-    private function getUser(UserResponseInterface $response): User
+    protected function getUserFromRepository(UserResponseInterface $response): ?User
     {
-        return $this->userRepository->findOneBy(['username' => $response->getUserIdentifier()])
-            ?? new User($response->getUserIdentifier());
+        return $this->userRepository->findOneBy(
+            ['username' => $response->getUserIdentifier()],
+        );
+    }
+
+    protected function createUserFromResponse(UserResponseInterface $response): User
+    {
+        return new User(
+            $response->getUserIdentifier(),
+            $response->getRealName(),
+            $response->getEmail(),
+        );
     }
 
     /**

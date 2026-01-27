@@ -11,3 +11,4 @@ hwi_oauth:
                 idp_hint: FabLab Account
             paths:
                 identifier: preferred_username
+                realname: name
