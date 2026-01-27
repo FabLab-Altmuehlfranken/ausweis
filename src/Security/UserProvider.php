@@ -29,12 +29,18 @@ final readonly class UserProvider implements OAuthAwareUserProviderInterface
 
     private function getUser(UserResponseInterface $response): User
     {
-        $user = $this->getUserFromRepository($response)
-            ?? $this->createUserFromResponse($response);
+        $username = $response->getUserIdentifier();
+        $displayName = $response->getRealName()
+            ?? throw new RuntimeException('got no real name from keycloak response');
+        $mail = $response->getEmail()
+            ?? throw new RuntimeException('got no mail from keycloak response');
+
+        $user = $this->getUserFromRepository($username)
+            ?? new User($username, $displayName, $mail);
 
         $user->setRoles($this->getRoles($response))
-            ->setDisplayName($response->getRealName())
-            ->setMail($response->getEmail());
+            ->setDisplayName($displayName)
+            ->setMail($mail);
 
         $this->entityManager->persist($user);
         $this->entityManager->flush();
@@ -42,19 +48,10 @@ final readonly class UserProvider implements OAuthAwareUserProviderInterface
         return $user;
     }
 
-    protected function getUserFromRepository(UserResponseInterface $response): ?User
+    private function getUserFromRepository(string $username): ?User
     {
         return $this->userRepository->findOneBy(
-            ['username' => $response->getUserIdentifier()],
-        );
-    }
-
-    protected function createUserFromResponse(UserResponseInterface $response): User
-    {
-        return new User(
-            $response->getUserIdentifier(),
-            $response->getRealName(),
-            $response->getEmail(),
+            ['username' => $username],
         );
     }
 
@@ -63,7 +60,7 @@ final readonly class UserProvider implements OAuthAwareUserProviderInterface
      */
     private function getRoles(UserResponseInterface $response): array
     {
-        if (!($response instanceof PathUserResponse)) {
+        if (!$response instanceof PathUserResponse) {
             throw new RuntimeException('unexpected user response type');
         }
 

@@ -174,4 +174,9 @@ class User implements UserInterface
 
         return $this;
     }
+
+    public function hasOpenCardOrder(): bool
+    {
+        return $this->cardOrder instanceof CardOrder;
+    }
 }

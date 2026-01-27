@@ -21,11 +21,15 @@ final class OrderCardController extends AbstractController
         return $this->render('order_card/index.html.twig');
     }
 
-    protected function hasUserCardOrCardOrder(): bool
+    private function hasUserCardOrCardOrder(): bool
     {
         $user = $this->getUser();
         assert($user instanceof User);
 
-        return $user->getCardId() || $user->getCardOrder();
+        if ($user->getCardId()) {
+            return true;
+        }
+
+        return $user->hasOpenCardOrder();
     }
 }
