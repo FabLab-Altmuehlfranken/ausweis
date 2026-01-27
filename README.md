@@ -7,7 +7,3 @@
     docker compose run --rm -u 1000 app bin/console doctrine:migrations:migrate -n
 
 After that the app should be reachable via http://localhost:8000/
-
-## TODO
-
-- update user (roles: is admin?, membership status?) on login
