@@ -10,7 +10,7 @@
         "ext-ctype": "*",
         "ext-iconv": "*",
         "doctrine/dbal": "^4.4.1",
-        "doctrine/doctrine-bundle": "^3",
+        "doctrine/doctrine-bundle": "^3.2.2",
         "doctrine/doctrine-migrations-bundle": "^3.7",
         "doctrine/orm": "^3.6.1",
         "hwi/oauth-bundle": "^2.4",
