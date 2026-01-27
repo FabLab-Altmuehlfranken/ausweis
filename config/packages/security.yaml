@@ -25,6 +25,9 @@ security:
 
                 oauth_user_provider:
                     service: App\Security\UserProvider
+            logout:
+                path: /logout
+                target: /
 
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#the-firewall
