@@ -39,7 +39,7 @@ class User implements UserInterface
     private Uuid $digitalCardId;
 
     #[ORM\Column(type: Types::BIGINT, nullable: true)]
-    private ?string $cardId = null;
+    private ?int $cardId = null;
 
     public function __construct(
         #[Assert\Length(min: 3)]
@@ -151,12 +151,12 @@ class User implements UserInterface
         return $this;
     }
 
-    public function getCardId(): ?string
+    public function getCardId(): ?int
     {
         return $this->cardId;
     }
 
-    public function setCardId(?string $cardId): static
+    public function setCardId(?int $cardId): static
     {
         $this->cardId = $cardId;
 

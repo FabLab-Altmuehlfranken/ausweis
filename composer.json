@@ -9,7 +9,7 @@
         "php": "~8.5.0",
         "ext-ctype": "*",
         "ext-iconv": "*",
-        "doctrine/dbal": "^3.10.4",
+        "doctrine/dbal": "^4.4.1",
         "doctrine/doctrine-bundle": "^2.18.2",
         "doctrine/doctrine-migrations-bundle": "^3.7",
         "doctrine/orm": "^3.6.1",
