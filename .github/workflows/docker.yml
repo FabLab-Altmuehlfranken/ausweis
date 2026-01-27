@@ -20,5 +20,5 @@ jobs:
       - uses: docker/build-push-action@v6
         with:
           pull: true
-          tags: ghcr.io/Fablab-Altmuehlfranken/ausweis:latest
+          tags: ghcr.io/fablab-altmuehlfranken/ausweis:latest
           push: true
