@@ -15,7 +15,7 @@ final class OrderCardController extends AbstractController
     public function index(): Response
     {
         if ($this->hasUserCardOrCardOrder()) {
-            throw $this->createAccessDeniedException();
+            return $this->redirectToRoute('homepage');
         }
 
         return $this->render('order_card/index.html.twig');
