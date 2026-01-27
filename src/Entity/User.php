@@ -19,6 +19,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_USERNAME', fields: ['username'])]
 class User implements UserInterface
 {
+    public const string MEMBER_ROLE = 'ROLE_MEMBER';
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
