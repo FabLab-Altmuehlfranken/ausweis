@@ -48,7 +48,7 @@
         "symfony/yaml": "7.4.*",
         "twig/extra-bundle": "^3.23",
         "twig/twig": "^3.23",
-        "webmozart/assert": "^1.12.1"
+        "webmozart/assert": "^2.1.2"
     },
     "config": {
         "allow-plugins": {
