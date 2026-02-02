@@ -17,6 +17,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: '`user`')]
 #[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_USERNAME', fields: ['username'])]
+#[ORM\UniqueConstraint(fields: ['digitalCardId'])]
+#[ORM\UniqueConstraint(fields: ['cardId'])]
 class User implements UserInterface
 {
     public const string MEMBER_ROLE = 'ROLE_MEMBER';
@@ -32,30 +34,25 @@ class User implements UserInterface
     #[ORM\Column]
     private array $roles = [];
 
-    #[ORM\OneToOne(mappedBy: 'requestedBy', cascade: ['persist', 'remove'])]
-    private ?CardOrder $cardOrder = null;
+    #[ORM\OneToOne(mappedBy: 'user', cascade: ['persist', 'remove'])]
+    private(set) ?CardOrder $cardOrder = null;
 
     #[ORM\Column(type: UuidType::NAME)]
-    private Uuid $digitalCardId;
+    private(set) Uuid $digitalCardId;
 
     #[ORM\Column(type: Types::BIGINT, nullable: true)]
-    private ?int $cardId = null;
+    private(set) ?int $cardId = null;
 
     public function __construct(
         #[Assert\Length(min: 3)]
         #[ORM\Column(length: 180)]
         private readonly string $username,
         #[ORM\Column(length: 255)]
-        private string $displayName,
+        private(set) string $displayName,
         #[ORM\Column(length: 255)]
-        private string $mail,
+        private(set) string $mail,
     ) {
         $this->digitalCardId = Uuid::v4();
-    }
-
-    public function getId(): int
-    {
-        return $this->id;
     }
 
     #[Override]
@@ -110,52 +107,6 @@ class User implements UserInterface
         );
     }
 
-    public function getCardOrder(): ?CardOrder
-    {
-        return $this->cardOrder;
-    }
-
-    public function setCardOrder(CardOrder $cardOrder): static
-    {
-        // set the owning side of the relation if necessary
-        if ($cardOrder->getRequestedBy() !== $this) {
-            $cardOrder->setRequestedBy($this);
-        }
-
-        $this->cardOrder = $cardOrder;
-
-        return $this;
-    }
-
-    public function getDisplayName(): string
-    {
-        return $this->displayName;
-    }
-
-    public function setDisplayName(string $displayName): static
-    {
-        $this->displayName = $displayName;
-
-        return $this;
-    }
-
-    public function getDigitalCardId(): Uuid
-    {
-        return $this->digitalCardId;
-    }
-
-    public function setDigitalCardId(Uuid $digitalCardId): static
-    {
-        $this->digitalCardId = $digitalCardId;
-
-        return $this;
-    }
-
-    public function getCardId(): ?int
-    {
-        return $this->cardId;
-    }
-
     public function setCardId(?int $cardId): static
     {
         $this->cardId = $cardId;
@@ -163,9 +114,11 @@ class User implements UserInterface
         return $this;
     }
 
-    public function getMail(): string
+    public function setDisplayName(string $displayName): static
     {
-        return $this->mail;
+        $this->displayName = $displayName;
+
+        return $this;
     }
 
     public function setMail(string $mail): static
