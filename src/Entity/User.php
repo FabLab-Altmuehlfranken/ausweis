@@ -35,13 +35,13 @@ class User implements UserInterface
     private array $roles = [];
 
     #[ORM\OneToOne(mappedBy: 'user', cascade: ['persist', 'remove'])]
-    private(set) ?CardOrder $cardOrder = null;
+    public private(set) ?CardOrder $cardOrder = null;
 
     #[ORM\Column(type: UuidType::NAME)]
-    private(set) Uuid $digitalCardId;
+    public private(set) Uuid $digitalCardId;
 
     #[ORM\Column(type: Types::BIGINT, nullable: true)]
-    private(set) ?int $cardId = null;
+    public private(set) ?int $cardId = null;
 
     public function __construct(
         #[Assert\Length(min: 3)]
