@@ -3,23 +3,27 @@
 {% block body %}
     <h1>Hallo {{ app.user.displayName }}!</h1>
 
-    {% if app.user.isCurrentlyMember %}
-        Du bist Mitglied im FabLab Altmühlfranken 🎉<br>
-    {% else %}
-        Du bist aktuell kein Mitglied im FabLab Altmühlfranken.<br>
-        Wenn du das ändern möchtest findest du <a href="https://fablab-altmuehlfranken.de/mitglied-werden/">hier</a> den Mitgliedsantrag.<br>
-    {% endif %}
+    <p>
+        {% if app.user.isCurrentlyMember %}
+            Du bist aktuell Mitglied im FabLab Altmühlfranken 🎉<br>
+        {% else %}
+            Du bist aktuell kein Mitglied im FabLab Altmühlfranken.<br>
+            Wenn du das ändern möchtest findest du <a href="https://fablab-altmuehlfranken.de/mitglied-werden/">hier</a> den Mitgliedsantrag.<br>
+        {% endif %}
+    </p>
 
-    <br>
+    <p>
+        📱 Dein digitaler Ausweis hat die ID <code>{{ app.user.digitalCardId }}</code><br>
+    </p>
 
-    📱 Dein digitaler Ausweis hat die ID {{ app.user.digitalCardId }}<br>
-
-    {% if app.user.cardId %}
-        🪪 Deine physische Ausweiskarte hat die ID {{ app.user.cardId }}<br>
-    {% elseif app.user.cardOrder %}
-        🪪 Du hast bereits eine physische Ausweiskarte beantragt.<br>
-        Sobald dein Ausweis fertig ist, senden wir dir eine Mail an <b>{{ app.user.mail }}</b>.<br>
-    {% else %}
-        🪪 Eine physische Ausweiskarte kannst du <a href="{{ path('order_card') }}">hier</a> beantragen.
-    {% endif %}
+    <p>
+        {% if app.user.cardId %}
+            🪪 Deine physische Ausweiskarte hat die ID <code>{{ app.user.cardId }}</code><br>
+        {% elseif app.user.cardOrder %}
+            🪪 Du hast bereits eine physische Ausweiskarte beantragt.<br>
+            Sobald dein Ausweis fertig ist, senden wir dir eine Mail an <b>{{ app.user.mail }}</b>.<br>
+        {% else %}
+            🪪 Eine physische Ausweiskarte kannst du <a href="{{ path('order_card') }}">hier</a> beantragen.
+        {% endif %}
+    </p>
 {% endblock %}
