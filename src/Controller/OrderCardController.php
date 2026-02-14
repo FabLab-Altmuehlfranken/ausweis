@@ -27,8 +27,10 @@ final class OrderCardController extends AbstractController
         $form = $this->createForm(OrderCardType::class);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
+            $user = $this->getUser();
+            assert($user instanceof User);
             $entityManager->persist(
-                new CardOrder($this->getUser()),
+                new CardOrder($user),
             );
             $entityManager->flush();
 
