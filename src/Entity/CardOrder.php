@@ -17,7 +17,7 @@ class CardOrder
     private int $id;
 
     #[ORM\Column(options: ['default' => 'CURRENT_TIMESTAMP'])]
-    private DateTimeImmutable $createdAt;
+    private(set) DateTimeImmutable $createdAt;
 
     public function __construct(
         #[ORM\OneToOne(inversedBy: 'cardOrder', cascade: ['persist', 'remove'])]

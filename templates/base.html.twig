@@ -17,6 +17,11 @@
     <body>
         <nav>
             <a href="{{ path('homepage') }}">Übersicht</a>
+            {% if app.user.isAdmin %}
+                -
+                <a href="{{ path('list_card_orders') }}">Ausweisanträge</a>
+            {% endif %}
+
             -
             <a href="{{ logout_path() }}">Ausloggen</a>
         </nav>

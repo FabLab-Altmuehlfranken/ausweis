@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Ausweisanträge{% endblock %}
+
+{% block body %}
+    <h1>Zu bearbeitende Anträge</h1>
+
+    <ul>
+        {% for order in orders %}
+            <li>
+                {{ order.user.displayName }}
+                <code>{{ order.user.mail }}</code>
+                (beantragt am {{ order.createdAt.format('Y-m-d H:i:s') }})
+            </li>
+        {% endfor %}
+    </ul>
+{% endblock %}

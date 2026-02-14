@@ -23,6 +23,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 class User implements UserInterface
 {
     public const string MEMBER_ROLE = 'ROLE_MEMBER';
+    public const string ADMIN_ROLE = 'ROLE_ADMIN';
 
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -144,15 +145,25 @@ class User implements UserInterface
         return $this;
     }
 
-    public function isCurrentlyMember(): bool
+    public function isMember(): bool
     {
-        if (!in_array(self::MEMBER_ROLE, $this->getRoles(), true)) {
+        return $this->hasRole(self::MEMBER_ROLE);
+    }
+
+    public function isAdmin(): bool
+    {
+        return $this->hasRole(self::ADMIN_ROLE);
+    }
+
+    private function hasRole(string $role): bool
+    {
+        if (!in_array($role, $this->getRoles(), true)) {
             return false;
         }
 
         $currentYear = date('Y');
-        $lastVerifiedMemberYear = $this->lastLoginAt->format('Y');
+        $lastLoginYear = $this->lastLoginAt->format('Y');
 
-        return $lastVerifiedMemberYear === $currentYear;
+        return $lastLoginYear === $currentYear;
     }
 }
