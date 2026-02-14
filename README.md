@@ -11,14 +11,14 @@ After that the app should be reachable via http://localhost:8000/
 ## Dependency updates
 
     # Update composer packages
-    docker compose run --rm app composer update
+    docker compose run --rm -u 1000 app composer update
 
     # Check for symfony flex recipe updates
-    docker compose run --rm app composer recipes --outdated
+    docker compose run --rm -u 1000 app composer recipes --outdated
 
     # Update symfony asset mapper importmap
-    docker compose run --rm app bin/console importmap:update
+    docker compose run --rm -u 1000 app bin/console importmap:update
 
 ## Run all the tests
 
-    docker compose run --rm app composer test
+    docker compose run --rm -u 1000 app composer test
