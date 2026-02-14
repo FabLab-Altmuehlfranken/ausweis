@@ -26,7 +26,7 @@ final class OrderCardController extends AbstractController
         $user = $this->getUser();
         assert($user instanceof User);
 
-        if ($user->getCardId()) {
+        if (is_int($user->cardId)) {
             return true;
         }
 

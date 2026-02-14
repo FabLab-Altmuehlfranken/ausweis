@@ -7,3 +7,18 @@
     docker compose run --rm -u 1000 app bin/console doctrine:migrations:migrate -n
 
 After that the app should be reachable via http://localhost:8000/
+
+## Dependency updates
+
+    # Update composer packages
+    docker compose run --rm app composer update
+
+    # Check for symfony flex recipe updates
+    docker compose run --rm app composer recipes --outdated
+
+    # Update symfony asset mapper importmap
+    docker compose run --rm app bin/console importmap:update
+
+## Run all the tests
+
+    docker compose run --rm app composer test

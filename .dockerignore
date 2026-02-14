@@ -1,0 +1,15 @@
+*
+!assets/
+!bin/
+!config/
+!migrations/
+!public/
+!src/
+!templates/
+!translations/
+!.env
+!composer.json
+!composer.lock
+!importmap.php
+!README.md
+!symfony.lock
