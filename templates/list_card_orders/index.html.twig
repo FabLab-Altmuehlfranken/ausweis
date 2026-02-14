@@ -5,13 +5,16 @@
 {% block body %}
     <h1>Zu bearbeitende Anträge</h1>
 
-    <ul>
+    <table>
+        <tr>
+            <th>Name</th>
+            <th>beantragt am</th>
+        </tr>
         {% for order in orders %}
-            <li>
-                {{ order.user.displayName }}
-                <code>{{ order.user.mail }}</code>
-                (beantragt am {{ order.createdAt.format('Y-m-d H:i:s') }})
-            </li>
+            <tr>
+                <td>{{ order.user.displayName }}</td>
+                <td>{{ order.createdAt.format('Y-m-d H:i:s') }}</td>
+            </tr>
         {% endfor %}
-    </ul>
+    </table>
 {% endblock %}

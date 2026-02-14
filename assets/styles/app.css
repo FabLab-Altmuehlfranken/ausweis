@@ -24,3 +24,20 @@ body {
         min-height: 50vh;
     }
 }
+
+table {
+    border-collapse: collapse;
+
+    th {
+        padding: 8px;
+        background-color: darkgray;
+    }
+
+    td {
+        padding: 8px;
+    }
+
+    tr:nth-child(even) {
+        background-color: whitesmoke;
+    }
+}
