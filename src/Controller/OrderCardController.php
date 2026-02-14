@@ -4,21 +4,42 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\Entity\CardOrder;
 use App\Entity\User;
+use App\Form\OrderCardType;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
 final class OrderCardController extends AbstractController
 {
     #[Route('/order_card', name: 'order_card')]
-    public function index(): Response
-    {
+    public function index(
+        Request $request,
+        EntityManagerInterface $entityManager,
+    ): Response {
         if ($this->hasUserCardOrCardOrder()) {
             return $this->redirectToRoute('homepage');
         }
 
-        return $this->render('order_card/index.html.twig');
+        $form = $this->createForm(OrderCardType::class);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager->persist(
+                new CardOrder($this->getUser()),
+            );
+            $entityManager->flush();
+
+            $this->addFlash('success', 'Ausweis erfolgreich beantragt');
+
+            return $this->redirectToRoute('homepage');
+        }
+
+        return $this->render('order_card/index.html.twig', [
+            'form' => $form,
+        ]);
     }
 
     private function hasUserCardOrCardOrder(): bool

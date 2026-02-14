@@ -5,9 +5,14 @@
 {% block body %}
     <h1>Ausweis beantragen</h1>
 
-    Der Name <b>"{{ app.user.displayName }}"</b> wird auf die Karte gedruckt.<br>
-    Sobald dein Ausweis fertig ist, senden wir dir eine Mail an <b>{{ app.user.mail }}</b>.<br>
-    Sind diese Informationen korrekt?<br>
-    Falls nicht, kannst du diese in deinem <a href="https://accounts.fablab-altmuehlfranken.de/realms/fablab/account/">FabLab Account</a> aktualisieren.<br>
-    Anschließend musst du dich hier neu einloggen, damit die Daten übernommen werden.
+    <p>
+        Der Name <b>"{{ app.user.displayName }}"</b> wird auf die Karte gedruckt.<br>
+        Sobald dein Ausweis fertig ist, senden wir dir eine Mail an <b>{{ app.user.mail }}</b>.<br>
+        <br>
+        Sind diese Informationen korrekt?<br>
+        Falls nicht, kannst du diese in deinem <a href="https://accounts.fablab-altmuehlfranken.de/realms/fablab/account/">FabLab Account</a> aktualisieren.<br>
+        Anschließend musst du dich hier neu einloggen, damit die Daten übernommen werden.
+    </p>
+
+    <p>{{ form(form) }}</p>
 {% endblock %}
