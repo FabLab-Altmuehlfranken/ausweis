@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="login">
+        <h1>FabLab Altmühlfranken - Ausweis</h1>
+
+        {% if error is defined and error %}
+            <p class="flash-error">
+                {{ error }}
+            </p>
+        {% endif %}
+
+        <div class="center">
+            {% for owner in hwi_oauth_resource_owners() %}
+                <a href="{{ hwi_oauth_login_url(owner) }}">
+                    <h3>Anmelden</h3>
+                </a>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock body %}

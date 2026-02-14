@@ -7,3 +7,19 @@ body {
     border-radius: 8px;
     padding-left: 8px;
 }
+
+.flash-error {
+    background-color: palevioletred;
+    border-radius: 8px;
+    padding-left: 8px;
+}
+
+.login {
+    text-align: center;
+
+    .center {
+        display: grid;
+        place-items: center;
+        min-height: 50vh;
+    }
+}

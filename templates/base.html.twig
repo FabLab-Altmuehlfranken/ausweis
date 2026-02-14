@@ -15,24 +15,26 @@
         {% endblock %}
     </head>
     <body>
-        <nav>
-            <a href="{{ path('homepage') }}">Übersicht</a>
-            {% if app.user.isAdmin %}
+        {% if is_granted('IS_AUTHENTICATED') %}
+            <nav>
+                <a href="{{ path('homepage') }}">Übersicht</a>
+                {% if app.user.isAdmin %}
+                    -
+                    <a href="{{ path('list_card_orders') }}">Ausweisanträge</a>
+                {% endif %}
+
                 -
-                <a href="{{ path('list_card_orders') }}">Ausweisanträge</a>
-            {% endif %}
+                <a href="{{ logout_path() }}">Ausloggen</a>
+            </nav>
 
-            -
-            <a href="{{ logout_path() }}">Ausloggen</a>
-        </nav>
+            <hr>
+        {% endif %}
 
-        <hr>
-
-        {% for label, messages in app.flashes(['success']) %}
+        {% for label, messages in app.flashes(['success', 'error']) %}
             {% for message in messages %}
-                <div class="flash-{{ label }}">
+                <p class="flash-{{ label }}">
                     {{ message }}
-                </div>
+                </p>
             {% endfor %}
         {% endfor %}
 
