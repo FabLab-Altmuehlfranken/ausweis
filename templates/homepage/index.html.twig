@@ -3,7 +3,7 @@
 {% block body %}
     <h1>Hallo {{ app.user.displayName }}!</h1>
 
-    {% if is_granted(constant('App\\Entity\\User::MEMBER_ROLE')) %}
+    {% if app.user.isCurrentlyMember %}
         Du bist Mitglied im FabLab Altmühlfranken 🎉<br>
     {% else %}
         Du bist aktuell kein Mitglied im FabLab Altmühlfranken.<br>

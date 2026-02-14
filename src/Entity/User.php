@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use DateTimeImmutable;
 use Deprecated;
+use Doctrine\DBAL\Types\DateTimeImmutableType;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Override;
@@ -40,6 +42,9 @@ class User implements UserInterface
 
     #[ORM\Column(type: Types::BIGINT, nullable: true)]
     private ?int $cardId = null;
+
+    #[ORM\Column]
+    private DateTimeImmutable $lastLoginAt;
 
     public function __construct(
         #[Assert\Length(min: 3)]
@@ -178,5 +183,24 @@ class User implements UserInterface
     public function hasOpenCardOrder(): bool
     {
         return $this->cardOrder instanceof CardOrder;
+    }
+
+    public function updateLastLoginAt(): static
+    {
+        $this->lastLoginAt = new DateTimeImmutable();
+
+        return $this;
+    }
+
+    public function isCurrentlyMember(): bool
+    {
+        if (!in_array(self::MEMBER_ROLE, $this->getRoles(), true)) {
+            return false;
+        }
+
+        $currentYear = date('Y');
+        $lastVerifiedMemberYear = $this->lastLoginAt->format('Y');
+
+        return $lastVerifiedMemberYear === $currentYear;
     }
 }

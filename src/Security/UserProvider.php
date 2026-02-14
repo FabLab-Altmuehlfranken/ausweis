@@ -40,7 +40,8 @@ final readonly class UserProvider implements OAuthAwareUserProviderInterface
 
         $user->setRoles($this->getRoles($response))
             ->setDisplayName($displayName)
-            ->setMail($mail);
+            ->setMail($mail)
+            ->updateLastLoginAt();
 
         $this->entityManager->persist($user);
         $this->entityManager->flush();
