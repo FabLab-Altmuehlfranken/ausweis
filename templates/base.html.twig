@@ -23,6 +23,14 @@
 
         <hr>
 
+        {% for label, messages in app.flashes(['success']) %}
+            {% for message in messages %}
+                <div class="flash-{{ label }}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endfor %}
+
         {% block body %}{% endblock %}
     </body>
 </html>
