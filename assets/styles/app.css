@@ -21,7 +21,11 @@ body {
     .center {
         display: grid;
         place-items: center;
-        min-height: 50vh;
+        min-height: 33vh;
+    }
+
+    img {
+        height: 4em;
     }
 }
 
@@ -44,4 +48,8 @@ table {
     tr:nth-child(even) {
         background-color: whitesmoke;
     }
+}
+
+nav > a > img {
+    height: 1em;
 }
