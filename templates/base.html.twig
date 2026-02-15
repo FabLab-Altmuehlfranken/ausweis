@@ -31,10 +31,10 @@
             <hr>
         {% endif %}
 
-        {% for label, messages in app.flashes(['success', 'error']) %}
+        {% for label, messages in app.flashes(['success', 'info', 'error']) %}
             {% for message in messages %}
                 <p class="flash-{{ label }}">
-                    {{ message }}
+                    {{ message|raw }}
                 </p>
             {% endfor %}
         {% endfor %}

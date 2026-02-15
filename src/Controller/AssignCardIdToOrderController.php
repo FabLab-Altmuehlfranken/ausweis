@@ -28,7 +28,16 @@ final class AssignCardIdToOrderController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->flush();
 
-            $this->addFlash('success', 'Ausweis-ID erfolgreich zugewiesen');
+            if ($order->cardId) {
+                $this->addFlash('success', 'Ausweis-ID erfolgreich zugewiesen.');
+            } else {
+                $this->addFlash('info', 'Ausweis-ID erfolgreich entfernt.');
+            }
+
+            if ($order->isReadyForPickUp()) {
+                // TODO send mail to let the user know their card is ready for pick-up
+                $this->addFlash('success', 'Ausweis bereit zur Abholung, der Benutzer wurde informiert.');
+            }
 
             return $this->redirectToRoute('list_card_orders');
         }

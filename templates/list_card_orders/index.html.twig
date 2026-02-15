@@ -11,6 +11,7 @@
             <th>🖨️ Druck beauftragt?</th>
             <th>🪪 Ausweis-ID</th>
             <th>⏳ beantragt am</th>
+            <th></th>
         </tr>
         {% for order in orders %}
             <tr>
@@ -23,7 +24,12 @@
                     <a href="{{ path('assign_card_id_to_order', {id: order.id}) }}">✏️</a>
                 </td>
                 <td>{{ order.createdAt.format('Y-m-d H:i:s') }}</td>
+                <td>
+                    <a href="{{ path('deliver_card_order', {id: order.id}) }}">Aushändigen</a>
+                    <a href="{{ path('delete_card_order', {id: order.id}) }}">Löschen</a>
+                </td>
             </tr>
         {% endfor %}
+{#        TODO request printing -> csv export/mail + set print ordered #}
     </table>
 {% endblock %}

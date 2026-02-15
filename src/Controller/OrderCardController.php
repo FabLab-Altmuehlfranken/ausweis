@@ -34,7 +34,8 @@ final class OrderCardController extends AbstractController
             );
             $entityManager->flush();
 
-            $this->addFlash('success', 'Ausweis erfolgreich beantragt');
+            // TODO send mail to let someone know about the new order
+            $this->addFlash('success', 'Ausweis erfolgreich beantragt.');
 
             return $this->redirectToRoute('homepage');
         }

@@ -21,7 +21,11 @@
             🪪 Deine physische Ausweiskarte hat die ID <code>{{ app.user.cardId }}</code><br>
         {% elseif app.user.cardOrder %}
             🪪 Du hast bereits eine physische Ausweiskarte beantragt.<br>
-            Sobald dein Ausweis fertig ist, senden wir dir eine Mail an <b>{{ app.user.mail }}</b>.<br>
+            {% if app.user.cardOrder.readyForPickUp %}
+                Dein Ausweis ist bereit zur Abholung.
+            {% else %}
+                Sobald dein Ausweis fertig ist, senden wir dir eine Mail an <b>{{ app.user.mail }}</b>.
+            {% endif %}
         {% else %}
             🪪 Eine physische Ausweiskarte kannst du <a href="{{ path('order_card') }}">hier</a> beantragen.
         {% endif %}

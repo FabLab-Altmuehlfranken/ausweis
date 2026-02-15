@@ -29,17 +29,26 @@ class CardOrder
     public private(set) ?string $cardId = null;
 
     public function __construct(
-        #[ORM\OneToOne(inversedBy: 'cardOrder', cascade: ['persist', 'remove'])]
+        #[ORM\OneToOne(inversedBy: 'cardOrder')]
         #[ORM\JoinColumn(name: '`user`', nullable: false)]
         private(set) User $user,
     ) {
         $this->createdAt = new DateTimeImmutable();
     }
 
-    public function setCardId(string $cardId): static
+    public function setCardId(?string $cardId): static
     {
-        $this->cardId = strtoupper($cardId);
+        if (is_string($cardId)) {
+            $cardId = strtoupper($cardId);
+        }
+
+        $this->cardId = $cardId;
 
         return $this;
+    }
+
+    public function isReadyForPickUp(): bool
+    {
+        return is_string($this->cardId);
     }
 }

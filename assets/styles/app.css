@@ -5,13 +5,19 @@ body {
 .flash-success {
     background-color: lightgreen;
     border-radius: 8px;
-    padding-left: 8px;
+    padding: 4px 12px;
+}
+
+.flash-info {
+    background-color: lightblue;
+    border-radius: 8px;
+    padding: 4px 12px;
 }
 
 .flash-error {
     background-color: palevioletred;
     border-radius: 8px;
-    padding-left: 8px;
+    padding: 4px 12px;
 }
 
 .login {

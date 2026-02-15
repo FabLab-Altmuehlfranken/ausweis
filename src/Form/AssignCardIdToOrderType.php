@@ -21,6 +21,7 @@ class AssignCardIdToOrderType extends AbstractType
         $builder
             ->add('cardId', TextType::class, [
                 'label' => 'Ausweis-ID',
+                'required' => false,
                 'attr' => ['autocomplete' => 'off'],
             ])
             ->add('submit', SubmitType::class, [
