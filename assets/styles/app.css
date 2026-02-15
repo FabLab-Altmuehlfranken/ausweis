@@ -50,6 +50,16 @@ table {
     }
 }
 
-nav > a > img {
-    height: 1em;
+nav {
+    a {
+        vertical-align: middle;
+        font-weight: bold;
+        padding-right: 16px;
+
+        img {
+            vertical-align: middle;
+            height: 3em;
+            padding-right: 8px;
+        }
+    }
 }

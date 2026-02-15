@@ -19,14 +19,12 @@
             <nav>
                 <a href="{{ path('homepage') }}">
                     <img src="{{ asset('images/logo.png') }}">
-                    Übersicht
+                    Ausweis
                 </a>
                 {% if app.user.isAdmin %}
-                    -
                     <a href="{{ path('list_card_orders') }}">Ausweisanträge</a>
                 {% endif %}
 
-                -
                 <a href="{{ logout_path() }}">Ausloggen</a>
             </nav>
 
