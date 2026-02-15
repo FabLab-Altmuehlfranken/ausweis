@@ -19,11 +19,24 @@ class CardOrder
     #[ORM\Column(options: ['default' => 'CURRENT_TIMESTAMP'])]
     public private(set) DateTimeImmutable $createdAt;
 
+    #[ORM\Column]
+    public private(set) bool $isPrintOrdered = false;
+
+    #[ORM\Column(nullable: true)]
+    public private(set) ?string $cardId = null;
+
     public function __construct(
         #[ORM\OneToOne(inversedBy: 'cardOrder', cascade: ['persist', 'remove'])]
         #[ORM\JoinColumn(name: '`user`', nullable: false)]
         private(set) User $user,
     ) {
         $this->createdAt = new DateTimeImmutable();
+    }
+
+    public function setCardId(string $cardId): static
+    {
+        $this->cardId = $cardId;
+
+        return $this;
     }
 }

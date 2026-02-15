@@ -7,7 +7,6 @@ namespace App\Entity;
 use App\Repository\UserRepository;
 use DateTimeImmutable;
 use Deprecated;
-use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Override;
 use Symfony\Bridge\Doctrine\Types\UuidType;

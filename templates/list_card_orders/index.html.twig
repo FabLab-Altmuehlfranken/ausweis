@@ -3,16 +3,22 @@
 {% block title %}Ausweisanträge{% endblock %}
 
 {% block body %}
-    <h1>Zu bearbeitende Anträge</h1>
+    <h1>📋 Zu bearbeitende Anträge</h1>
 
     <table>
         <tr>
-            <th>Name</th>
-            <th>beantragt am</th>
+            <th>🧑 Name</th>
+            <th>🖨️ Druck beauftragt?</th>
+            <th>🪪 Ausweis-ID</th>
+            <th>⏳ beantragt am</th>
         </tr>
         {% for order in orders %}
             <tr>
                 <td>{{ order.user.displayName }}</td>
+                <td class="center">{{ order.isPrintOrdered ? '✅' : '❌' }}</td>
+                <td>
+                    <code>{{ order.cardId }}</code>
+                </td>
                 <td>{{ order.createdAt.format('Y-m-d H:i:s') }}</td>
             </tr>
         {% endfor %}
