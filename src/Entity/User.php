@@ -42,8 +42,8 @@ class User implements UserInterface
     #[ORM\Column(type: UuidType::NAME)]
     public private(set) Uuid $digitalCardId;
 
-    #[ORM\Column(type: Types::BIGINT, nullable: true)]
-    public private(set) ?int $cardId = null;
+    #[ORM\Column(nullable: true)]
+    public private(set) ?string $cardId = null;
 
     #[ORM\Column]
     private DateTimeImmutable $lastLoginAt;
@@ -112,11 +112,16 @@ class User implements UserInterface
         );
     }
 
-    public function setCardId(?int $cardId): static
+    public function setCardId(?string $cardId): static
     {
         $this->cardId = $cardId;
 
         return $this;
+    }
+
+    public function hasCard(): bool
+    {
+        return is_string($this->cardId);
     }
 
     public function setDisplayName(string $displayName): static
