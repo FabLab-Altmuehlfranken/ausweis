@@ -8,7 +8,7 @@ use App\Entity\CardOrder;
 use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
@@ -19,7 +19,7 @@ final class DeleteCardOrderController extends AbstractController
     public function index(
         CardOrder $order,
         EntityManagerInterface $entityManager,
-    ): Response {
+    ): RedirectResponse {
         $userName = $order->user->displayName;
         $entityManager->remove($order);
         $entityManager->flush();
