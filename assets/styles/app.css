@@ -37,6 +37,7 @@ body {
 
 table {
     border-collapse: collapse;
+    white-space: nowrap;
 
     th {
         padding: 8px;

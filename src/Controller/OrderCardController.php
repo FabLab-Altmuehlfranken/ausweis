@@ -21,6 +21,8 @@ final class OrderCardController extends AbstractController
         EntityManagerInterface $entityManager,
     ): Response {
         if ($this->hasUserCardOrCardOrder()) {
+            $this->addFlash('info', 'Du hast entweder bereits einen Ausweis oder schon einen beantragt.');
+
             return $this->redirectToRoute('homepage');
         }
 

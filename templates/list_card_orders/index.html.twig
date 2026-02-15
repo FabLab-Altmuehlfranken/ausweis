@@ -25,8 +25,9 @@
                 </td>
                 <td>{{ order.createdAt.format('Y-m-d H:i:s') }}</td>
                 <td>
-                    <a href="{{ path('deliver_card_order', {id: order.id}) }}">Aushändigen</a>
-                    <a href="{{ path('delete_card_order', {id: order.id}) }}">Löschen</a>
+                    <a href="{{ path('deliver_card_order', {id: order.id}) }}">🤝 Aushändigen</a>
+                    <br>
+                    <a href="{{ path('delete_card_order', {id: order.id}) }}">🗑️ Löschen</a>
                 </td>
             </tr>
         {% endfor %}
