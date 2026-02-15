@@ -9,5 +9,32 @@
         Name <b>{{ order.user.displayName }}</b>
     </p>
 
+    <button id="scanButton">Ausweis-ID via NFC einlesen</button>
+
+    <script>
+        scanButton.addEventListener("click", async () => {
+            if (!("NDEFReader" in window)) {
+                alert("Web NFC is not available. Use Chrome on Android.");
+
+                return;
+            }
+
+            try {
+                const ndef = new NDEFReader();
+                await ndef.scan();
+
+                ndef.addEventListener("readingerror", () => {
+                    alert("Argh! Cannot read data from the NFC tag. Try another one?");
+                });
+
+                ndef.addEventListener("reading", ({ serialNumber }) => {
+                    document.getElementById('assign_card_id_to_order_cardId').value = serialNumber;
+                });
+            } catch (error) {
+                alert("Argh! " + error);
+            }
+        });
+    </script>
+
     <p>{{ form(form) }}</p>
 {% endblock %}
