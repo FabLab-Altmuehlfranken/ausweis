@@ -16,8 +16,11 @@
             <tr>
                 <td>{{ order.user.displayName }}</td>
                 <td class="center">{{ order.isPrintOrdered ? '✅' : '❌' }}</td>
-                <td>
-                    <code>{{ order.cardId }}</code>
+                <td class="center">
+                    {% if order.cardId %}
+                        <code>{{ order.cardId }}</code>
+                    {% endif %}
+                    <a href="{{ path('assign_card_id_to_order', {id: order.id}) }}">✏️</a>
                 </td>
                 <td>{{ order.createdAt.format('Y-m-d H:i:s') }}</td>
             </tr>
