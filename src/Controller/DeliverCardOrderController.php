@@ -19,8 +19,7 @@ final class DeliverCardOrderController extends AbstractController
     public function index(
         CardOrder $order,
         EntityManagerInterface $entityManager,
-    ): Response
-    {
+    ): Response {
         if (!$order->isReadyForPickUp()) {
             $this->addFlash('error', 'Ausweis ist noch nicht bereit zur Abholung.');
 
