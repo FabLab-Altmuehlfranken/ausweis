@@ -27,15 +27,7 @@ final class OrderCardController extends AbstractController
         $form = $this->createForm(OrderCardType::class);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $user = $this->getUser();
-            assert($user instanceof User);
-            $entityManager->persist(
-                new CardOrder($user),
-            );
-            $entityManager->flush();
-
-            // TODO send mail to let someone know about the new order
-            $this->addFlash('success', 'Ausweis erfolgreich beantragt.');
+            $this->handleCardOrder($entityManager);
 
             return $this->redirectToRoute('homepage');
         }
@@ -55,5 +47,20 @@ final class OrderCardController extends AbstractController
         }
 
         return $user->hasOpenCardOrder();
+    }
+
+    private function handleCardOrder(
+        EntityManagerInterface $entityManager,
+    ): void {
+        $user = $this->getUser();
+        assert($user instanceof User);
+
+        $entityManager->persist(
+            new CardOrder($user),
+        );
+        $entityManager->flush();
+
+        // TODO send mail to let someone know about the new order
+        $this->addFlash('success', 'Ausweis erfolgreich beantragt.');
     }
 }

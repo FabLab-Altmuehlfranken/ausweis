@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Ausweis aushändigen{% endblock %}
+
+{% block body %}
+    <h1>🤝 Ausweis aushändigen</h1>
+
+    <p>Hiermit bestätigst du, dass du den Ausweis an <b>"{{ app.user.displayName }}"</b> ausgehändigt hast.</p>
+
+    <p>{{ form(form) }}</p>
+{% endblock %}

@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Antrag löschen{% endblock %}
+
+{% block body %}
+    <h1>🗑 Antrag löschen</h1>
+
+    <p>Hiermit wird der Ausweisantrag von <b>"{{ app.user.displayName }}"</b> gelöscht.</p>
+
+    <p>{{ form(form) }}</p>
+{% endblock %}

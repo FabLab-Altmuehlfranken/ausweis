@@ -26,18 +26,7 @@ final class AssignCardIdToOrderController extends AbstractController
         $form = $this->createForm(AssignCardIdToOrderType::class, $order);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->flush();
-
-            if ($order->cardId) {
-                $this->addFlash('success', 'Ausweis-ID erfolgreich zugewiesen.');
-            } else {
-                $this->addFlash('info', 'Ausweis-ID erfolgreich entfernt.');
-            }
-
-            if ($order->isReadyForPickUp()) {
-                // TODO send mail to let the user know their card is ready for pick-up
-                $this->addFlash('success', 'Ausweis bereit zur Abholung, der Benutzer wurde informiert.');
-            }
+            $this->handleCardAssignment($entityManager, $order);
 
             return $this->redirectToRoute('list_card_orders');
         }
@@ -46,5 +35,23 @@ final class AssignCardIdToOrderController extends AbstractController
             'form' => $form,
             'order' => $order,
         ]);
+    }
+
+    private function handleCardAssignment(
+        EntityManagerInterface $entityManager,
+        CardOrder $order,
+    ): void {
+        $entityManager->flush();
+
+        if ($order->cardId) {
+            $this->addFlash('success', 'Ausweis-ID erfolgreich zugewiesen.');
+        } else {
+            $this->addFlash('info', 'Ausweis-ID erfolgreich entfernt.');
+        }
+
+        if ($order->isReadyForPickUp()) {
+            // TODO send mail to let the user know their card is ready for pick-up
+            $this->addFlash('success', 'Ausweis bereit zur Abholung, der Benutzer wurde informiert.');
+        }
     }
 }
