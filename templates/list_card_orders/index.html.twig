@@ -21,7 +21,9 @@
                     {% if order.cardId %}
                         <code>{{ order.cardId }}</code>
                     {% endif %}
-                    <a href="{{ path('assign_card_id_to_order', {id: order.id}) }}">✏️</a>
+                    {% if order.isPrintOrdered %}
+                        <a href="{{ path('assign_card_id_to_order', {id: order.id}) }}">✏️</a>
+                    {% endif %}
                 </td>
                 <td>{{ order.createdAt.format('Y-m-d H:i:s') }}</td>
                 <td>
