@@ -18,7 +18,7 @@ class OrderCardType extends AbstractType
     {
         $builder
             ->add('confirm', CheckboxType::class, [
-                'label' => 'Ich bestätige, dass die angezeigten Daten korrekt sind und möchte einen physichen Vereinsausweis beantragen',
+                'label' => 'Ich bestätige, dass die angezeigten Daten korrekt sind und möchte einen physichen Vereinsausweis beantragen.',
             ])
             ->add('submit', SubmitType::class, [
                 'label' => 'Beantragen',
