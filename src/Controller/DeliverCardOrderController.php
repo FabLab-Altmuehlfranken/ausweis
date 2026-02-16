@@ -38,6 +38,7 @@ final class DeliverCardOrderController extends AbstractController
         }
 
         return $this->render('deliver_card_order/index.html.twig', [
+            'order' => $order,
             'form' => $form,
         ]);
     }

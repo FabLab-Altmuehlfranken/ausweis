@@ -32,6 +32,7 @@ final class DeleteCardOrderController extends AbstractController
         }
 
         return $this->render('delete_card_order/index.html.twig', [
+            'order' => $order,
             'form' => $form,
         ]);
     }
