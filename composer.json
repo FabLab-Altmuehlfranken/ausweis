@@ -121,7 +121,10 @@
             "bin/console doctrine:migrations:migrate --no-interaction first",
             "bin/console doctrine:migrations:migrate --no-interaction"
         ],
-        "doctrine-schema-validate": "bin/console doctrine:schema:validate",
+        "doctrine-schema-validate": [
+            "bin/console doctrine:migrations:migrate --no-interaction",
+            "bin/console doctrine:schema:validate"
+        ],
         "rector": "vendor/bin/rector process src --dry-run",
         "security-check": [
             "composer audit --locked --no-dev",
