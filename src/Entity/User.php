@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Entity;
 
 use App\Repository\UserRepository;
-use DateTimeImmutable;
 use Deprecated;
 use Doctrine\ORM\Mapping as ORM;
 use Override;
@@ -43,9 +42,6 @@ class User implements UserInterface
 
     #[ORM\Column(nullable: true)]
     public private(set) ?string $cardId = null;
-
-    #[ORM\Column]
-    private DateTimeImmutable $lastLoginAt;
 
     public function __construct(
         #[Assert\Length(min: 3)]
@@ -142,13 +138,6 @@ class User implements UserInterface
         return $this->cardOrder instanceof CardOrder;
     }
 
-    public function updateLastLoginAt(): static
-    {
-        $this->lastLoginAt = new DateTimeImmutable();
-
-        return $this;
-    }
-
     public function isMember(): bool
     {
         return $this->hasRole(self::MEMBER_ROLE);
@@ -161,13 +150,6 @@ class User implements UserInterface
 
     private function hasRole(string $role): bool
     {
-        if (!in_array($role, $this->getRoles(), true)) {
-            return false;
-        }
-
-        $currentYear = date('Y');
-        $lastLoginYear = $this->lastLoginAt->format('Y');
-
-        return $lastLoginYear === $currentYear;
+        return in_array($role, $this->getRoles(), true);
     }
 }
