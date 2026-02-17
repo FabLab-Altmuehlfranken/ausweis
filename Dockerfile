@@ -7,7 +7,7 @@ ENV APP_ENV='prod'
 ENV APP_DEBUG='0'
 
 RUN apt-get update \
-    && apt-get install -y --no-install-recommends git unzip \
+    && apt-get install -y --no-install-recommends git unzip acl \
     && rm -rf /var/lib/apt/lists/*
 
 RUN install-php-extensions apcu intl zip pdo_pgsql @composer
@@ -23,3 +23,7 @@ EOF
 
 COPY . /app
 RUN composer install --no-dev --optimize-autoloader -d /app/
+
+ADD --chmod=755 https://github.com/api-platform/api-platform/raw/refs/heads/main/api/frankenphp/docker-entrypoint.sh /usr/local/bin/custom-entrypoint
+ENTRYPOINT ["/usr/local/bin/custom-entrypoint"]
+CMD [ "frankenphp", "run", "--config", "/etc/frankenphp/Caddyfile" ]
