@@ -80,6 +80,11 @@ jobs:
         image: postgres:15-alpine
         ports:
           - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 1s
+          --health-timeout 3s
+          --health-retries 60
     steps:
       - uses: actions/checkout@v6
       - uses: shivammathur/setup-php@v2
