@@ -96,19 +96,32 @@
             "@auto-scripts"
         ],
         "test": [
+            "@composer-validate",
             "@lint-yaml",
             "@lint-container",
             "@lint-twig",
             "@php-cs-fixer",
             "@phpstan",
+            "@doctrine-migrations",
+            "@doctrine-schema-validate",
             "@rector",
             "@security-check"
         ],
+        "composer-validate": "composer validate --strict --no-check-publish",
         "lint-yaml": "bin/console lint:yaml --parse-tags *.yaml config/ tests/",
         "lint-container": "bin/console lint:container",
         "lint-twig": "bin/console lint:twig --show-deprecations templates/",
         "php-cs-fixer": "vendor/bin/php-cs-fixer fix --dry-run --using-cache=no --ansi --diff",
-        "phpstan": "vendor/bin/phpstan analyse --ansi --memory-limit 256M",
+        "phpstan": [
+            "APP_DEBUG=1 bin/console cache:clear -e dev",
+            "vendor/bin/phpstan analyse --ansi --memory-limit 256M"
+        ],
+        "doctrine-migrations": [
+            "bin/console doctrine:migrations:migrate --no-interaction",
+            "bin/console doctrine:migrations:migrate --no-interaction first",
+            "bin/console doctrine:migrations:migrate --no-interaction"
+        ],
+        "doctrine-schema-validate": "bin/console doctrine:schema:validate",
         "rector": "vendor/bin/rector process src --dry-run",
         "security-check": [
             "composer audit --locked --no-dev",
