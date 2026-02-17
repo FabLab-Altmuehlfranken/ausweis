@@ -7,9 +7,6 @@ on:
 env:
   PHP_VERSION: 8.5
   SYMFONY_DEPRECATIONS_HELPER: max[total]=0
-  POSTGRES_DB: app
-  POSTGRES_PASSWORD: '!ChangeMe!'
-  POSTGRES_USER: app
   DATABASE_URL: postgresql://app:!ChangeMe!@localhost:5432/app?serverVersion=15&charset=utf8"
 
 jobs:
@@ -103,11 +100,6 @@ jobs:
           POSTGRES_USER: app
         ports:
           - 5432:5432
-        options: >-
-          --health-cmd pg_isready
-          --health-interval 1s
-          --health-timeout 3s
-          --health-retries 60
     steps:
       - uses: actions/checkout@v6
       - uses: shivammathur/setup-php@v2
