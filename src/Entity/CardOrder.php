@@ -18,7 +18,7 @@ class CardOrder
     public private(set) int $id;
 
     #[ORM\Column(options: ['default' => 'CURRENT_TIMESTAMP'])]
-    public private(set) DateTimeImmutable $createdAt;
+    public private(set) readonly DateTimeImmutable $createdAt;
 
     #[ORM\Column]
     public private(set) bool $isPrintOrdered = false;
@@ -31,7 +31,7 @@ class CardOrder
     public function __construct(
         #[ORM\OneToOne(inversedBy: 'cardOrder')]
         #[ORM\JoinColumn(name: '`user`', nullable: false)]
-        private(set) readonly User $user,
+        public private(set) readonly User $user,
     ) {
         $this->createdAt = new DateTimeImmutable();
     }
