@@ -18,18 +18,22 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 final class AssignCardIdToOrderController extends AbstractController
 {
+    public function __construct(
+        private readonly MailerInterface $mailer,
+    ) {
+    }
+
     #[Route('/card_orders/{id}/assign_card_id', name: 'assign_card_id_to_order')]
     #[IsGranted(User::ADMIN_ROLE)]
     public function index(
         CardOrder $order,
         Request $request,
         EntityManagerInterface $entityManager,
-        MailerInterface $mailer,
     ): Response {
         $form = $this->createForm(AssignCardIdToOrderType::class, $order);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->handleCardAssignment($entityManager, $order, $mailer);
+            $this->handleCardAssignment($entityManager, $order);
 
             return $this->redirectToRoute('list_card_orders');
         }
@@ -43,7 +47,6 @@ final class AssignCardIdToOrderController extends AbstractController
     private function handleCardAssignment(
         EntityManagerInterface $entityManager,
         CardOrder $order,
-        MailerInterface $mailer,
     ): void {
         $entityManager->flush();
 
@@ -54,15 +57,20 @@ final class AssignCardIdToOrderController extends AbstractController
         }
 
         if ($order->isReadyForPickUp()) {
-            $mailer->send(
-                new TemplatedEmail()
-                    ->to($order->user->mail)
-                    ->subject('[FabLab] Ausweis bereit zu Abholung')
-                    ->textTemplate('mail/card_ready_for_pickup.txt.twig')
-                    ->context(['name' => $order->user->displayName])
-            );
+            $this->notifyUser($order);
 
             $this->addFlash('success', 'Ausweis bereit zur Abholung, der Benutzer wurde informiert.');
         }
+    }
+
+    public function notifyUser(CardOrder $order): void
+    {
+        $this->mailer->send(
+            new TemplatedEmail()
+                ->to($order->user->mail)
+                ->subject('[FabLab] Ausweis bereit zu Abholung')
+                ->textTemplate('mail/card_ready_for_pickup.txt.twig')
+                ->context(['name' => $order->user->displayName])
+        );
     }
 }

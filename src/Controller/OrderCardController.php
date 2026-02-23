@@ -17,11 +17,15 @@ use Symfony\Component\Routing\Attribute\Route;
 
 final class OrderCardController extends AbstractController
 {
+    public function __construct(
+        private readonly MailerInterface $mailer,
+    ) {
+    }
+
     #[Route('/order_card', name: 'order_card')]
     public function index(
         Request $request,
         EntityManagerInterface $entityManager,
-        MailerInterface $mailer,
     ): Response {
         if ($this->hasUserCardOrCardOrder()) {
             $this->addFlash('info', 'Du hast entweder bereits einen Ausweis oder schon einen beantragt.');
@@ -32,7 +36,7 @@ final class OrderCardController extends AbstractController
         $form = $this->createForm(OrderCardType::class);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->handleCardOrder($entityManager, $mailer);
+            $this->handleCardOrder($entityManager);
 
             return $this->redirectToRoute('homepage');
         }
@@ -56,7 +60,6 @@ final class OrderCardController extends AbstractController
 
     private function handleCardOrder(
         EntityManagerInterface $entityManager,
-        MailerInterface $mailer,
     ): void {
         $user = $this->getUser();
         assert($user instanceof User);
@@ -65,13 +68,7 @@ final class OrderCardController extends AbstractController
             new CardOrder($user),
         );
 
-        $mailer->send(
-            new TemplatedEmail()
-                ->to('vorstand@fablab-altmuehlfranken.de')
-                ->subject('[FabLab] Neuer Ausweisantrag ('.$user->displayName.')')
-                ->textTemplate('mail/new_card_order.txt.twig')
-                ->context(['name' => $user->displayName])
-        );
+        $this->notifyManagement($user);
 
         /*
          * Flush after sending mail so in case there's an error we only sent a
@@ -81,5 +78,16 @@ final class OrderCardController extends AbstractController
         $entityManager->flush();
 
         $this->addFlash('success', 'Ausweis erfolgreich beantragt.');
+    }
+
+    public function notifyManagement(User $user): void
+    {
+        $this->mailer->send(
+            new TemplatedEmail()
+                ->to('vorstand@fablab-altmuehlfranken.de')
+                ->subject('[FabLab] Neuer Ausweisantrag ('.$user->displayName.')')
+                ->textTemplate('mail/new_card_order.txt.twig')
+                ->context(['name' => $user->displayName])
+        );
     }
 }
