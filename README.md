@@ -8,6 +8,8 @@
 
 After that the app should be reachable via http://localhost:8000/
 
+Sent mails can be inspected at http://localhost:8025/
+
 ## Dependency updates
 
     # Update composer packages
