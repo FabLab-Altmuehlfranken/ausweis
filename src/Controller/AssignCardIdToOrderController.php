@@ -8,9 +8,11 @@ use App\Entity\CardOrder;
 use App\Entity\User;
 use App\Form\AssignCardIdToOrderType;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
@@ -22,11 +24,12 @@ final class AssignCardIdToOrderController extends AbstractController
         CardOrder $order,
         Request $request,
         EntityManagerInterface $entityManager,
+        MailerInterface $mailer,
     ): Response {
         $form = $this->createForm(AssignCardIdToOrderType::class, $order);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->handleCardAssignment($entityManager, $order);
+            $this->handleCardAssignment($entityManager, $order, $mailer);
 
             return $this->redirectToRoute('list_card_orders');
         }
@@ -40,6 +43,7 @@ final class AssignCardIdToOrderController extends AbstractController
     private function handleCardAssignment(
         EntityManagerInterface $entityManager,
         CardOrder $order,
+        MailerInterface $mailer,
     ): void {
         $entityManager->flush();
 
@@ -50,7 +54,14 @@ final class AssignCardIdToOrderController extends AbstractController
         }
 
         if ($order->isReadyForPickUp()) {
-            // TODO send mail to let the user know their card is ready for pick-up
+            $mailer->send(
+                new TemplatedEmail()
+                    ->to($order->user->mail)
+                    ->subject('[FabLab] Ausweis bereit zu Abholung')
+                    ->textTemplate('mail/card_ready_for_pickup.html.twig')
+                    ->context(['name' => $order->user->displayName])
+            );
+
             $this->addFlash('success', 'Ausweis bereit zur Abholung, der Benutzer wurde informiert.');
         }
     }
