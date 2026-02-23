@@ -31,7 +31,7 @@ class CardOrder
     public function __construct(
         #[ORM\OneToOne(inversedBy: 'cardOrder')]
         #[ORM\JoinColumn(name: '`user`', nullable: false)]
-        private(set) User $user,
+        private(set) readonly User $user,
     ) {
         $this->createdAt = new DateTimeImmutable();
     }
