@@ -17,17 +17,19 @@
     </p>
 
     <p>
+        🪪
         {% if app.user.cardId %}
-            🪪 Deine physische Ausweiskarte hat die ID: <code>{{ app.user.cardId }}</code><br>
+            Deine physische Ausweiskarte hat die ID: <code>{{ app.user.cardId }}</code>
         {% elseif app.user.cardOrder %}
-            🪪 Du hast bereits eine physische Ausweiskarte beantragt.<br>
             {% if app.user.cardOrder.readyForPickUp %}
                 Dein Ausweis ist bereit zur Abholung.
+                Wende dich dazu am besten an einem OpenLab-Termin an ein Vorstandsmitglied.
             {% else %}
+                Du hast bereits eine physische Ausweiskarte beantragt.
                 Sobald dein Ausweis fertig ist, senden wir dir eine Mail an: <b>{{ app.user.mail }}</b>
             {% endif %}
         {% else %}
-            🪪 Eine physische Ausweiskarte kannst du <a href="{{ path('order_card') }}">hier</a> beantragen.
+            Eine physische Ausweiskarte kannst du <a href="{{ path('order_card') }}">hier</a> beantragen.
         {% endif %}
     </p>
 {% endblock %}
