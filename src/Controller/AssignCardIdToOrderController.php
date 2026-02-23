@@ -58,7 +58,7 @@ final class AssignCardIdToOrderController extends AbstractController
                 new TemplatedEmail()
                     ->to($order->user->mail)
                     ->subject('[FabLab] Ausweis bereit zu Abholung')
-                    ->textTemplate('mail/card_ready_for_pickup.html.twig')
+                    ->textTemplate('mail/card_ready_for_pickup.txt.twig')
                     ->context(['name' => $order->user->displayName])
             );
 

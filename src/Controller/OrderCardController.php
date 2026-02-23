@@ -69,7 +69,7 @@ final class OrderCardController extends AbstractController
             new TemplatedEmail()
                 ->to('vorstand@fablab-altmuehlfranken.de')
                 ->subject('[FabLab] Neuer Ausweisantrag ('.$user->displayName.')')
-                ->textTemplate('mail/new_card_order.html.twig')
+                ->textTemplate('mail/new_card_order.txt.twig')
                 ->context(['name' => $user->displayName])
         );
 
