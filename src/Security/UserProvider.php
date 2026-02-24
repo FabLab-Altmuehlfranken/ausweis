@@ -65,8 +65,10 @@ final readonly class UserProvider implements OAuthAwareUserProviderInterface
         }
 
         $data = $response->getData();
+        /* @phpstan-ignore-next-line */
         $roles = $data['resource_access']['ausweis']['roles'] ?? [];
 
+        Assert::isArray($roles);
         Assert::allStringNotEmpty($roles);
 
         return $roles;
