@@ -22,7 +22,8 @@ COPY <<-EOF /usr/local/etc/php/conf.d/local.ini
 EOF
 
 COPY . /app
-RUN composer install --no-dev --optimize-autoloader -d /app/
+RUN composer install --no-dev --optimize-autoloader -d /app/ \
+    && /app/bin/console asset-map:compile
 
 ADD --chmod=755 https://github.com/api-platform/api-platform/raw/refs/heads/main/api/frankenphp/docker-entrypoint.sh /usr/local/bin/custom-entrypoint
 ENTRYPOINT ["/usr/local/bin/custom-entrypoint"]
