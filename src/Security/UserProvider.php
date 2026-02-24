@@ -65,14 +65,7 @@ final readonly class UserProvider implements OAuthAwareUserProviderInterface
         }
 
         $data = $response->getData();
-        if (
-            !is_array($data['resource_access'] ?? null)
-            || !is_array($data['resource_access']['ausweis'] ?? null)
-            || !is_array($data['resource_access']['ausweis']['roles'] ?? null)
-        ) {
-            throw new RuntimeException('unexpected user response type');
-        }
-        $roles = $data['resource_access']['ausweis']['roles'];
+        $roles = $data['resource_access']['ausweis']['roles'] ?? [];
 
         Assert::allStringNotEmpty($roles);
 
