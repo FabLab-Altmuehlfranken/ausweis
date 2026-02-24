@@ -15,17 +15,20 @@
         {% endblock %}
     </head>
     <body>
-        {% if is_granted('IS_AUTHENTICATED') %}
+        {% if app.current_route !== 'hwi_oauth_connect' %}
             <nav>
                 <a href="{{ path('homepage') }}">
                     <img src="{{ asset('images/logo.png') }}">
                     Ausweis
                 </a>
-                {% if app.user.isAdmin %}
-                    <a href="{{ path('list_card_orders') }}">Ausweisanträge</a>
-                {% endif %}
 
-                <a href="{{ logout_path() }}">Ausloggen</a>
+                {% if is_granted('IS_AUTHENTICATED') %}
+                    {% if app.user.isAdmin %}
+                        <a href="{{ path('list_card_orders') }}">Ausweisanträge</a>
+                    {% endif %}
+
+                    <a href="{{ logout_path() }}">Ausloggen</a>
+                {% endif %}
             </nav>
 
             <hr>

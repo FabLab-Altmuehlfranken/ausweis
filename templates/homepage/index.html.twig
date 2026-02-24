@@ -13,7 +13,10 @@
     </p>
 
     <p>
-        📱 Dein digitaler Ausweis hat die ID: <code>{{ app.user.digitalCardId }}</code><br>
+        📱 Dein digitaler Ausweis hat die ID:
+        <a href="{{ path('user_details_by_digital_card_id', {'uuid': app.user.digitalCardId}) }}">
+            <code>{{ app.user.digitalCardId }}</code>
+        </a><br>
     </p>
 
     <p>
