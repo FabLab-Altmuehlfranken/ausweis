@@ -1,9 +1,19 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
+    <p>
+        Ausweis-ID: <code>{{ user.digitalCardId }}</code>
+    </p>
+
     {% if is_granted('ROLE_ADMIN') %}
-        Name: {{ user.displayName }}<br>
+        <p>
+            Name: <b>{{ user.displayName }}</b>
+        </p>
     {% endif %}
 
-    Gescannte digitale Ausweis-ID: <code>{{ user.digitalCardId }}</code>
+    <details>
+        <summary>QR-Code anzeigen</summary>
+
+        <img src="{{ qrCode.dataUri }}">
+    </details>
 {% endblock %}

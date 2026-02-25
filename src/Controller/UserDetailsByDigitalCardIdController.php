@@ -5,8 +5,10 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Entity\User;
+use Endroid\QrCode\Builder\BuilderInterface;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\DependencyInjection\Attribute\Target;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
@@ -16,9 +18,16 @@ final class UserDetailsByDigitalCardIdController extends AbstractController
     public function index(
         #[MapEntity(mapping: ['uuid' => 'digitalCardId'])]
         User $user,
+        #[Target('user_details_svgQrCodeBuilder')]
+        BuilderInterface $qrCodeBuilder,
     ): Response {
+        $qrCode = $qrCodeBuilder->build(
+            data: $user->digitalCardId->toString(),
+        );
+
         return $this->render('user_details_by_digital_card_id/index.html.twig', [
             'user' => $user,
+            'qrCode' => $qrCode,
         ]);
     }
 }
