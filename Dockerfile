@@ -21,7 +21,12 @@ COPY <<-EOF /usr/local/etc/php/conf.d/local.ini
 	opcache.preload = /app/config/preload.php
 EOF
 
-COPY . /app
+RUN useradd ausweis \
+	&& setcap -r /usr/local/bin/frankenphp \
+	&& chown -R ausweis:ausweis /config/caddy /data/caddy /app
+USER ausweis
+
+COPY --chown=ausweis:ausweis . /app
 RUN composer install --no-dev --optimize-autoloader -d /app/ \
     && /app/bin/console asset-map:compile
 
