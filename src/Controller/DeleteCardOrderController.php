@@ -16,17 +16,21 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 final class DeleteCardOrderController extends AbstractController
 {
+    public function __construct(
+        private readonly EntityManagerInterface $entityManager,
+    ) {
+    }
+
     #[Route('/card_orders/{id}/delete', name: 'delete_card_order')]
     #[IsGranted(User::ADMIN_ROLE)]
     public function index(
         CardOrder $order,
         Request $request,
-        EntityManagerInterface $entityManager,
     ): Response {
         $form = $this->createForm(ConfirmType::class);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->handleOrderDeletion($order, $entityManager);
+            $this->handleOrderDeletion($order, $this->entityManager);
 
             return $this->redirectToRoute('list_card_orders');
         }

@@ -19,13 +19,13 @@ final class OrderCardController extends AbstractController
 {
     public function __construct(
         private readonly MailerInterface $mailer,
+        private readonly EntityManagerInterface $entityManager,
     ) {
     }
 
     #[Route('/order_card', name: 'order_card')]
     public function index(
         Request $request,
-        EntityManagerInterface $entityManager,
     ): Response {
         if ($this->hasUserCardOrCardOrder()) {
             $this->addFlash('info', 'Du hast entweder bereits einen Ausweis oder schon einen beantragt.');
@@ -36,7 +36,7 @@ final class OrderCardController extends AbstractController
         $form = $this->createForm(OrderCardType::class);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->handleCardOrder($entityManager);
+            $this->handleCardOrder($this->entityManager);
 
             return $this->redirectToRoute('homepage');
         }

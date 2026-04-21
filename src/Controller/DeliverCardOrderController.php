@@ -16,12 +16,16 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 final class DeliverCardOrderController extends AbstractController
 {
+    public function __construct(
+        private readonly EntityManagerInterface $entityManager,
+    ) {
+    }
+
     #[Route('/card_orders/{id}/deliver', name: 'deliver_card_order')]
     #[IsGranted(User::ADMIN_ROLE)]
     public function index(
         CardOrder $order,
         Request $request,
-        EntityManagerInterface $entityManager,
     ): Response {
         if (!$order->isReadyForPickUp()) {
             $this->addFlash('error', 'Ausweis ist noch nicht bereit zur Abholung.');
@@ -32,7 +36,7 @@ final class DeliverCardOrderController extends AbstractController
         $form = $this->createForm(ConfirmType::class);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->handleCardDelivery($order, $entityManager);
+            $this->handleCardDelivery($order, $this->entityManager);
 
             return $this->redirectToRoute('list_card_orders');
         }

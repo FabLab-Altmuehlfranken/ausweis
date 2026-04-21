@@ -20,6 +20,7 @@ final class AssignCardIdToOrderController extends AbstractController
 {
     public function __construct(
         private readonly MailerInterface $mailer,
+        private readonly EntityManagerInterface $entityManager,
     ) {
     }
 
@@ -28,12 +29,11 @@ final class AssignCardIdToOrderController extends AbstractController
     public function index(
         CardOrder $order,
         Request $request,
-        EntityManagerInterface $entityManager,
     ): Response {
         $form = $this->createForm(AssignCardIdToOrderType::class, $order);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->handleCardAssignment($entityManager, $order);
+            $this->handleCardAssignment($this->entityManager, $order);
 
             return $this->redirectToRoute('list_card_orders');
         }
