@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Service;
 
 use Endroid\QrCode\Builder\BuilderInterface;
@@ -32,11 +34,11 @@ final readonly class UserDetailsQrCodeGenerator
         );
     }
 
-    protected function buildUrl(Uuid $digitalCardId): string
+    private function buildUrl(Uuid $digitalCardId): string
     {
         return $this->baseUrl.$this->urlGenerator->generate(
-                'user_details_by_digital_card_id',
-                ['uuid' => $digitalCardId->toString()],
-            );
+            'user_details_by_digital_card_id',
+            ['uuid' => $digitalCardId->toString()],
+        );
     }
 }
