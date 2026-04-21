@@ -11,15 +11,19 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
+#[Route('/user_details/{uuid}', name: 'user_details_by_digital_card_id')]
 final class UserDetailsByDigitalCardIdController extends AbstractController
 {
-    #[Route('/user_details/{uuid}', name: 'user_details_by_digital_card_id')]
-    public function index(
-        UserDetailsQrCodeGenerator $qrCodeGenerator,
+    public function __construct(
+        private readonly UserDetailsQrCodeGenerator $qrCodeGenerator,
+    ) {
+    }
+
+    public function __invoke(
         #[MapEntity(mapping: ['uuid' => 'digitalCardId'])]
         User $user,
     ): Response {
-        $qrCode = $qrCodeGenerator->generate($user->digitalCardId);
+        $qrCode = $this->qrCodeGenerator->generate($user->digitalCardId);
 
         return $this->render('user_details_by_digital_card_id/index.html.twig', [
             'user' => $user,
