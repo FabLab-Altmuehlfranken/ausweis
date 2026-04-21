@@ -22,7 +22,7 @@ Sent mails can be inspected at http://localhost:8025/
 
 ## Run all the tests
 
-    docker compose run --rm -u 1000 app composer test
+    docker compose run --rm app composer test
 
 ## Database migrations
 
