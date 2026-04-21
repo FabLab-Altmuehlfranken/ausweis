@@ -16,6 +16,8 @@ use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
+#[Route('/card_orders/{id}/assign_card_id', name: 'assign_card_id_to_order')]
+#[IsGranted(User::ADMIN_ROLE)]
 final class AssignCardIdToOrderController extends AbstractController
 {
     public function __construct(
@@ -24,9 +26,7 @@ final class AssignCardIdToOrderController extends AbstractController
     ) {
     }
 
-    #[Route('/card_orders/{id}/assign_card_id', name: 'assign_card_id_to_order')]
-    #[IsGranted(User::ADMIN_ROLE)]
-    public function index(
+    public function __invoke(
         CardOrder $order,
         Request $request,
     ): Response {

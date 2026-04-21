@@ -11,6 +11,8 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
+#[Route('/card_orders', name: 'list_card_orders')]
+#[IsGranted(User::ADMIN_ROLE)]
 final class ListCardOrdersController extends AbstractController
 {
     public function __construct(
@@ -18,9 +20,7 @@ final class ListCardOrdersController extends AbstractController
     ) {
     }
 
-    #[Route('/card_orders', name: 'list_card_orders')]
-    #[IsGranted(User::ADMIN_ROLE)]
-    public function index(): Response
+    public function __invoke(): Response
     {
         $orders = $this->repository->findAll();
 

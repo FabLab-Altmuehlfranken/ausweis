@@ -15,6 +15,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Routing\Attribute\Route;
 
+#[Route('/order_card', name: 'order_card')]
 final class OrderCardController extends AbstractController
 {
     public function __construct(
@@ -23,8 +24,7 @@ final class OrderCardController extends AbstractController
     ) {
     }
 
-    #[Route('/order_card', name: 'order_card')]
-    public function index(
+    public function __invoke(
         Request $request,
     ): Response {
         if ($this->hasUserCardOrCardOrder()) {
