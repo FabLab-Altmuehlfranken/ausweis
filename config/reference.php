@@ -996,7 +996,7 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *             use_underscore?: bool|Param, // Default: true
  *             unordered_list_markers?: list<scalar|Param|null>,
  *         },
- *         ...<mixed>
+ *         ...<string, mixed>
  *     },
  * }
  * @psalm-type SecurityConfig = array{
@@ -1513,7 +1513,7 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *         use_authorization_to_get_token?: scalar|Param|null,
  *         paths?: array<string, mixed>,
  *         options?: array<string, scalar|Param|null>,
- *         ...<mixed>
+ *         ...<string, mixed>
  *     }>,
  * }
  * @psalm-type EndroidQrCodeConfig = array<string, mixed>
