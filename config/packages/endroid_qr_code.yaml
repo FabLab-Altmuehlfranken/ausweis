@@ -6,7 +6,3 @@ endroid_qr_code:
             round_block_size_mode: 'none'
             writer_options:
                 exclude_svg_width_and_height: true
-        card_png:
-            writer: Endroid\QrCode\Writer\PngWriter
-            error_correction_level: 'medium'
-            size: 300
