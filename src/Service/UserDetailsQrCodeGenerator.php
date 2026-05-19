@@ -6,7 +6,6 @@ namespace App\Service;
 
 use Endroid\QrCode\Builder\BuilderInterface;
 use Endroid\QrCode\Color\Color;
-use Endroid\QrCode\ErrorCorrectionLevel;
 use Endroid\QrCode\Writer\Result\ResultInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\DependencyInjection\Attribute\Target;
@@ -28,7 +27,6 @@ final readonly class UserDetailsQrCodeGenerator
     {
         return $this->qrCodeBuilder->build(
             data: $this->buildUrl($digitalCardId),
-            errorCorrectionLevel: ErrorCorrectionLevel::Low,
             margin: 0,
             backgroundColor: new Color(0, 0, 0, 127),
         );

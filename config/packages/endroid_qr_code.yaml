@@ -2,7 +2,7 @@ endroid_qr_code:
     builders:
         user_details_svg:
             writer: Endroid\QrCode\Writer\SvgWriter
-            error_correction_level: 'medium' # 'low', 'medium', 'quartile', or 'high'
+            error_correction_level: 'low'
             round_block_size_mode: 'none'
             writer_options:
                 exclude_svg_width_and_height: true
