@@ -6,9 +6,25 @@
     </p>
 
     {% if is_granted('ROLE_ADMIN') %}
-        <p>
-            Name: <b>{{ user.displayName }}</b>
-        </p>
+        <fieldset>
+            <legend>Admin-Area</legend>
+
+            <p>
+                Name: <b>{{ user.displayName }}</b>
+            </p>
+            {% if user.cardOrder %}
+                <p>
+                    Ausweisantrag:
+                    {% if user.cardOrder.readyForPickUp %}
+                        <a href="{{ path('deliver_card_order', {id: user.cardOrder.id}) }}">🤝 Ausweis aushändigen</a>
+                    {% elseif user.cardOrder.isPrintOrdered %}
+                        <a href="{{ path('assign_card_id_to_order', {id: user.cardOrder.id}) }}">✏️ Ausweis zuordnen</a>
+                    {% else %}
+                        ⏳ ausstehend
+                    {% endif %}
+                </p>
+            {% endif %}
+        </fieldset>
     {% endif %}
 
     <details>
