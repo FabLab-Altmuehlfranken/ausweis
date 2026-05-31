@@ -27,7 +27,8 @@ final class ExportCardOrdersController extends AbstractController
         private readonly Filesystem $filesystem,
         private readonly CardOrderRepository $repository,
         private readonly UserDetailsQrCodeGenerator $qrCodeGenerator,
-        private readonly EntityManagerInterface $entityManager,
+        // TODO
+        // private readonly EntityManagerInterface $entityManager,
         private readonly MailerInterface $mailer,
     ) {
     }
@@ -102,15 +103,19 @@ final class ExportCardOrdersController extends AbstractController
         return $zipFilePath;
     }
 
-    private function setPrintOrdered(array $orders): void
-    {
-        array_map(
-            static fn (CardOrder $order) => $order->setPrintOrdered(),
-            $orders,
-        );
-
-        $this->entityManager->flush();
-    }
+    // TODO
+    // /**
+    //  * @param CardOrder[] $orders
+    //  */
+    // private function setPrintOrdered(array $orders): void
+    // {
+    //     array_map(
+    //         static fn (CardOrder $order) => $order->setPrintOrdered(),
+    //         $orders,
+    //     );
+    //
+    //     $this->entityManager->flush();
+    // }
 
     /**
      * @param CardOrder[] $orders
@@ -119,11 +124,14 @@ final class ExportCardOrdersController extends AbstractController
         array $orders,
         string $zipFilePath,
     ): void {
+        $user = $this->getUser();
+        assert($user instanceof User);
+
         $this->mailer->send(
             new TemplatedEmail()
                 // TODO
                 // ->to('vorstand@fablab-altmuehlfranken.de')
-                ->to($this->getUser()->mail)
+                ->to($user->mail)
                 ->subject('[FabLab] Export Ausweisanträge')
                 ->textTemplate('mail/card_orders_export.txt.twig')
                 ->context(['count' => count($orders)])
