@@ -35,6 +35,13 @@
                 </td>
             </tr>
         {% endfor %}
-{#        TODO request printing -> csv export/mail + set print ordered #}
     </table>
+
+    {% if orders|filter(o => not o.isPrintOrdered) is not empty %}
+        <p>
+            <form method="POST" action="{{ path('export_card_orders') }}">
+                <input type="submit" value="🖨️ Druck beauftragen" title="Generiert eine Mail mit einem Export aller Anträge, für die noch kein Druck beauftragt wurde.">
+            </form>
+        </p>
+    {% endif %}
 {% endblock %}

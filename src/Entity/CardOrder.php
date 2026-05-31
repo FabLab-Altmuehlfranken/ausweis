@@ -7,6 +7,7 @@ namespace App\Entity;
 use App\Repository\CardOrderRepository;
 use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
+use LogicException;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: CardOrderRepository::class)]
@@ -45,6 +46,15 @@ class CardOrder
         $this->cardId = $cardId;
 
         return $this;
+    }
+
+    public function setPrintOrdered(): void
+    {
+        if ($this->isPrintOrdered) {
+            throw new LogicException('print was ordered already');
+        }
+
+        $this->isPrintOrdered = true;
     }
 
     public function isReadyForPickUp(): bool
