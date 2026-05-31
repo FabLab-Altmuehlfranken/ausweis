@@ -8,12 +8,12 @@ use App\Entity\CardOrder;
 use App\Entity\User;
 use App\Repository\CardOrderRepository;
 use App\Service\UserDetailsQrCodeGenerator;
-use Doctrine\ORM\EntityManagerInterface;
+// use Doctrine\ORM\EntityManagerInterface;
 use RuntimeException;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Filesystem\Filesystem;
-use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
@@ -33,7 +33,7 @@ final class ExportCardOrdersController extends AbstractController
     ) {
     }
 
-    public function __invoke(): Response
+    public function __invoke(): RedirectResponse
     {
         $orders = $this->repository->findBy(['isPrintOrdered' => false]);
 
@@ -56,7 +56,7 @@ final class ExportCardOrdersController extends AbstractController
      *
      * @return array<string, string>
      */
-    protected function getQrCodesByUsername(array $orders): array
+    private function getQrCodesByUsername(array $orders): array
     {
         $qrCodes = [];
         foreach ($orders as $order) {
@@ -72,7 +72,7 @@ final class ExportCardOrdersController extends AbstractController
     /**
      * @param array<string, string> $qrCodesByUsername
      */
-    protected function createZipFile(array $qrCodesByUsername): string
+    private function createZipFile(array $qrCodesByUsername): string
     {
         $zip = new ZipArchive();
         $zipFilePath = $this->filesystem->tempnam(
@@ -120,7 +120,7 @@ final class ExportCardOrdersController extends AbstractController
     /**
      * @param CardOrder[] $orders
      */
-    protected function sendMail(
+    private function sendMail(
         array $orders,
         string $zipFilePath,
     ): void {
