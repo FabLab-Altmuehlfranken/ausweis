@@ -14,12 +14,14 @@ use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpKernel\Attribute\MapQueryParameter;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use ZipArchive;
+use const FILTER_VALIDATE_INT;
 
-#[Route('/card_orders/export', name: 'export_card_orders', methods: ['POST'])]
 #[IsGranted(User::ADMIN_ROLE)]
 final class ExportCardOrdersController extends AbstractController
 {
@@ -32,7 +34,8 @@ final class ExportCardOrdersController extends AbstractController
     ) {
     }
 
-    public function __invoke(): RedirectResponse
+    #[Route('/card_orders/export', name: 'export_card_orders', methods: ['POST'])]
+    public function export(): RedirectResponse
     {
         $orders = $this->repository->findBy(['isPrintOrdered' => false]);
 
@@ -41,9 +44,22 @@ final class ExportCardOrdersController extends AbstractController
         $this->sendMail($orders, $zipFilePath);
         $this->filesystem->remove($zipFilePath);
 
-        $this->setPrintOrdered($orders);
+        $this->addFlash('success', 'Offene Anträge erfolgreich exportiert und per Mail an dich verschickt.');
 
-        $this->addFlash('success', 'Offene Anträge erfolgreich exportiert und per Mail an dich verschickt, bitte zum Druck weitergeben.');
+        return $this->redirectToRoute('list_card_orders');
+    }
+
+    #[Route('/card_orders/mark_print_ordered', name: 'mark_print_ordered', methods: ['GET'])]
+    public function markPrintOrdered(
+        #[MapQueryParameter(name: 'ids', filter: FILTER_VALIDATE_INT)]
+        array $cardOrderIds,
+    ): RedirectResponse {
+        $this->repository->findBy([
+            'isPrintOrdered' => false,
+            'id' => $cardOrderIds,
+        ]) |> $this->setPrintOrdered(...);
+
+        $this->addFlash('success', 'Anträge erfolgreich mit "Druck beauftragt" markiert.');
 
         return $this->redirectToRoute('list_card_orders');
     }
@@ -123,12 +139,25 @@ final class ExportCardOrdersController extends AbstractController
         $user = $this->getUser();
         assert($user instanceof User);
 
+        $orderIds = array_map(
+            static fn (CardOrder $order) => $order->id,
+            $orders,
+        );
+        $setPrintOrderedLink = $this->generateUrl(
+            'mark_print_ordered',
+            ['ids' => $orderIds],
+            UrlGeneratorInterface::ABSOLUTE_URL,
+        );
+
         $this->mailer->send(
             new TemplatedEmail()
                 ->to($user->mail)
                 ->subject('[FabLab] Export Ausweisanträge')
                 ->textTemplate('mail/card_orders_export.txt.twig')
-                ->context(['count' => count($orders)])
+                ->context([
+                    'count' => count($orders),
+                    'link' => $setPrintOrderedLink,
+                ])
                 ->attachFromPath($zipFilePath, 'fablab-ausweis-bestellungen.zip')
         );
     }
