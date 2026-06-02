@@ -50,6 +50,9 @@ final class ExportCardOrdersController extends AbstractController
         return $this->redirectToRoute('list_card_orders');
     }
 
+    /**
+     * @param int[] $cardOrderIds
+     */
     #[Route('/card_orders/mark_print_ordered', name: 'mark_print_ordered', methods: ['GET'])]
     public function markPrintOrdered(
         #[MapQueryParameter(name: 'ids', filter: FILTER_VALIDATE_INT)]
