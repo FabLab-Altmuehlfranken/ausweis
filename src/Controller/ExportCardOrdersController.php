@@ -144,7 +144,7 @@ final class ExportCardOrdersController extends AbstractController
         assert($user instanceof User);
 
         $orderIds = array_map(
-            static fn (CardOrder $order) => $order->id,
+            static fn (CardOrder $order): int => $order->id,
             $orders,
         );
         $setPrintOrderedLink = $this->generateUrl(
