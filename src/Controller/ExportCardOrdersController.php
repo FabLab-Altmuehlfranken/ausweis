@@ -8,7 +8,7 @@ use App\Entity\CardOrder;
 use App\Entity\User;
 use App\Repository\CardOrderRepository;
 use App\Service\UserDetailsQrCodeGenerator;
-// use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\EntityManagerInterface;
 use RuntimeException;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -27,8 +27,7 @@ final class ExportCardOrdersController extends AbstractController
         private readonly Filesystem $filesystem,
         private readonly CardOrderRepository $repository,
         private readonly UserDetailsQrCodeGenerator $qrCodeGenerator,
-        // TODO
-        // private readonly EntityManagerInterface $entityManager,
+        private readonly EntityManagerInterface $entityManager,
         private readonly MailerInterface $mailer,
     ) {
     }
@@ -42,11 +41,9 @@ final class ExportCardOrdersController extends AbstractController
         $this->sendMail($orders, $zipFilePath);
         $this->filesystem->remove($zipFilePath);
 
-        // TODO enable once we know the zip file fits the requirements
-        // $this->setPrintOrdered($orders);
-        $this->addFlash('info', 'ZIP-Datei wurde per Mail an dich verschickt, Anträge wurden NICHT als "Druck beauftragt" markiert. Bitte prüfen, ob die ZIP-Datei den Anforderungen entspricht!');
+        $this->setPrintOrdered($orders);
 
-        $this->addFlash('success', 'Offene Anträge erfolgreich exportiert und per Mail verschickt.');
+        $this->addFlash('success', 'Offene Anträge erfolgreich exportiert und per Mail an dich verschickt, bitte zum Druck weitergeben.');
 
         return $this->redirectToRoute('list_card_orders');
     }
@@ -103,19 +100,18 @@ final class ExportCardOrdersController extends AbstractController
         return $zipFilePath;
     }
 
-    // TODO
-    // /**
-    //  * @param CardOrder[] $orders
-    //  */
-    // private function setPrintOrdered(array $orders): void
-    // {
-    //     array_map(
-    //         static fn (CardOrder $order) => $order->setPrintOrdered(),
-    //         $orders,
-    //     );
-    //
-    //     $this->entityManager->flush();
-    // }
+    /**
+     * @param CardOrder[] $orders
+     */
+    private function setPrintOrdered(array $orders): void
+    {
+        array_map(
+            static fn (CardOrder $order) => $order->setPrintOrdered(),
+            $orders,
+        );
+
+        $this->entityManager->flush();
+    }
 
     /**
      * @param CardOrder[] $orders
@@ -129,8 +125,6 @@ final class ExportCardOrdersController extends AbstractController
 
         $this->mailer->send(
             new TemplatedEmail()
-                // TODO
-                // ->to('vorstand@fablab-altmuehlfranken.de')
                 ->to($user->mail)
                 ->subject('[FabLab] Export Ausweisanträge')
                 ->textTemplate('mail/card_orders_export.txt.twig')
