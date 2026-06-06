@@ -9,20 +9,21 @@
         <fieldset>
             <legend>Admin-Area</legend>
 
-            <p>
-                Name: <b>{{ user.displayName }}</b>
-            </p>
+            Name: <b>{{ user.displayName }}</b>
+            <br>
+            Mitglied: {{ user.isMember ? '✅' : '❌' }}
+            <br>
+            Physischer Ausweis:
             {% if user.cardOrder %}
-                <p>
-                    Ausweisantrag:
-                    {% if user.cardOrder.readyForPickUp %}
-                        <a href="{{ path('deliver_card_order', {id: user.cardOrder.id}) }}">🤝 Ausweis aushändigen</a>
-                    {% elseif user.cardOrder.isPrintOrdered %}
-                        <a href="{{ path('assign_card_id_to_order', {id: user.cardOrder.id}) }}">✏️ Ausweis zuordnen</a>
-                    {% else %}
-                        ⏳ ausstehend
-                    {% endif %}
-                </p>
+                {% if user.cardOrder.readyForPickUp %}
+                    <a href="{{ path('deliver_card_order', {id: user.cardOrder.id}) }}">🤝 Ausweis aushändigen</a>
+                {% elseif user.cardOrder.isPrintOrdered %}
+                    <a href="{{ path('assign_card_id_to_order', {id: user.cardOrder.id}) }}">✏️ Ausweis zuordnen</a>
+                {% else %}
+                    ⏳ beantragt
+                {% endif %}
+            {% else %}
+                {{ user.cardId ? '✅' : '❌' }}
             {% endif %}
         </fieldset>
     {% endif %}
