@@ -30,6 +30,6 @@ COPY --chown=ausweis:ausweis . /app
 RUN composer install --no-dev --optimize-autoloader -d /app/ \
     && /app/bin/console asset-map:compile
 
-ADD --chmod=755 https://github.com/api-platform/api-platform/raw/refs/heads/main/api/frankenphp/docker-entrypoint.sh /usr/local/bin/custom-entrypoint
+ADD --chmod=755 https://raw.githubusercontent.com/dunglas/symfony-docker/refs/heads/main/frankenphp/docker-entrypoint.sh /usr/local/bin/custom-entrypoint
 ENTRYPOINT ["/usr/local/bin/custom-entrypoint"]
 CMD [ "frankenphp", "run", "--config", "/etc/frankenphp/Caddyfile" ]
