@@ -47,9 +47,9 @@ class User implements UserInterface
         #[ORM\Column(length: 180)]
         private readonly string $username,
         #[ORM\Column(length: 255)]
-        private(set) string $displayName,
+        public private(set) string $displayName,
         #[ORM\Column(length: 255)]
-        private(set) string $mail,
+        public private(set) string $mail,
     ) {
         $this->digitalCardId = Uuid::v4();
     }
