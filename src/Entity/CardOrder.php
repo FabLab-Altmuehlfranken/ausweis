@@ -11,6 +11,7 @@ use LogicException;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: CardOrderRepository::class)]
+#[ORM\UniqueConstraint(fields: ['cardId'])]
 class CardOrder
 {
     #[ORM\Id]
