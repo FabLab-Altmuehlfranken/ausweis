@@ -90,7 +90,8 @@ final class AssignCardIdToOrderController extends AbstractController
             return;
         }
 
-        if ($this->userRepository->findOneBy(['cardId' => $order->cardId])) {
+        $userWithSameCardId = $this->userRepository->findOneBy(['cardId' => $order->cardId]);
+        if ($userWithSameCardId instanceof User) {
             throw new NonUniqueCardIdException();
         }
 
