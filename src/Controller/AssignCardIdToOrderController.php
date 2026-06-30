@@ -7,6 +7,8 @@ namespace App\Controller;
 use App\Entity\CardOrder;
 use App\Entity\User;
 use App\Form\AssignCardIdToOrderType;
+use App\Repository\CardOrderRepository;
+use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -23,6 +25,8 @@ final class AssignCardIdToOrderController extends AbstractController
     public function __construct(
         private readonly MailerInterface $mailer,
         private readonly EntityManagerInterface $entityManager,
+        private readonly UserRepository $userRepository,
+        private readonly CardOrderRepository $cardOrderRepository,
     ) {
     }
 
@@ -33,7 +37,11 @@ final class AssignCardIdToOrderController extends AbstractController
         $form = $this->createForm(AssignCardIdToOrderType::class, $order);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->handleCardAssignment($this->entityManager, $order);
+            try {
+                $this->handleCardAssignment($this->entityManager, $order);
+            } catch (NonUniqueCardIdException) {
+                $this->addFlash('error', 'Ausweis-ID ist bereits einem anderen Benutzer zugewiesen');
+            }
 
             return $this->redirectToRoute('list_card_orders');
         }
@@ -48,6 +56,8 @@ final class AssignCardIdToOrderController extends AbstractController
         EntityManagerInterface $entityManager,
         CardOrder $order,
     ): void {
+        $this->ensureUniqueCardId($order);
+
         $entityManager->flush();
 
         if ($order->cardId) {
@@ -72,5 +82,23 @@ final class AssignCardIdToOrderController extends AbstractController
                 ->textTemplate('mail/card_ready_for_pickup.txt.twig')
                 ->context(['name' => $order->user->displayName])
         );
+    }
+
+    private function ensureUniqueCardId(CardOrder $order): void
+    {
+        if (!$order->cardId) {
+            return;
+        }
+
+        if ($this->userRepository->findOneBy(['cardId' => $order->cardId])) {
+            throw new NonUniqueCardIdException();
+        }
+
+        $orderWithSameCardId = $this->cardOrderRepository->findOneBy(['cardId' => $order->cardId]);
+        if (null === $orderWithSameCardId || $orderWithSameCardId === $order) {
+            return;
+        }
+
+        throw new NonUniqueCardIdException();
     }
 }
