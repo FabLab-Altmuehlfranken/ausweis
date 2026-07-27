@@ -5,6 +5,7 @@ ENV FRANKENPHP_CONFIG='worker /app/public/index.php'
 
 ENV APP_ENV='prod'
 ENV APP_DEBUG='0'
+ENV FRANKENPHP_RESET_KERNEL=1
 
 RUN apt-get update \
     && apt-get install -y --no-install-recommends git unzip acl \
