@@ -20,10 +20,13 @@ class PrivilegeType extends AbstractType
     {
         $builder
             ->add('name')
-            ->add('description')
+            ->add('description', options: [
+                'label' => 'Beschreibung',
+            ])
             ->add('area', EntityType::class, [
                 'class' => Area::class,
                 'choice_label' => 'name',
+                'label' => 'Bereich',
             ])
         ;
     }

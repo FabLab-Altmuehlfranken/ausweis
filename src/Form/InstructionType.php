@@ -24,6 +24,7 @@ class InstructionType extends AbstractType
                 'class' => Privilege::class,
                 'choice_label' => 'name',
                 'multiple' => true,
+                'label' => 'Berechtigungen',
             ])
         ;
     }
