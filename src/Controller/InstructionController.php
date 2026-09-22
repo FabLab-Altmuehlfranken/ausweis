@@ -38,6 +38,8 @@ final class InstructionController extends AbstractController
             $entityManager->persist($instruction);
             $entityManager->flush();
 
+            $this->addFlash('success', 'Berechtigung erfolgreich angelegt.');
+
             return $this->redirectToRoute('app_instruction_index', [], Response::HTTP_SEE_OTHER);
         }
 
@@ -64,6 +66,8 @@ final class InstructionController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->flush();
 
+            $this->addFlash('success', 'Bereich erfolgreich gespeichert.');
+
             return $this->redirectToRoute('app_instruction_index', [], Response::HTTP_SEE_OTHER);
         }
 
@@ -79,6 +83,8 @@ final class InstructionController extends AbstractController
         if ($this->isCsrfTokenValid('delete'.$instruction->id, $request->getPayload()->getString('_token'))) {
             $entityManager->remove($instruction);
             $entityManager->flush();
+
+            $this->addFlash('success', 'Bereich erfolgreich gelöscht.');
         }
 
         return $this->redirectToRoute('app_instruction_index', [], Response::HTTP_SEE_OTHER);

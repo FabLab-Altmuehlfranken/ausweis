@@ -38,6 +38,8 @@ final class PrivilegeController extends AbstractController
             $entityManager->persist($privilege);
             $entityManager->flush();
 
+            $this->addFlash('success', 'Berechtigung erfolgreich angelegt.');
+
             return $this->redirectToRoute('app_privilege_index', [], Response::HTTP_SEE_OTHER);
         }
 
@@ -64,6 +66,8 @@ final class PrivilegeController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->flush();
 
+            $this->addFlash('success', 'Berechtigung erfolgreich gespeichert.');
+
             return $this->redirectToRoute('app_privilege_index', [], Response::HTTP_SEE_OTHER);
         }
 
@@ -79,6 +83,8 @@ final class PrivilegeController extends AbstractController
         if ($this->isCsrfTokenValid('delete'.$privilege->id, $request->getPayload()->getString('_token'))) {
             $entityManager->remove($privilege);
             $entityManager->flush();
+
+            $this->addFlash('success', 'Berechtigung erfolgreich gelöscht.');
         }
 
         return $this->redirectToRoute('app_privilege_index', [], Response::HTTP_SEE_OTHER);

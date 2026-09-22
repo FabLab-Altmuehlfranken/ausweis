@@ -38,6 +38,8 @@ final class AreaController extends AbstractController
             $entityManager->persist($area);
             $entityManager->flush();
 
+            $this->addFlash('success', 'Bereich erfolgreich angelegt.');
+
             return $this->redirectToRoute('app_area_index', [], Response::HTTP_SEE_OTHER);
         }
 
@@ -64,6 +66,8 @@ final class AreaController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->flush();
 
+            $this->addFlash('success', 'Bereich erfolgreich gespeichert.');
+
             return $this->redirectToRoute('app_area_index', [], Response::HTTP_SEE_OTHER);
         }
 
@@ -79,6 +83,8 @@ final class AreaController extends AbstractController
         if ($this->isCsrfTokenValid('delete'.$area->id, $request->getPayload()->getString('_token'))) {
             $entityManager->remove($area);
             $entityManager->flush();
+
+            $this->addFlash('success', 'Bereich erfolgreich gelöscht.');
         }
 
         return $this->redirectToRoute('app_area_index', [], Response::HTTP_SEE_OTHER);
