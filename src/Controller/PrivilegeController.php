@@ -9,6 +9,7 @@ use App\Entity\User;
 use App\Form\PrivilegeType;
 use App\Repository\PrivilegeRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use SortDirection;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -23,7 +24,10 @@ final class PrivilegeController extends AbstractController
     public function index(PrivilegeRepository $privilegeRepository): Response
     {
         return $this->render('privilege/index.html.twig', [
-            'privileges' => $privilegeRepository->findAll(),
+            'privileges' => $privilegeRepository->findBy(
+                [],
+                orderBy: ['area' => SortDirection::Ascending, 'name' => SortDirection::Ascending],
+            ),
         ]);
     }
 

@@ -9,6 +9,7 @@ use App\Entity\User;
 use App\Form\AreaType;
 use App\Repository\AreaRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use SortDirection;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -23,7 +24,7 @@ final class AreaController extends AbstractController
     public function index(AreaRepository $areaRepository): Response
     {
         return $this->render('area/index.html.twig', [
-            'areas' => $areaRepository->findAll(),
+            'areas' => $areaRepository->findBy([], orderBy: ['name' => SortDirection::Ascending]),
         ]);
     }
 
