@@ -1,4 +1,4 @@
 <form method="post" action="{{ path('app_instruction_delete', {'id': instruction.id}) }}" onsubmit="return confirm('Möchtest du die Einweisung \'{{ instruction.name }}\' wirklich löschen?');">
     <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ instruction.id) }}">
-    <button class="btn">Löschen</button>
+    <button class="btn">🗑 Löschen</button>
 </form>
