@@ -23,7 +23,7 @@ class PrivilegeType extends AbstractType
             ->add('description')
             ->add('area', EntityType::class, [
                 'class' => Area::class,
-                'choice_label' => 'id',
+                'choice_label' => 'name',
             ])
         ;
     }
