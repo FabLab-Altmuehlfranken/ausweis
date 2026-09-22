@@ -70,3 +70,68 @@ nav {
         }
     }
 }
+
+/* forms are rendered with the bootstrap 5 form theme, but without bootstrap's css */
+form {
+    .row {
+        margin-bottom: 1em;
+    }
+
+    fieldset:not(.choice-group) {
+        border: 0;
+        padding: 0;
+        margin: 0;
+    }
+
+    .col-form-label {
+        display: block;
+        font-weight: bold;
+        padding: 0;
+        margin-bottom: .25em;
+    }
+
+    .form-control,
+    .form-select {
+        display: block;
+        width: 100%;
+        box-sizing: border-box;
+        padding: .4em;
+        font: inherit;
+    }
+
+    textarea.form-control {
+        min-height: 6em;
+        resize: vertical;
+    }
+
+    select[multiple].form-select {
+        min-height: 12em;
+    }
+
+    .form-text {
+        font-size: .85em;
+        color: #444;
+        margin-top: .25em;
+    }
+
+    .form-check {
+        display: block;
+        padding: .1em 0;
+    }
+
+    .choice-group {
+        margin: .5em 0;
+        border: 1px solid darkgray;
+        border-radius: 8px;
+
+        legend {
+            font-weight: bold;
+            padding: 0 .3em;
+        }
+    }
+
+    button[type="submit"] {
+        font: inherit;
+        padding: .4em 1.5em;
+    }
+}

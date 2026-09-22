@@ -1,0 +1,27 @@
+{% use 'bootstrap_5_horizontal_layout.html.twig' %}
+
+{# renders the group labels of expanded choices (checkboxes / radio buttons) with group_by #}
+{% block choice_widget_expanded -%}
+    <div {{ block('widget_container_attributes') }}>
+        {%- for name, choice in choices %}
+            {%- if choice.choices is defined -%}
+                <fieldset class="choice-group">
+                    <legend>{{ choice.label }}</legend>
+                    {%- for childName, groupChoice in choice.choices %}
+                        {{- form_widget(form[childName], {
+                            parent_label_class: label_attr.class|default(''),
+                            translation_domain: choice_translation_domain,
+                            valid: valid,
+                        }) -}}
+                    {% endfor -%}
+                </fieldset>
+            {%- else -%}
+                {{- form_widget(form[name], {
+                    parent_label_class: label_attr.class|default(''),
+                    translation_domain: choice_translation_domain,
+                    valid: valid,
+                }) -}}
+            {%- endif -%}
+        {% endfor -%}
+    </div>
+{%- endblock choice_widget_expanded %}
