@@ -195,7 +195,7 @@ class User implements UserInterface
     public function getActivePrivilege(Privilege $privilege): ?UserPrivilege
     {
         foreach ($this->privileges as $userPrivilege) {
-            if ($userPrivilege->privilege === $privilege) {
+            if ($userPrivilege->privilege === $privilege && !$userPrivilege->isRevoked()) {
                 return $userPrivilege;
             }
         }

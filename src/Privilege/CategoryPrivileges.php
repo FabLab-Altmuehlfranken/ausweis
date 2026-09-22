@@ -11,12 +11,23 @@ use App\Entity\UserPrivilege;
 final readonly class CategoryPrivileges
 {
     /**
-     * @param list<UserPrivilege> $privileges
+     * @param list<UserPrivilege> $privileges including revoked ones
      */
     public function __construct(
         public MachineCategory $category,
         public array $privileges,
     ) {
+    }
+
+    /**
+     * @return list<UserPrivilege>
+     */
+    public function getActivePrivileges(): array
+    {
+        return array_values(array_filter(
+            $this->privileges,
+            static fn (UserPrivilege $privilege): bool => !$privilege->isRevoked(),
+        ));
     }
 
     /**
@@ -39,7 +50,7 @@ final readonly class CategoryPrivileges
         $result = [];
         foreach ($categories as $categoryId => $category) {
             $privileges = $privilegesByCategory[$categoryId] ?? [];
-            usort($privileges, static fn (UserPrivilege $a, UserPrivilege $b): int => strcasecmp($a->privilege->name, $b->privilege->name));
+            usort($privileges, static fn (UserPrivilege $a, UserPrivilege $b): int => [$a->isRevoked(), strtolower($a->privilege->name)] <=> [$b->isRevoked(), strtolower($b->privilege->name)]);
 
             $result[] = new self($category, $privileges);
         }

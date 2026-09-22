@@ -50,12 +50,12 @@
 
         <h2>🔑 Berechtigungen</h2>
 
-        {% set visibleCategories = privileges %}
+        {% set visibleCategories = isAdmin ? privileges : privileges|filter(c => c.activePrivileges is not empty) %}
 
         {% for categoryPrivileges in visibleCategories %}
             <h3>{{ categoryPrivileges.category.name }}</h3>
 
-            {% set visiblePrivileges = categoryPrivileges.privileges %}
+            {% set visiblePrivileges = isAdmin ? categoryPrivileges.privileges : categoryPrivileges.activePrivileges %}
             {% if visiblePrivileges is not empty %}
                 <ul class="privileges">
                     {% for userPrivilege in visiblePrivileges %}
@@ -69,7 +69,9 @@
                                 <summary>
                                     {{ status.icon }} {{ privilege.name }}
                                     <span class="muted">
-                                        {% if expiryDate %}
+                                        {% if status.value == 'revoked' %}
+                                            – entzogen{% if isAdmin %} am {{ userPrivilege.revokedAt.format('d.m.Y') }}{% endif %}
+                                        {% elseif expiryDate %}
                                             – {{ status.value == 'expired' ? 'abgelaufen am' : 'bis' }} {{ expiryDate.format('d.m.Y') }}
                                         {% endif %}
                                     </span>
@@ -86,7 +88,15 @@
                                             erneuert am {{ lastRenewal.date.format('d.m.Y') }} ({{ lastRenewal.instruction.name }}){% endif %}{% if not expiryDate %},
                                             unbegrenzt gültig{% endif %}.
                                         {% endif %}
+
+                                        {% if isAdmin and userPrivilege.revoked %}
+                                            Entzogen{% if userPrivilege.revokedBy %} von {{ userPrivilege.revokedBy.displayName }}{% endif %}{% if userPrivilege.revocationReason %}: {{ userPrivilege.revocationReason }}{% endif %}.
+                                        {% endif %}
                                     </span>
+
+                                    {% if isAdmin and not userPrivilege.revoked %}
+                                        <a href="{{ path('revoke_privilege', {id: userPrivilege.id}) }}">🚫 entziehen</a>
+                                    {% endif %}
                                 </div>
                             </details>
                         </li>

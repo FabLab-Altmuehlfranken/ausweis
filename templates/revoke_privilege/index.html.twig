@@ -1,0 +1,18 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Berechtigung entziehen{% endblock %}
+
+{% block body %}
+    <h1>🚫 Berechtigung entziehen</h1>
+
+    <p>
+        Name: <b>{{ privilege.user.displayName }}</b><br>
+        Berechtigung: <b>{{ privilege.privilege.category.name }}: {{ privilege.privilege.name }}</b>
+    </p>
+
+    <p>
+        Die Berechtigung kann nur durch eine erneute Einweisung wieder erteilt werden.
+    </p>
+
+    <p>{{ form(form) }}</p>
+{% endblock %}

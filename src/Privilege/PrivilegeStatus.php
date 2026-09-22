@@ -8,12 +8,14 @@ enum PrivilegeStatus: string
 {
     case Valid = 'valid';
     case Expired = 'expired';
+    case Revoked = 'revoked';
 
     public function icon(): string
     {
         return match ($this) {
             self::Valid => '✅',
             self::Expired => '⌛',
+            self::Revoked => '🚫',
         };
     }
 
@@ -22,6 +24,7 @@ enum PrivilegeStatus: string
         return match ($this) {
             self::Valid => 'gültig',
             self::Expired => 'abgelaufen',
+            self::Revoked => 'entzogen',
         };
     }
 }
