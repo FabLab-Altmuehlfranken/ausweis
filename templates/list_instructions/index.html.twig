@@ -5,6 +5,11 @@
 {% block body %}
     <h1>🎓 Einweisungen</h1>
 
+    <p>
+        Die Teilnahme an einer Einweisung wird auf der Ausweis-Seite eines Mitglieds bestätigt.
+        Die Teilnehmer erhalten dadurch alle Berechtigungen der Einweisung, bereits vorhandene werden erneuert.
+    </p>
+
     {% if is_granted('ROLE_ADMIN') %}
         <p>
             <a href="{{ path('create_instruction') }}">➕ Einweisung anlegen</a>

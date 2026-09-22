@@ -1,36 +1,119 @@
 {% extends 'base.html.twig' %}
 
+{% block stylesheets %}
+    {{ parent() }}
+    <style>
+        .user-details h2 { font-size: 1.15em; margin: 1em 0 .3em; }
+        .user-details h3 { font-size: 1em; margin: .6em 0 .1em; }
+        .user-details p, .user-details ul, .user-details fieldset { margin: .3em 0; }
+        .user-details ul { padding-left: 1.2em; }
+        .user-details summary { cursor: pointer; }
+        .user-details .muted { color: #666; font-size: .9em; }
+        .user-details .privileges { list-style: none; padding-left: 0; }
+        .user-details .privileges details > :not(summary) { margin: .1em 0 .4em 1.6em; }
+    </style>
+{% endblock %}
+
 {% block body %}
-    <p>
-        Ausweis-ID: <code>{{ user.digitalCardId }}</code>
-    </p>
+    {% set isAdmin = is_granted('ROLE_ADMIN') %}
+    {% set isInstructor = is_granted('ROLE_INSTRUCTOR') %}
 
-    {% if is_granted('ROLE_ADMIN') %}
-        <fieldset>
-            <legend>Admin-Area</legend>
+    <div class="user-details">
+        <details>
+            <summary>🪪 <code>{{ user.digitalCardId }}</code> <span class="muted">(QR-Code anzeigen)</span></summary>
 
-            Name: <b>{{ user.displayName }}</b>
-            <br>
-            Mitglied: {{ user.isMember ? '✅' : '❌' }}
-            <br>
-            Physischer Ausweis:
-            {% if user.cardOrder %}
-                {% if user.cardOrder.readyForPickUp %}
-                    <a href="{{ path('deliver_card_order', {id: user.cardOrder.id}) }}">🤝 Ausweis aushändigen</a>
-                {% elseif user.cardOrder.isPrintOrdered %}
-                    <a href="{{ path('assign_card_id_to_order', {id: user.cardOrder.id}) }}">✏️ Ausweis zuordnen</a>
-                {% else %}
-                    ⏳ beantragt
+            <img src="{{ qrCode.dataUri }}">
+        </details>
+
+        {% if isInstructor %}
+            <fieldset>
+                <legend>Admin-Area</legend>
+
+                <b>{{ user.displayName }}</b>
+                {% if isAdmin %}
+                    · Mitglied: {{ user.isMember ? '✅' : '❌' }}
+                    · Physischer Ausweis:
+                    {% if user.cardOrder %}
+                        {% if user.cardOrder.readyForPickUp %}
+                            <a href="{{ path('deliver_card_order', {id: user.cardOrder.id}) }}">🤝 aushändigen</a>
+                        {% elseif user.cardOrder.isPrintOrdered %}
+                            <a href="{{ path('assign_card_id_to_order', {id: user.cardOrder.id}) }}">✏️ zuordnen</a>
+                        {% else %}
+                            ⏳ beantragt
+                        {% endif %}
+                    {% else %}
+                        {{ user.cardId ? '✅' : '❌' }}
+                    {% endif %}
                 {% endif %}
-            {% else %}
-                {{ user.cardId ? '✅' : '❌' }}
+            </fieldset>
+        {% endif %}
+
+        <h2>🔑 Berechtigungen</h2>
+
+        {% set visibleCategories = privileges %}
+
+        {% for categoryPrivileges in visibleCategories %}
+            <h3>{{ categoryPrivileges.category.name }}</h3>
+
+            {% set visiblePrivileges = categoryPrivileges.privileges %}
+            {% if visiblePrivileges is not empty %}
+                <ul class="privileges">
+                    {% for userPrivilege in visiblePrivileges %}
+                        {% set privilege = userPrivilege.privilege %}
+                        {% set status = userPrivilege.status %}
+                        {% set expiryDate = userPrivilege.expiryDate %}
+                        {% set initialAttendance = userPrivilege.initialAttendance %}
+                        {% set lastRenewal = userPrivilege.lastRenewal %}
+                        <li>
+                            <details>
+                                <summary>
+                                    {{ status.icon }} {{ privilege.name }}
+                                    <span class="muted">
+                                        {% if expiryDate %}
+                                            – {{ status.value == 'expired' ? 'abgelaufen am' : 'bis' }} {{ expiryDate.format('d.m.Y') }}
+                                        {% endif %}
+                                    </span>
+                                </summary>
+
+                                <div>
+                                    {% if privilege.description %}
+                                        {{ privilege.description|nl2br }}<br>
+                                    {% endif %}
+
+                                    <span class="muted">
+                                        {% if initialAttendance %}
+                                            Erteilt am {{ initialAttendance.date.format('d.m.Y') }} ({{ initialAttendance.instruction.name }}){% if lastRenewal %},
+                                            erneuert am {{ lastRenewal.date.format('d.m.Y') }} ({{ lastRenewal.instruction.name }}){% endif %}{% if not expiryDate %},
+                                            unbegrenzt gültig{% endif %}.
+                                        {% endif %}
+                                    </span>
+                                </div>
+                            </details>
+                        </li>
+                    {% endfor %}
+                </ul>
             {% endif %}
-        </fieldset>
-    {% endif %}
+        {% else %}
+            <p>Keine Berechtigungen vorhanden.</p>
+        {% endfor %}
 
-    <details>
-        <summary>QR-Code anzeigen</summary>
+        {% if isInstructor %}
+            <h2>🎓 Besuchte Einweisungen</h2>
 
-        <img src="{{ qrCode.dataUri }}">
-    </details>
+            {% if user.attendances is not empty %}
+                <ul>
+                    {% for attendance in user.attendances %}
+                        <li>
+                            {{ attendance.date.format('d.m.Y') }}: {{ attendance.instruction.name }}
+                            <span class="muted">(bestätigt von {{ attendance.confirmedBy.displayName }})</span>
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+
+            <p>
+                <a href="{{ path('confirm_instruction_attendance', {uuid: user.digitalCardId}) }}">➕ Teilnahme an Einweisung bestätigen</a>
+            </p>
+        {% endif %}
+    </div>
 {% endblock %}
