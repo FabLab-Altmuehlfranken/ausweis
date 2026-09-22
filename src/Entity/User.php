@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Override;
 use Symfony\Bridge\Doctrine\Types\UuidType;
@@ -42,6 +44,12 @@ class User implements UserInterface
     #[ORM\Column(nullable: true)]
     public private(set) ?string $cardId = null;
 
+    /**
+     * @var Collection<int, InstructionAssignment>
+     */
+    #[ORM\OneToMany(targetEntity: InstructionAssignment::class, mappedBy: 'assignedTo', orphanRemoval: true)]
+    public private(set) Collection $instructionAssignments;
+
     public function __construct(
         #[Assert\Length(min: 3)]
         #[ORM\Column(length: 180)]
@@ -52,6 +60,7 @@ class User implements UserInterface
         public private(set) string $mail,
     ) {
         $this->digitalCardId = Uuid::v4();
+        $this->instructionAssignments = new ArrayCollection();
     }
 
     #[Override]
