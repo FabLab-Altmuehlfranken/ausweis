@@ -16,7 +16,11 @@
         <tbody>
         {% for privilege in privileges %}
             <tr>
-                <td>{{ privilege.area.name }}</td>
+                <td>
+                    <a href="{{ path('app_area_show', {'id': privilege.area.id}) }}">
+                        {{ privilege.area.name }}
+                    </a>
+                </td>
                 <td>
                     <a href="{{ path('app_privilege_show', {'id': privilege.id}) }}">
                         {{ privilege.name }}

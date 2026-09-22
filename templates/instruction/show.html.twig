@@ -8,12 +8,22 @@
     <table class="table">
         <tbody>
             <tr>
-                <th>Id</th>
-                <td>{{ instruction.id }}</td>
-            </tr>
-            <tr>
                 <th>Name</th>
                 <td>{{ instruction.name }}</td>
+            </tr>
+            <tr>
+                <th>Berechtigungen</th>
+                <td>
+                    <ul>
+                        {% for privilege in instruction.privileges %}
+                            <li>
+                                <a href="{{ path('app_privilege_show', {'id': privilege.id}) }}">
+                                    {{ privilege.name }}
+                                </a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </td>
             </tr>
         </tbody>
     </table>

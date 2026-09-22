@@ -11,6 +11,20 @@
                 <th>Name</th>
                 <td>{{ area.name }}</td>
             </tr>
+            <tr>
+                <th>Berechtigungen</th>
+                <td>
+                    <ul>
+                        {% for privilege in area.privileges %}
+                            <li>
+                                <a href="{{ path('app_privilege_show', {'id': privilege.id}) }}">
+                                    {{ privilege.name }}
+                                </a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </td>
+            </tr>
         </tbody>
     </table>
 

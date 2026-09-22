@@ -8,6 +8,14 @@
     <table class="table">
         <tbody>
             <tr>
+                <th>Bereich</th>
+                <td>
+                    <a href="{{ path('app_area_show', {'id': privilege.area.id}) }}">
+                        {{ privilege.area.name }}
+                    </a>
+                </td>
+            </tr>
+            <tr>
                 <th>Name</th>
                 <td>{{ privilege.name }}</td>
             </tr>
