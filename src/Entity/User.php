@@ -21,6 +21,7 @@ class User implements UserInterface
 {
     public const string MEMBER_ROLE = 'ROLE_MEMBER';
     public const string ADMIN_ROLE = 'ROLE_ADMIN';
+    public const string INSTRUCTOR_ROLE = 'ROLE_INSTRUCTOR';
 
     #[ORM\Id]
     #[ORM\GeneratedValue]

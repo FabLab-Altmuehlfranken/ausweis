@@ -36,6 +36,10 @@
                         <a href="{{ path('list_machine_categories') }}">Berechtigungen</a>
                     {% endif %}
 
+                    {% if is_granted('ROLE_INSTRUCTOR') %}
+                        <a href="{{ path('list_instructions') }}">Einweisungen</a>
+                    {% endif %}
+
                     <a href="{{ logout_path() }}">Ausloggen</a>
                 {% endif %}
             </nav>
