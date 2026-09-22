@@ -39,6 +39,7 @@ table {
     border-collapse: collapse;
     white-space: nowrap;
     min-width: 100%;
+    margin: 8px 0;
 
     th {
         padding: 8px;
