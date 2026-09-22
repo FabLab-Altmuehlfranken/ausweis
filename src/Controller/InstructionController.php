@@ -11,6 +11,7 @@ use App\Repository\InstructionRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use SortDirection;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -79,7 +80,7 @@ final class InstructionController extends AbstractController
     }
 
     #[Route('/{id}', name: 'app_instruction_delete', methods: ['POST'])]
-    public function delete(Request $request, Instruction $instruction, EntityManagerInterface $entityManager): Response
+    public function delete(Request $request, Instruction $instruction, EntityManagerInterface $entityManager): RedirectResponse
     {
         if ($this->isCsrfTokenValid('delete'.$instruction->id, $request->getPayload()->getString('_token'))) {
             $entityManager->remove($instruction);

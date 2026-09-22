@@ -11,6 +11,7 @@ use App\Repository\AreaRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use SortDirection;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -79,7 +80,7 @@ final class AreaController extends AbstractController
     }
 
     #[Route('/{id}', name: 'app_area_delete', methods: ['POST'])]
-    public function delete(Request $request, Area $area, EntityManagerInterface $entityManager): Response
+    public function delete(Request $request, Area $area, EntityManagerInterface $entityManager): RedirectResponse
     {
         if ($this->isCsrfTokenValid('delete'.$area->id, $request->getPayload()->getString('_token'))) {
             $entityManager->remove($area);

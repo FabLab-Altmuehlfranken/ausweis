@@ -11,6 +11,7 @@ use App\Repository\PrivilegeRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use SortDirection;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -82,7 +83,7 @@ final class PrivilegeController extends AbstractController
     }
 
     #[Route('/{id}', name: 'app_privilege_delete', methods: ['POST'])]
-    public function delete(Request $request, Privilege $privilege, EntityManagerInterface $entityManager): Response
+    public function delete(Request $request, Privilege $privilege, EntityManagerInterface $entityManager): RedirectResponse
     {
         if ($this->isCsrfTokenValid('delete'.$privilege->id, $request->getPayload()->getString('_token'))) {
             $entityManager->remove($privilege);
