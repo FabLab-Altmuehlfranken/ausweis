@@ -60,6 +60,13 @@ class User implements UserInterface
     #[ORM\OrderBy(['date' => 'DESC'])]
     public private(set) Collection $attendances;
 
+    /**
+     * @var Collection<int, CategoryBan>
+     */
+    #[ORM\OneToMany(targetEntity: CategoryBan::class, mappedBy: 'user')]
+    #[ORM\OrderBy(['createdAt' => 'ASC'])]
+    public private(set) Collection $categoryBans;
+
     public function __construct(
         #[Assert\Length(min: 3)]
         #[ORM\Column(length: 180)]
@@ -72,6 +79,7 @@ class User implements UserInterface
         $this->digitalCardId = Uuid::v4();
         $this->privileges = new ArrayCollection();
         $this->attendances = new ArrayCollection();
+        $this->categoryBans = new ArrayCollection();
     }
 
     #[Override]
@@ -197,6 +205,17 @@ class User implements UserInterface
         foreach ($this->privileges as $userPrivilege) {
             if ($userPrivilege->privilege === $privilege && !$userPrivilege->isRevoked()) {
                 return $userPrivilege;
+            }
+        }
+
+        return null;
+    }
+
+    public function getActiveBan(MachineCategory $category): ?CategoryBan
+    {
+        foreach ($this->categoryBans as $ban) {
+            if ($ban->category === $category && $ban->isActive()) {
+                return $ban;
             }
         }
 

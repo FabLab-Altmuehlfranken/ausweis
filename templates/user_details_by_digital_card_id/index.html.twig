@@ -50,12 +50,22 @@
 
         <h2>🔑 Berechtigungen</h2>
 
-        {% set visibleCategories = isAdmin ? privileges : privileges|filter(c => c.activePrivileges is not empty) %}
+        {% set visibleCategories = isAdmin ? privileges : privileges|filter(c => c.ban or c.activePrivileges is not empty) %}
 
         {% for categoryPrivileges in visibleCategories %}
-            <h3>{{ categoryPrivileges.category.name }}</h3>
+            {% set ban = categoryPrivileges.ban %}
+            <h3>
+                {{ categoryPrivileges.category.name }}
+                {% if ban %}
+                    – ⛔ gesperrt
+                    {% if isAdmin %}
+                        <span class="muted">seit {{ ban.createdAt.format('d.m.Y') }} von {{ ban.createdBy.displayName }}{% if ban.reason %}: {{ ban.reason }}{% endif %}</span>
+                        <a href="{{ path('lift_category_ban', {id: ban.id}) }}" title="Sperre aufheben">🔓</a>
+                    {% endif %}
+                {% endif %}
+            </h3>
 
-            {% set visiblePrivileges = isAdmin ? categoryPrivileges.privileges : categoryPrivileges.activePrivileges %}
+            {% set visiblePrivileges = isAdmin ? categoryPrivileges.privileges : (ban ? [] : categoryPrivileges.activePrivileges) %}
             {% if visiblePrivileges is not empty %}
                 <ul class="privileges">
                     {% for userPrivilege in visiblePrivileges %}
@@ -71,6 +81,8 @@
                                     <span class="muted">
                                         {% if status.value == 'revoked' %}
                                             – entzogen{% if isAdmin %} am {{ userPrivilege.revokedAt.format('d.m.Y') }}{% endif %}
+                                        {% elseif status.value == 'banned' %}
+                                            – gesperrt
                                         {% elseif expiryDate %}
                                             – {{ status.value == 'expired' ? 'abgelaufen am' : 'bis' }} {{ expiryDate.format('d.m.Y') }}
                                         {% endif %}
@@ -121,8 +133,26 @@
                 </ul>
             {% endif %}
 
+            {% set liftedBans = isAdmin ? user.categoryBans|filter(b => not b.active) : [] %}
+            {% if liftedBans is not empty %}
+                <h2>🔓 Aufgehobene Sperren</h2>
+
+                <ul>
+                    {% for ban in liftedBans %}
+                        <li>
+                            {{ ban.category.name }}:
+                            {{ ban.createdAt.format('d.m.Y') }} – {{ ban.liftedAt.format('d.m.Y') }}
+                            <span class="muted">(gesperrt von {{ ban.createdBy.displayName }}{% if ban.reason %}: {{ ban.reason }}{% endif %}{% if ban.liftedBy %}, aufgehoben von {{ ban.liftedBy.displayName }}{% endif %})</span>
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+
             <p>
                 <a href="{{ path('confirm_instruction_attendance', {uuid: user.digitalCardId}) }}">➕ Teilnahme an Einweisung bestätigen</a>
+                {% if isAdmin %}
+                    · <a href="{{ path('ban_user_from_category', {uuid: user.digitalCardId}) }}">⛔ Für Gerätekategorie sperren</a>
+                {% endif %}
             </p>
         {% endif %}
     </div>

@@ -1,0 +1,18 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Sperre aufheben{% endblock %}
+
+{% block body %}
+    <h1>🔓 Sperre aufheben</h1>
+
+    <p>
+        Name: <b>{{ ban.user.displayName }}</b><br>
+        Gerätekategorie: <b>{{ ban.category.name }}</b><br>
+        Gesperrt am {{ ban.createdAt.format('d.m.Y') }} von {{ ban.createdBy.displayName }}
+        {% if ban.reason %}
+            <br>Begründung: {{ ban.reason }}
+        {% endif %}
+    </p>
+
+    <p>{{ form(form) }}</p>
+{% endblock %}

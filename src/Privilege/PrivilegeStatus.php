@@ -9,6 +9,7 @@ enum PrivilegeStatus: string
     case Valid = 'valid';
     case Expired = 'expired';
     case Revoked = 'revoked';
+    case Banned = 'banned';
 
     public function icon(): string
     {
@@ -16,6 +17,7 @@ enum PrivilegeStatus: string
             self::Valid => '✅',
             self::Expired => '⌛',
             self::Revoked => '🚫',
+            self::Banned => '⛔',
         };
     }
 
@@ -25,6 +27,7 @@ enum PrivilegeStatus: string
             self::Valid => 'gültig',
             self::Expired => 'abgelaufen',
             self::Revoked => 'entzogen',
+            self::Banned => 'gesperrt',
         };
     }
 }

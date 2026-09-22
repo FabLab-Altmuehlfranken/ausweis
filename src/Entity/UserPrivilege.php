@@ -120,6 +120,7 @@ class UserPrivilege
 
         return match (true) {
             $this->isRevoked() => PrivilegeStatus::Revoked,
+            $this->user->getActiveBan($this->privilege->category) instanceof CategoryBan => PrivilegeStatus::Banned,
             $expiryDate instanceof DateTimeImmutable && $expiryDate < $today => PrivilegeStatus::Expired,
             default => PrivilegeStatus::Valid,
         };
