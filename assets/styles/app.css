@@ -94,3 +94,11 @@ nav > a {
     padding-right: 16px;
     text-decoration: none;
 }
+
+form .form-select, form .form-control {
+    min-width: 50%;
+}
+
+form > button {
+    margin: 16px 0;
+}
