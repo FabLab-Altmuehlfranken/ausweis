@@ -24,12 +24,14 @@
     </head>
     <body>
         {% if app.current_route !== 'hwi_oauth_connect' %}
-            <nav>
-                <a href="{{ path('homepage') }}">
-                    <img src="{{ asset('images/logo.png') }}">
-                    Ausweis
-                </a>
+            <a href="{{ path('homepage') }}" class="logo">
+                <img src="{{ asset('images/logo.png') }}">
+                Ausweis
+            </a>
 
+            <a href="{{ logout_path() }}" class="logout">Ausloggen</a>
+
+            <nav>
                 {% if is_granted('IS_AUTHENTICATED') %}
                     {% if app.user.isAdmin %}
                         <a href="{{ path('list_card_orders') }}">Ausweisanträge</a>
@@ -38,7 +40,7 @@
                         <a href="{{ path('app_instruction_index') }}">Einweisungen</a>
                     {% endif %}
 
-                    <a href="{{ logout_path() }}">Ausloggen</a>
+
                 {% endif %}
             </nav>
 

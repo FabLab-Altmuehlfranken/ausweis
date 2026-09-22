@@ -38,6 +38,7 @@ body {
 table {
     border-collapse: collapse;
     white-space: nowrap;
+    min-width: 100%;
 
     th {
         padding: 8px;
@@ -57,16 +58,18 @@ table {
     }
 }
 
-nav {
-    a {
-        vertical-align: middle;
-        font-weight: bold;
-        padding-right: 16px;
+nav > a, a.logo {
+    vertical-align: middle;
+    font-weight: bold;
+    padding-right: 16px;
 
-        img {
-            vertical-align: middle;
-            height: 3em;
-            padding-right: 8px;
-        }
+    img {
+        vertical-align: middle;
+        height: 3em;
+        padding-right: 8px;
     }
+}
+
+a.logout {
+    float: right;
 }
