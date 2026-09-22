@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Berechtigung {{ privilege ? 'bearbeiten' : 'anlegen' }}{% endblock %}
+
+{% block body %}
+    <h1>🔑 Berechtigung {{ privilege ? 'bearbeiten' : 'anlegen' }}</h1>
+
+    <p>
+        Gerätekategorie: <b>{{ category.name }}</b>
+    </p>
+
+    <p>{{ form(form) }}</p>
+{% endblock %}

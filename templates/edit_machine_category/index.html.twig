@@ -1,0 +1,9 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Gerätekategorie {{ category ? 'bearbeiten' : 'anlegen' }}{% endblock %}
+
+{% block body %}
+    <h1>🛠️ Gerätekategorie {{ category ? 'bearbeiten' : 'anlegen' }}</h1>
+
+    <p>{{ form(form) }}</p>
+{% endblock %}

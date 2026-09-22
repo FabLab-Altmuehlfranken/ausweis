@@ -1,0 +1,66 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Gerätekategorien & Berechtigungen{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <style>
+        .privilege-table { width: 100%; table-layout: fixed; }
+        .privilege-table th { text-align: left; }
+        .privilege-table td { white-space: normal; vertical-align: top; overflow-wrap: anywhere; }
+        .privilege-table summary { cursor: pointer; }
+        .privilege-table details > :not(summary), .privilege-table .description { font-size: .9em; color: #444; }
+    </style>
+{% endblock %}
+
+{% block body %}
+    <h1>🛠️ Gerätekategorien & Berechtigungen</h1>
+
+    <p>
+        <a href="{{ path('create_machine_category') }}">➕ Gerätekategorie anlegen</a>
+    </p>
+
+    {% for category in categories %}
+        <h2>
+            {{ category.name }}
+            <a href="{{ path('edit_machine_category', {id: category.id}) }}" title="Gerätekategorie bearbeiten">✏️</a>
+        </h2>
+
+        {% if category.privileges is not empty %}
+            <table class="privilege-table">
+                <colgroup>
+                    <col>
+                    <col style="width: 9em">
+                    <col style="width: 3em">
+                </colgroup>
+                <tr>
+                    <th>🔑 Berechtigung</th>
+                    <th>⏳ Gültigkeit</th>
+                    <th></th>
+                </tr>
+                {% for privilege in category.privileges %}
+                    <tr>
+                        <td>
+                            {% if privilege.description %}
+                                <details>
+                                    <summary>{{ privilege.name }}</summary>
+                                    <div class="description">{{ privilege.description|nl2br }}</div>
+                                </details>
+                            {% else %}
+                                {{ privilege.name }}
+                            {% endif %}
+                        </td>
+                        <td>{{ privilege.validityMonths ? privilege.validityMonths ~ ' Monate' : 'unbegrenzt' }}</td>
+                        <td><a href="{{ path('edit_privilege', {id: privilege.id}) }}" title="Berechtigung bearbeiten">✏️</a></td>
+                    </tr>
+                {% endfor %}
+            </table>
+        {% endif %}
+
+        <p>
+            <a href="{{ path('create_privilege', {id: category.id}) }}">➕ Berechtigung anlegen</a>
+        </p>
+    {% else %}
+        <p>Es wurden noch keine Gerätekategorien angelegt.</p>
+    {% endfor %}
+{% endblock %}
