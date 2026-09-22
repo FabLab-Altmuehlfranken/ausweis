@@ -1,0 +1,29 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Einweisungen{% endblock %}
+
+{% block body %}
+    <h1>Einweisungen</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for instruction in instructions %}
+            <tr>
+                <td>{{ instruction.name }}</td>
+                <td>
+                    <a href="{{ path('app_instruction_show', {'id': instruction.id}) }}">anzeigen</a>
+                    <a href="{{ path('app_instruction_edit', {'id': instruction.id}) }}">bearbeiten</a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_instruction_new') }}">Neue Einweisung Anlegen</a>
+{% endblock %}

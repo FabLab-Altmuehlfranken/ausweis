@@ -1,0 +1,24 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Einweisung{% endblock %}
+
+{% block body %}
+    <h1>Instruction</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ instruction.id }}</td>
+            </tr>
+            <tr>
+                <th>Name</th>
+                <td>{{ instruction.name }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_instruction_edit', {'id': instruction.id}) }}">bearbeiten</a>
+
+    {{ include('instruction/_delete_form.html.twig') }}
+{% endblock %}
