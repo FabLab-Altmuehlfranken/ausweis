@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\Entity\Area;
 use App\Entity\Privilege;
 use App\Entity\User;
 use App\Form\PrivilegeType;
@@ -32,9 +33,16 @@ final class PrivilegeController extends AbstractController
     }
 
     #[Route('/new', name: 'app_privilege_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager): Response
-    {
+    #[Route('/new/{area}', name: 'app_privilege_new_in_area', methods: ['GET'])]
+    public function new(
+        Request $request,
+        EntityManagerInterface $entityManager,
+        ?Area $area = null,
+    ): Response {
         $privilege = new Privilege();
+        if ($area) {
+            $privilege->setArea($area);
+        }
         $form = $this->createForm(PrivilegeType::class, $privilege);
         $form->handleRequest($request);
 
