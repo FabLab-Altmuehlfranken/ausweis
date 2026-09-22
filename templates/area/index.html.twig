@@ -1,0 +1,29 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Bereiche{% endblock %}
+
+{% block body %}
+    <h1>Bereiche</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for area in areas %}
+            <tr>
+                <td>{{ area.name }}</td>
+                <td>
+                    <a href="{{ path('app_area_show', {'id': area.id}) }}">anzeigen</a>
+                    <a href="{{ path('app_area_edit', {'id': area.id}) }}">bearbeiten</a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_area_new') }}">Neuen Bereich Anlegen</a>
+{% endblock %}
