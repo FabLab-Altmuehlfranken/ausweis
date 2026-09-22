@@ -9,7 +9,6 @@ use App\Entity\User;
 use App\Form\InstructionType;
 use App\Repository\InstructionRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use SortDirection;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -25,7 +24,7 @@ final class InstructionController extends AbstractController
     public function index(InstructionRepository $instructionRepository): Response
     {
         return $this->render('instruction/index.html.twig', [
-            'instructions' => $instructionRepository->findBy([], orderBy: ['name' => SortDirection::Ascending]),
+            'instructions' => $instructionRepository->findBy([], orderBy: ['name' => 'ASC']),
         ]);
     }
 

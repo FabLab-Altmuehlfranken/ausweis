@@ -9,7 +9,6 @@ use App\Entity\User;
 use App\Form\PrivilegeType;
 use App\Repository\PrivilegeRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use SortDirection;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -27,7 +26,7 @@ final class PrivilegeController extends AbstractController
         return $this->render('privilege/index.html.twig', [
             'privileges' => $privilegeRepository->findBy(
                 [],
-                orderBy: ['area' => SortDirection::Ascending, 'name' => SortDirection::Ascending],
+                orderBy: ['area' => 'ASC', 'name' => 'ASC'],
             ),
         ]);
     }
