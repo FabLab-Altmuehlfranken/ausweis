@@ -24,12 +24,14 @@
     </head>
     <body>
         {% if app.current_route !== 'hwi_oauth_connect' %}
-            <a href="{{ path('homepage') }}" class="logo">
-                <img src="{{ asset('images/logo.png') }}">
-                Ausweis
-            </a>
+            <header>
+                <a href="{{ path('homepage') }}" class="logo">
+                    <img src="{{ asset('images/logo.png') }}">
+                    <span>Ausweis</span>
+                </a>
 
-            <a href="{{ logout_path() }}" class="logout">Ausloggen</a>
+                <a href="{{ logout_path() }}" class="logout">Ausloggen</a>
+            </header>
 
             <nav>
                 {% if is_granted('IS_AUTHENTICATED') %}

@@ -58,18 +58,34 @@ table {
     }
 }
 
-nav > a, a.logo {
-    vertical-align: middle;
+header {
     font-weight: bold;
-    padding-right: 16px;
+    text-decoration: none;
+    vertical-align: center;
 
+    a.logo {
+        text-decoration: none;
+
+        span {
+            font-size: 2rem;
+            vertical-align: center;
+        }
+    }
     img {
-        vertical-align: middle;
+        vertical-align: center;
         height: 3em;
         padding-right: 8px;
     }
+
+    a.logout {
+        float: right;
+        text-decoration: none;
+    }
 }
 
-a.logout {
-    float: right;
+nav > a {
+    vertical-align: center;
+    font-weight: bold;
+    padding-right: 16px;
+    text-decoration: none;
 }
