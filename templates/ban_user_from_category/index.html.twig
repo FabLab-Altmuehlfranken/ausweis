@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Für Gerätekategorie sperren{% endblock %}
+
+{% block body %}
+    <h1>⛔ Für Gerätekategorie sperren</h1>
+
+    <p>
+        Name: <b>{{ user.displayName }}</b>
+    </p>
+
+    <p>
+        Eine Sperre gilt unabhängig von erteilten Berechtigungen für alle Geräte der Kategorie, bis sie aufgehoben wird.
+    </p>
+
+    <p>{{ form(form) }}</p>
+{% endblock %}

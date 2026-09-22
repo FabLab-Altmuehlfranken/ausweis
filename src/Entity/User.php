@@ -5,6 +5,9 @@ declare(strict_types=1);
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use DateTimeImmutable;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Override;
 use Symfony\Bridge\Doctrine\Types\UuidType;
@@ -21,6 +24,7 @@ class User implements UserInterface
 {
     public const string MEMBER_ROLE = 'ROLE_MEMBER';
     public const string ADMIN_ROLE = 'ROLE_ADMIN';
+    public const string INSTRUCTOR_ROLE = 'ROLE_INSTRUCTOR';
 
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -42,6 +46,27 @@ class User implements UserInterface
     #[ORM\Column(nullable: true)]
     public private(set) ?string $cardId = null;
 
+    /**
+     * @var Collection<int, UserPrivilege>
+     */
+    #[ORM\OneToMany(targetEntity: UserPrivilege::class, mappedBy: 'user')]
+    #[ORM\OrderBy(['id' => 'ASC'])]
+    public private(set) Collection $privileges;
+
+    /**
+     * @var Collection<int, InstructionAttendance>
+     */
+    #[ORM\OneToMany(targetEntity: InstructionAttendance::class, mappedBy: 'user')]
+    #[ORM\OrderBy(['date' => 'DESC'])]
+    public private(set) Collection $attendances;
+
+    /**
+     * @var Collection<int, CategoryBan>
+     */
+    #[ORM\OneToMany(targetEntity: CategoryBan::class, mappedBy: 'user')]
+    #[ORM\OrderBy(['createdAt' => 'ASC'])]
+    public private(set) Collection $categoryBans;
+
     public function __construct(
         #[Assert\Length(min: 3)]
         #[ORM\Column(length: 180)]
@@ -52,6 +77,9 @@ class User implements UserInterface
         public private(set) string $mail,
     ) {
         $this->digitalCardId = Uuid::v4();
+        $this->privileges = new ArrayCollection();
+        $this->attendances = new ArrayCollection();
+        $this->categoryBans = new ArrayCollection();
     }
 
     #[Override]
@@ -138,6 +166,60 @@ class User implements UserInterface
     public function isAdmin(): bool
     {
         return $this->hasRole(self::ADMIN_ROLE);
+    }
+
+    /**
+     * @internal use UserPrivilege::__construct()
+     */
+    public function addPrivilege(UserPrivilege $privilege): void
+    {
+        if (!$this->privileges->contains($privilege)) {
+            $this->privileges->add($privilege);
+        }
+    }
+
+    /**
+     * @internal use InstructionAttendance::__construct()
+     */
+    public function addAttendance(InstructionAttendance $attendance): void
+    {
+        if (!$this->attendances->contains($attendance)) {
+            $this->attendances->add($attendance);
+        }
+    }
+
+    public function hasAttended(Instruction $instruction, DateTimeImmutable $date): bool
+    {
+        foreach ($this->attendances as $attendance) {
+            if ($attendance->instruction === $instruction
+                && $attendance->date->format('Y-m-d') === $date->format('Y-m-d')) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public function getActivePrivilege(Privilege $privilege): ?UserPrivilege
+    {
+        foreach ($this->privileges as $userPrivilege) {
+            if ($userPrivilege->privilege === $privilege && !$userPrivilege->isRevoked()) {
+                return $userPrivilege;
+            }
+        }
+
+        return null;
+    }
+
+    public function getActiveBan(MachineCategory $category): ?CategoryBan
+    {
+        foreach ($this->categoryBans as $ban) {
+            if ($ban->category === $category && $ban->isActive()) {
+                return $ban;
+            }
+        }
+
+        return null;
     }
 
     private function hasRole(string $role): bool

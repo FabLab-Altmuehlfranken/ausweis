@@ -1,0 +1,47 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Einweisungen{% endblock %}
+
+{% block body %}
+    <h1>🎓 Einweisungen</h1>
+
+    <p>
+        Die Teilnahme an einer Einweisung wird hier für mehrere Mitglieder oder auf der Ausweis-Seite eines Mitglieds bestätigt.
+        Die Teilnehmer erhalten dadurch alle Berechtigungen der Einweisung, bereits vorhandene werden erneuert.
+    </p>
+
+    {% if is_granted('ROLE_ADMIN') %}
+        <p>
+            <a href="{{ path('create_instruction') }}">➕ Einweisung anlegen</a>
+        </p>
+    {% endif %}
+
+    {% for instruction in instructions %}
+        <h2>
+            {{ instruction.name }}
+            <a href="{{ path('batch_confirm_instruction_attendance', {id: instruction.id}) }}" title="Teilnehmer bestätigen">👥</a>
+            {% if is_granted('ROLE_ADMIN') %}
+                <a href="{{ path('edit_instruction', {id: instruction.id}) }}" title="Einweisung bearbeiten">✏️</a>
+            {% endif %}
+        </h2>
+
+        {% if instruction.description %}
+            <p>{{ instruction.description|nl2br }}</p>
+        {% endif %}
+
+        {% set privilegesByCategory = {} %}
+        {% for privilege in instruction.privileges|sort((a, b) => a.category.name <=> b.category.name ?: a.name <=> b.name) %}
+            {% set privilegesByCategory = privilegesByCategory|merge({
+                (privilege.category.name): (privilegesByCategory[privilege.category.name] ?? [])|merge([privilege.name]),
+            }) %}
+        {% endfor %}
+
+        <ul>
+            {% for category, privilegeNames in privilegesByCategory %}
+                <li><b>{{ category }}:</b> {{ privilegeNames|join(', ') }}</li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>Es wurden noch keine Einweisungen angelegt.</p>
+    {% endfor %}
+{% endblock %}

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Privilege\CategoryPrivileges;
 use App\Service\UserDetailsQrCodeGenerator;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -28,6 +29,7 @@ final class UserDetailsByDigitalCardIdController extends AbstractController
         return $this->render('user_details_by_digital_card_id/index.html.twig', [
             'user' => $user,
             'qrCode' => $qrCode,
+            'privileges' => CategoryPrivileges::fromUser($user),
         ]);
     }
 }

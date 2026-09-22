@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Teilnahme an Einweisung bestätigen{% endblock %}
+
+{% block body %}
+    <h1>🎓 Teilnahme an Einweisung bestätigen</h1>
+
+    <p>
+        Name: <b>{{ user.displayName }}</b>
+    </p>
+
+    <p>
+        Das Mitglied erhält alle Berechtigungen der Einweisung, bereits vorhandene werden erneuert.
+    </p>
+
+    <p>{{ form(form) }}</p>
+{% endblock %}

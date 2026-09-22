@@ -1,0 +1,9 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Einweisung {{ instruction ? 'bearbeiten' : 'anlegen' }}{% endblock %}
+
+{% block body %}
+    <h1>🎓 Einweisung {{ instruction ? 'bearbeiten' : 'anlegen' }}</h1>
+
+    <p>{{ form(form) }}</p>
+{% endblock %}
