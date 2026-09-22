@@ -56,6 +56,10 @@ table {
     tr:nth-child(even) {
         background-color: whitesmoke;
     }
+
+    tr:nth-child(odd) {
+        background-color: gainsboro;
+    }
 }
 
 header {
