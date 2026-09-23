@@ -39,7 +39,7 @@ final class InstructionController extends AbstractController
             $entityManager->persist($instruction);
             $entityManager->flush();
 
-            $this->addFlash('success', 'Berechtigung erfolgreich angelegt.');
+            $this->addFlash('success', 'Einweisung erfolgreich angelegt.');
 
             return $this->redirectToRoute('app_instruction_show', ['id' => $instruction->id], Response::HTTP_SEE_OTHER);
         }
@@ -67,7 +67,7 @@ final class InstructionController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->flush();
 
-            $this->addFlash('success', 'Bereich erfolgreich gespeichert.');
+            $this->addFlash('success', 'Einweisung erfolgreich gespeichert.');
 
             return $this->redirectToRoute('app_instruction_show', ['id' => $instruction->id], Response::HTTP_SEE_OTHER);
         }
