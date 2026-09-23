@@ -2,6 +2,11 @@ body {
     background-color: lightgray;
 }
 
+a {
+    text-decoration: none;
+    color: blue;
+}
+
 .flash-success {
     background-color: lightgreen;
     border-radius: 8px;
