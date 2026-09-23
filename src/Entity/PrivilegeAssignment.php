@@ -18,7 +18,7 @@ class PrivilegeAssignment
     public private(set) int $id;
 
     #[ORM\Column(options: ['default' => 'CURRENT_TIMESTAMP'])]
-    public private(set) DateTimeImmutable $createdAt;
+    public private(set) DateTimeImmutable $timestamp;
 
     #[ORM\ManyToOne(inversedBy: 'privilegeAssignments')]
     #[ORM\JoinColumn(nullable: false)]
@@ -30,7 +30,7 @@ class PrivilegeAssignment
 
     public function __construct()
     {
-        $this->createdAt = new DateTimeImmutable();
+        $this->timestamp = new DateTimeImmutable();
     }
 
     public function setUser(User $user): static
@@ -49,6 +49,6 @@ class PrivilegeAssignment
 
     public function renewAssignment(): void
     {
-        $this->createdAt = new DateTimeImmutable();
+        $this->timestamp = new DateTimeImmutable();
     }
 }

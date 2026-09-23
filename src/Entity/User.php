@@ -49,7 +49,7 @@ class User implements UserInterface
      * @var Collection<int, PrivilegeAssignment>
      */
     #[ORM\OneToMany(targetEntity: PrivilegeAssignment::class, mappedBy: 'user', orphanRemoval: true)]
-    #[ORM\OrderBy(['createdAt' => SortDirection::Ascending])]
+    #[ORM\OrderBy(['timestamp' => SortDirection::Descending])]
     public private(set) Collection $privilegeAssignments;
 
     public function __construct(
