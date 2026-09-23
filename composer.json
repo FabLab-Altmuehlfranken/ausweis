@@ -122,7 +122,8 @@
         "doctrine-migrations": [
             "bin/console doctrine:migrations:migrate --no-interaction",
             "bin/console doctrine:migrations:migrate --no-interaction first",
-            "bin/console doctrine:migrations:migrate --no-interaction"
+            "bin/console doctrine:migrations:migrate --no-interaction",
+            "bin/console doctrine:fixtures:load --no-interaction"
         ],
         "doctrine-schema-validate": [
             "bin/console doctrine:migrations:migrate --no-interaction",
