@@ -48,7 +48,7 @@ class User implements UserInterface
      * @var Collection<int, PrivilegeAssignment>
      */
     #[ORM\OneToMany(targetEntity: PrivilegeAssignment::class, mappedBy: 'user', orphanRemoval: true)]
-    #[ORM\OrderBy(['privilege.area.name' => 'ASC', 'privilege.name' => 'ASC'])]
+    #[ORM\OrderBy(['createdAt' => 'ASC'])]
     public private(set) Collection $privilegeAssignments;
 
     public function __construct(
