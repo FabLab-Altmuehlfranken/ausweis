@@ -44,7 +44,7 @@ class Privilege
      * @var Collection<int, PrivilegeAssignment>
      */
     #[ORM\OneToMany(targetEntity: PrivilegeAssignment::class, mappedBy: 'privilege', orphanRemoval: true)]
-    #[ORM\OrderBy(['user.name' => 'ASC'])]
+    #[ORM\OrderBy(['user' => 'ASC'])]
     public private(set) Collection $privilegeAssignments;
 
     public function __construct()

@@ -47,7 +47,7 @@ class User implements UserInterface
     /**
      * @var Collection<int, PrivilegeAssignment>
      */
-    #[ORM\OneToMany(targetEntity: PrivilegeAssignment::class, mappedBy: 'assignedTo', orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: PrivilegeAssignment::class, mappedBy: 'user', orphanRemoval: true)]
     #[ORM\OrderBy(['privilege.area.name' => 'ASC', 'privilege.name' => 'ASC'])]
     public private(set) Collection $privilegeAssignments;
 

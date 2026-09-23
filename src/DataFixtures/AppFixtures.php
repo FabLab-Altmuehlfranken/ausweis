@@ -95,7 +95,7 @@ class AppFixtures extends Fixture
     ): void {
         foreach ($keys as $i) {
             $privilegeAssignment = new PrivilegeAssignment()
-                ->setAssignedTo($users[$i])
+                ->setUser($users[$i])
                 ->setPrivilege($privilege);
             $manager->persist($privilegeAssignment);
         }

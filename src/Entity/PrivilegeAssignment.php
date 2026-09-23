@@ -21,7 +21,7 @@ class PrivilegeAssignment
 
     #[ORM\ManyToOne(inversedBy: 'privilegeAssignments')]
     #[ORM\JoinColumn(nullable: false)]
-    public private(set) User $assignedTo;
+    public private(set) User $user;
 
     #[ORM\ManyToOne(inversedBy: 'privilegeAssignments')]
     #[ORM\JoinColumn(nullable: false)]
@@ -32,9 +32,9 @@ class PrivilegeAssignment
         $this->createdAt = new DateTimeImmutable();
     }
 
-    public function setAssignedTo(User $assignedTo): static
+    public function setUser(User $user): static
     {
-        $this->assignedTo = $assignedTo;
+        $this->user = $user;
 
         return $this;
     }
