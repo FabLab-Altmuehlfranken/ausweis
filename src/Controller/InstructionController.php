@@ -41,7 +41,7 @@ final class InstructionController extends AbstractController
 
             $this->addFlash('success', 'Berechtigung erfolgreich angelegt.');
 
-            return $this->redirectToRoute('app_instruction_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_instruction_show', ['id' => $instruction->id], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('instruction/new.html.twig', [
@@ -69,7 +69,7 @@ final class InstructionController extends AbstractController
 
             $this->addFlash('success', 'Bereich erfolgreich gespeichert.');
 
-            return $this->redirectToRoute('app_instruction_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_instruction_show', ['id' => $instruction->id], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('instruction/edit.html.twig', [

@@ -52,7 +52,7 @@ final class PrivilegeController extends AbstractController
 
             $this->addFlash('success', 'Berechtigung erfolgreich angelegt.');
 
-            return $this->redirectToRoute('app_privilege_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_privilege_show', ['id' => $privilege->id], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('privilege/new.html.twig', [
@@ -80,7 +80,7 @@ final class PrivilegeController extends AbstractController
 
             $this->addFlash('success', 'Berechtigung erfolgreich gespeichert.');
 
-            return $this->redirectToRoute('app_privilege_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_privilege_show', ['id' => $privilege->id], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('privilege/edit.html.twig', [
@@ -99,6 +99,6 @@ final class PrivilegeController extends AbstractController
             $this->addFlash('success', 'Berechtigung erfolgreich gelöscht.');
         }
 
-        return $this->redirectToRoute('app_privilege_index', [], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute('app_area_show', ['id' => $areaId], Response::HTTP_SEE_OTHER);
     }
 }

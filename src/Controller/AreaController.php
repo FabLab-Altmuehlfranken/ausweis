@@ -41,7 +41,7 @@ final class AreaController extends AbstractController
 
             $this->addFlash('success', 'Bereich erfolgreich angelegt.');
 
-            return $this->redirectToRoute('app_area_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_area_show', ['id' => $area->id], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('area/new.html.twig', [
@@ -69,7 +69,7 @@ final class AreaController extends AbstractController
 
             $this->addFlash('success', 'Bereich erfolgreich gespeichert.');
 
-            return $this->redirectToRoute('app_area_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_area_show', ['id' => $area->id], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('area/edit.html.twig', [
