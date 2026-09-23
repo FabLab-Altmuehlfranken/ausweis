@@ -82,10 +82,12 @@ final class AreaController extends AbstractController
     public function delete(Request $request, Area $area, EntityManagerInterface $entityManager): RedirectResponse
     {
         if ($this->isCsrfTokenValid('delete'.$area->id, $request->getPayload()->getString('_token'))) {
+            $name = $area->name;
+
             $entityManager->remove($area);
             $entityManager->flush();
 
-            $this->addFlash('success', 'Bereich erfolgreich gelöscht.');
+            $this->addFlash('success', 'Bereich "'.$name.'" erfolgreich gelöscht.');
         }
 
         return $this->redirectToRoute('app_area_index', [], Response::HTTP_SEE_OTHER);

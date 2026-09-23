@@ -93,10 +93,12 @@ final class PrivilegeController extends AbstractController
     public function delete(Request $request, Privilege $privilege, EntityManagerInterface $entityManager): RedirectResponse
     {
         if ($this->isCsrfTokenValid('delete'.$privilege->id, $request->getPayload()->getString('_token'))) {
+            $name = $privilege->name;
+
             $entityManager->remove($privilege);
             $entityManager->flush();
 
-            $this->addFlash('success', 'Berechtigung erfolgreich gelöscht.');
+            $this->addFlash('success', 'Berechtigung "'.$name.'" erfolgreich gelöscht.');
         }
 
         return $this->redirectToRoute('app_area_show', ['id' => $areaId], Response::HTTP_SEE_OTHER);

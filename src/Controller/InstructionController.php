@@ -82,10 +82,12 @@ final class InstructionController extends AbstractController
     public function delete(Request $request, Instruction $instruction, EntityManagerInterface $entityManager): RedirectResponse
     {
         if ($this->isCsrfTokenValid('delete'.$instruction->id, $request->getPayload()->getString('_token'))) {
+            $name = $instruction->name;
+
             $entityManager->remove($instruction);
             $entityManager->flush();
 
-            $this->addFlash('success', 'Bereich erfolgreich gelöscht.');
+            $this->addFlash('success', 'Einweisung "'.$name.'" erfolgreich gelöscht.');
         }
 
         return $this->redirectToRoute('app_instruction_index', [], Response::HTTP_SEE_OTHER);
