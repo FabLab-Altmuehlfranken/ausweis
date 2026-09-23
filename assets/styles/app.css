@@ -119,3 +119,11 @@ span.muted {
 fieldset {
     margin: 8px 0;
 }
+
+details.qr-code {
+    summary {
+        cursor: pointer;
+        font-weight: bold;
+        color: blue;
+    }
+}
