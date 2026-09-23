@@ -22,7 +22,7 @@ class InstructionType extends AbstractType
             ->add('name')
             ->add('privileges', EntityType::class, [
                 'class' => Privilege::class,
-                'choice_label' => 'name',
+                'choice_label' => fn (Privilege $p): string => $p->area->name.' > '.$p->name,
                 'multiple' => true,
                 'label' => 'Berechtigungen',
             ])
