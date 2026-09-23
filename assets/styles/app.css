@@ -67,6 +67,10 @@ table {
     }
 }
 
+table.nowrap {
+    white-space: nowrap;
+}
+
 header {
     font-weight: bold;
     text-decoration: none;
