@@ -15,7 +15,11 @@
         </tr>
         {% for order in orders %}
             <tr>
-                <td>{{ order.user.displayName }}</td>
+                <td>
+                    <a href="{{ path('user_details_by_digital_card_id', {'uuid': order.user.digitalCardId}) }}">
+                        {{ order.user.displayName }}
+                    </a>
+                </td>
                 <td class="center">{{ order.isPrintOrdered ? '✅' : '❌' }}</td>
                 <td class="center">
                     {% if order.cardId %}
