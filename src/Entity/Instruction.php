@@ -44,6 +44,9 @@ class Instruction
         return $this;
     }
 
+    /**
+     * @param Collection<int, Privilege> $privileges
+     */
     public function setPrivileges(Collection $privileges): static
     {
         $this->privileges = $privileges;
