@@ -19,14 +19,14 @@ class PrivilegeType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('name')
-            ->add('description', options: [
-                'label' => 'Beschreibung',
-            ])
             ->add('area', EntityType::class, [
                 'class' => Area::class,
                 'choice_label' => 'name',
                 'label' => 'Bereich',
+            ])
+            ->add('name')
+            ->add('description', options: [
+                'label' => 'Beschreibung',
             ])
         ;
     }
