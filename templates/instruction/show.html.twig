@@ -3,7 +3,7 @@
 {% block title %}Einweisung{% endblock %}
 
 {% block body %}
-    <h1>Instruction</h1>
+    <h1>Einweisung</h1>
 
     <table class="table">
         <tbody>
@@ -18,7 +18,7 @@
                         {% for privilege in instruction.privileges %}
                             <li>
                                 <a href="{{ path('app_privilege_show', {'id': privilege.id}) }}">
-                                    {{ privilege.name }}
+                                    {{ privilege.area.name }}: {{ privilege.name }}
                                 </a>
                             </li>
                         {% endfor %}
