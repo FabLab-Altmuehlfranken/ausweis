@@ -4,22 +4,22 @@ declare(strict_types=1);
 
 namespace App\Repository;
 
-use App\Entity\InstructionAssignment;
+use App\Entity\PrivilegeAssignment;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @extends ServiceEntityRepository<InstructionAssignment>
+ * @extends ServiceEntityRepository<PrivilegeAssignment>
  */
-class InstructionAssignmentRepository extends ServiceEntityRepository
+class PrivilegeAssignmentRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, InstructionAssignment::class);
+        parent::__construct($registry, PrivilegeAssignment::class);
     }
 
     //    /**
-    //     * @return InstructionAssignment[] Returns an array of InstructionAssignment objects
+    //     * @return PrivilegeAssignment[] Returns an array of PrivilegeAssignment objects
     //     */
     //    public function findByExampleField($value): array
     //    {
@@ -33,7 +33,7 @@ class InstructionAssignmentRepository extends ServiceEntityRepository
     //        ;
     //    }
 
-    //    public function findOneBySomeField($value): ?InstructionAssignment
+    //    public function findOneBySomeField($value): ?PrivilegeAssignment
     //    {
     //        return $this->createQueryBuilder('i')
     //            ->andWhere('i.exampleField = :val')

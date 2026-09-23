@@ -45,10 +45,11 @@ class User implements UserInterface
     public private(set) ?string $cardId = null;
 
     /**
-     * @var Collection<int, InstructionAssignment>
+     * @var Collection<int, PrivilegeAssignment>
      */
-    #[ORM\OneToMany(targetEntity: InstructionAssignment::class, mappedBy: 'assignedTo', orphanRemoval: true)]
-    public private(set) Collection $instructionAssignments;
+    #[ORM\OneToMany(targetEntity: PrivilegeAssignment::class, mappedBy: 'assignedTo', orphanRemoval: true)]
+    #[ORM\OrderBy(['privilege.area.name' => 'ASC', 'privilege.name' => 'ASC'])]
+    public private(set) Collection $privilegeAssignments;
 
     public function __construct(
         #[Assert\Length(min: 3)]
@@ -60,7 +61,7 @@ class User implements UserInterface
         public private(set) string $mail,
     ) {
         $this->digitalCardId = Uuid::v4();
-        $this->instructionAssignments = new ArrayCollection();
+        $this->privilegeAssignments = new ArrayCollection();
     }
 
     #[Override]

@@ -27,7 +27,9 @@ class Instruction
      * @var Collection<int, Privilege>
      */
     #[ORM\ManyToMany(targetEntity: Privilege::class, inversedBy: 'instructions')]
+    #[ORM\OrderBy(['name' => 'ASC'])]
     #[Assert\NotBlank]
+    #[Assert\Count(min: 1)]
     public private(set) Collection $privileges;
 
     public function __construct()

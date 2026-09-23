@@ -37,18 +37,20 @@ class Privilege
      * @var Collection<int, Instruction>
      */
     #[ORM\ManyToMany(targetEntity: Instruction::class, mappedBy: 'privileges')]
+    #[ORM\OrderBy(['name' => 'ASC'])]
     public private(set) Collection $instructions;
 
     /**
-     * @var Collection<int, InstructionAssignment>
+     * @var Collection<int, PrivilegeAssignment>
      */
-    #[ORM\OneToMany(targetEntity: InstructionAssignment::class, mappedBy: 'privilege', orphanRemoval: true)]
-    public private(set) Collection $instructionAssignments;
+    #[ORM\OneToMany(targetEntity: PrivilegeAssignment::class, mappedBy: 'privilege', orphanRemoval: true)]
+    #[ORM\OrderBy(['user.name' => 'ASC'])]
+    public private(set) Collection $privilegeAssignments;
 
     public function __construct()
     {
         $this->instructions = new ArrayCollection();
-        $this->instructionAssignments = new ArrayCollection();
+        $this->privilegeAssignments = new ArrayCollection();
     }
 
     public function setName(string $name): static

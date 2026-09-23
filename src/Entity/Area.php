@@ -27,6 +27,7 @@ class Area
      * @var Collection<int, Privilege>
      */
     #[ORM\OneToMany(targetEntity: Privilege::class, mappedBy: 'area', orphanRemoval: true)]
+    #[ORM\OrderBy(['name' => 'ASC'])]
     #[Assert\NotBlank]
     public private(set) Collection $privileges;
 

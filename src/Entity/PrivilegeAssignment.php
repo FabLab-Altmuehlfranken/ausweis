@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
-use App\Repository\InstructionAssignmentRepository;
+use App\Repository\PrivilegeAssignmentRepository;
 use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: InstructionAssignmentRepository::class)]
-class InstructionAssignment
+#[ORM\Entity(repositoryClass: PrivilegeAssignmentRepository::class)]
+class PrivilegeAssignment
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -19,11 +19,11 @@ class InstructionAssignment
     #[ORM\Column(options: ['default' => 'CURRENT_TIMESTAMP'])]
     public private(set) DateTimeImmutable $createdAt;
 
-    #[ORM\ManyToOne(inversedBy: 'instructionAssignments')]
+    #[ORM\ManyToOne(inversedBy: 'privilegeAssignments')]
     #[ORM\JoinColumn(nullable: false)]
     public private(set) User $assignedTo;
 
-    #[ORM\ManyToOne(inversedBy: 'instructionAssignments')]
+    #[ORM\ManyToOne(inversedBy: 'privilegeAssignments')]
     #[ORM\JoinColumn(nullable: false)]
     public private(set) Privilege $privilege;
 
