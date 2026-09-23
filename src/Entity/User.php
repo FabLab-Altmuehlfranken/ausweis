@@ -9,6 +9,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Override;
+use SortDirection;
 use Symfony\Bridge\Doctrine\Types\UuidType;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Uid\Uuid;
@@ -48,7 +49,7 @@ class User implements UserInterface
      * @var Collection<int, PrivilegeAssignment>
      */
     #[ORM\OneToMany(targetEntity: PrivilegeAssignment::class, mappedBy: 'user', orphanRemoval: true)]
-    #[ORM\OrderBy(['createdAt' => 'ASC'])]
+    #[ORM\OrderBy(['createdAt' => SortDirection::Ascending])]
     public private(set) Collection $privilegeAssignments;
 
     public function __construct(
