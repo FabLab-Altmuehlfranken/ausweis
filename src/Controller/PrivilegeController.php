@@ -27,7 +27,7 @@ final class PrivilegeController extends AbstractController
         ?Area $area = null,
     ): Response {
         $privilege = new Privilege();
-        if ($area) {
+        if ($area instanceof Area) {
             $privilege->setArea($area);
         }
         $form = $this->createForm(PrivilegeType::class, $privilege);

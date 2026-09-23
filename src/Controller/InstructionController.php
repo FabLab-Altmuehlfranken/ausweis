@@ -107,7 +107,7 @@ final class InstructionController extends AbstractController
             foreach ($instruction->privileges as $privilege) {
                 foreach ($dto->users as $user) {
                     $privilegeAssignment = $user->privilegeAssignments->findFirst(
-                        fn (int $k, PrivilegeAssignment $v) => $v->privilege->id === $privilege->id,
+                        fn (int $k, PrivilegeAssignment $v): bool => $v->privilege->id === $privilege->id,
                     ) ?? new PrivilegeAssignment()->setUser($user)->setPrivilege($privilege);
                     $privilegeAssignment->renewAssignment();
                     $entityManager->persist($privilegeAssignment);
