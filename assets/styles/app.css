@@ -110,3 +110,12 @@ form > button {
 form textarea {
     min-height: 5rem;
 }
+
+span.muted {
+    font-size: .8em;
+    color: dimgrey;
+}
+
+fieldset {
+    margin: 8px 0;
+}

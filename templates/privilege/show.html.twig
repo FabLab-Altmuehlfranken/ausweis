@@ -32,6 +32,9 @@
                                 <a href="{{ path('user_details_by_digital_card_id', {'uuid': assignment.user.digitalCardId}) }}">
                                     {{ assignment.user.displayName }}
                                 </a>
+                                <span class="muted">
+                                    - {{ assignment.createdAt.format('d.m.Y') }}
+                                </span>
                             </li>
                         {% endfor %}
                     </ul>
