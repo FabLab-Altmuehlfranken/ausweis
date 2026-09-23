@@ -24,6 +24,7 @@ class InstructionType extends AbstractType
                 'class' => Privilege::class,
                 'choice_label' => fn (Privilege $p): string => $p->area->name.': '.$p->name,
                 'multiple' => true,
+                'expanded' => true,
                 'label' => 'Berechtigungen',
             ])
         ;
