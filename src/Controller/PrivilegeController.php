@@ -8,7 +8,6 @@ use App\Entity\Area;
 use App\Entity\Privilege;
 use App\Entity\User;
 use App\Form\PrivilegeType;
-use App\Repository\PrivilegeRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -21,19 +20,7 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 #[IsGranted(User::ADMIN_ROLE)]
 final class PrivilegeController extends AbstractController
 {
-    #[Route(name: 'app_privilege_index', methods: ['GET'])]
-    public function index(PrivilegeRepository $privilegeRepository): Response
-    {
-        return $this->render('privilege/index.html.twig', [
-            'privileges' => $privilegeRepository->findBy(
-                [],
-                orderBy: ['area' => 'ASC', 'name' => 'ASC'],
-            ),
-        ]);
-    }
-
-    #[Route('/new', name: 'app_privilege_new', methods: ['GET', 'POST'])]
-    #[Route('/new/{area}', name: 'app_privilege_new_in_area', methods: ['GET'])]
+    #[Route('/new/{area}', name: 'app_privilege_new', methods: ['GET', 'POST'])]
     public function new(
         Request $request,
         EntityManagerInterface $entityManager,
