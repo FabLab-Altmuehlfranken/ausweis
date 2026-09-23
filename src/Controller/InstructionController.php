@@ -5,7 +5,10 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Entity\Instruction;
+use App\Entity\PrivilegeAssignment;
 use App\Entity\User;
+use App\Form\AssignPrivilegesDTO;
+use App\Form\AssignPrivilegesType;
 use App\Form\InstructionType;
 use App\Repository\InstructionRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -91,5 +94,35 @@ final class InstructionController extends AbstractController
         }
 
         return $this->redirectToRoute('app_instruction_index', [], Response::HTTP_SEE_OTHER);
+    }
+
+    #[Route('/{id}/assign_prigileves', name: 'app_instruction_assign_privileges', methods: ['GET', 'POST'])]
+    public function assignPrivileges(Request $request, Instruction $instruction, EntityManagerInterface $entityManager): Response
+    {
+        $dto = new AssignPrivilegesDTO();
+        $form = $this->createForm(AssignPrivilegesType::class, $dto);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            foreach ($instruction->privileges as $privilege) {
+                foreach ($dto->users as $user) {
+                    $privilegeAssignment = $user->privilegeAssignments->findFirst(
+                        fn (int $k, PrivilegeAssignment $v) => $v->privilege->id === $privilege->id,
+                    ) ?? new PrivilegeAssignment()->setUser($user)->setPrivilege($privilege);
+                    $privilegeAssignment->renewAssignment();
+                    $entityManager->persist($privilegeAssignment);
+                }
+            }
+
+            $entityManager->flush();
+
+            $this->addFlash('success', 'Teilnahme erfolgreich bestätigt und Berechtigungen zugewiesen.');
+
+            return $this->redirectToRoute('app_instruction_show', ['id' => $instruction->id], Response::HTTP_SEE_OTHER);
+        }
+
+        return $this->render('instruction/assign_prigileges.html.twig', [
+            'form' => $form,
+        ]);
     }
 }

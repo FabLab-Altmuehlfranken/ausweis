@@ -9,6 +9,7 @@ use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: PrivilegeAssignmentRepository::class)]
+#[ORM\UniqueConstraint(fields: ['user', 'privilege'])]
 class PrivilegeAssignment
 {
     #[ORM\Id]
@@ -44,5 +45,10 @@ class PrivilegeAssignment
         $this->privilege = $privilege;
 
         return $this;
+    }
+
+    public function renewAssignment(): void
+    {
+        $this->createdAt = new DateTimeImmutable();
     }
 }
