@@ -73,11 +73,9 @@ table.nowrap {
 
 header {
     font-weight: bold;
-    text-decoration: none;
     vertical-align: center;
 
     a.logo {
-        text-decoration: none;
 
         span {
             font-size: 2rem;
@@ -92,7 +90,6 @@ header {
 
     a.logout {
         float: right;
-        text-decoration: none;
     }
 }
 
@@ -100,7 +97,6 @@ nav > a {
     vertical-align: center;
     font-weight: bold;
     padding-right: 16px;
-    text-decoration: none;
 }
 
 form .form-select, form .form-control {
