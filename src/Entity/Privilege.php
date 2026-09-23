@@ -9,6 +9,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use SortDirection;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: PrivilegeRepository::class)]
@@ -37,14 +38,14 @@ class Privilege
      * @var Collection<int, Instruction>
      */
     #[ORM\ManyToMany(targetEntity: Instruction::class, mappedBy: 'privileges')]
-    #[ORM\OrderBy(['name' => 'ASC'])]
+    #[ORM\OrderBy(['name' => SortDirection::Ascending])]
     public private(set) Collection $instructions;
 
     /**
      * @var Collection<int, PrivilegeAssignment>
      */
     #[ORM\OneToMany(targetEntity: PrivilegeAssignment::class, mappedBy: 'privilege', orphanRemoval: true)]
-    #[ORM\OrderBy(['user' => 'ASC'])]
+    #[ORM\OrderBy(['user' => SortDirection::Ascending])]
     public private(set) Collection $privilegeAssignments;
 
     public function __construct()
