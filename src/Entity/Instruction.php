@@ -44,9 +44,6 @@ class Instruction
         return $this;
     }
 
-    /**
-     * @param Collection $privileges
-     */
     public function setPrivileges(Collection $privileges): static
     {
         $this->privileges = $privileges;
