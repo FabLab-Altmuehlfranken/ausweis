@@ -29,7 +29,6 @@ class Instruction
      */
     #[ORM\ManyToMany(targetEntity: Privilege::class, inversedBy: 'instructions')]
     #[ORM\OrderBy(['name' => SortDirection::Ascending])]
-    #[Assert\NotBlank]
     #[Assert\Count(min: 1)]
     public private(set) Collection $privileges;
 

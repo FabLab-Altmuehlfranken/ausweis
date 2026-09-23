@@ -11,6 +11,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 class AssignPrivilegesDTO
 {
     /** @var Collection<int, User> */
-    #[Assert\NotBlank]
+    #[Assert\Count(min: 1)]
     public Collection $users;
 }
