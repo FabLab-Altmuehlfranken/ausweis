@@ -92,6 +92,7 @@ final class PrivilegeController extends AbstractController
     #[Route('/{id}', name: 'app_privilege_delete', methods: ['POST'])]
     public function delete(Request $request, Privilege $privilege, EntityManagerInterface $entityManager): RedirectResponse
     {
+        $areaId = $privilege->area->id;
         if ($this->isCsrfTokenValid('delete'.$privilege->id, $request->getPayload()->getString('_token'))) {
             $name = $privilege->name;
 
