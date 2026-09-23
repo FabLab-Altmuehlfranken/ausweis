@@ -17,7 +17,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
-#[Route('/privilege')]
+#[Route('/privileges')]
 #[IsGranted(User::ADMIN_ROLE)]
 final class PrivilegeController extends AbstractController
 {

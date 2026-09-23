@@ -16,7 +16,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
-#[Route('/instruction')]
+#[Route('/instructions')]
 #[IsGranted(User::ADMIN_ROLE)]
 final class InstructionController extends AbstractController
 {
