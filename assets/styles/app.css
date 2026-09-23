@@ -73,19 +73,19 @@ table.nowrap {
 
 header {
     font-weight: bold;
-    vertical-align: center;
 
     a.logo {
-
         span {
             font-size: 2rem;
             vertical-align: center;
         }
-    }
-    img {
-        vertical-align: center;
-        height: 3em;
-        padding-right: 8px;
+
+        img {
+            vertical-align: center;
+            height: 3em;
+            padding-right: 8px;
+            padding-bottom: 8px;
+        }
     }
 
     a.logout {
