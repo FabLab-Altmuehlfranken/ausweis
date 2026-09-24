@@ -72,6 +72,13 @@
             {% else %}
                 {{ user.cardId ? '✅' : '❌' }}
             {% endif %}
+            <hr>
+            <a href="{{ path('app_privilegeassignment_grant', {user: user.id}) }}" class="action">🔑 Berechtigungen Zuweisen</a>
+            {% if user.privilegeAssignments is not empty %}
+                <br>
+                <a href="{{ path('app_privilegeassignment_revoke', {user: user.id}) }}" class="action">🚫 Berechtigungen Entziehen</a>
+            {% endif %}
+
         </fieldset>
     {% endif %}
 {% endblock %}
