@@ -5,9 +5,9 @@
 {% block body %}
     <h1>🎓 Einweisung</h1>
 
-    <a href="{{ path('app_instruction_assign_privileges', {'id': instruction.id}) }}">🏅 Teilnahme bestätigen</a>
+    <a href="{{ path('app_instruction_assign_privileges', {'id': instruction.id}) }}" class="action">🏅 Teilnahme bestätigen</a>
 
-    <table class="table">
+    <table>
         <tbody>
             <tr>
                 <th>Name</th>
@@ -30,7 +30,7 @@
         </tbody>
     </table>
 
-    <a href="{{ path('app_instruction_edit', {'id': instruction.id}) }}">✏️ Bearbeiten</a>
+    <a href="{{ path('app_instruction_edit', {'id': instruction.id}) }}" class="action">✏️ Bearbeiten</a>
 
     {{ include('instruction/_delete_form.html.twig') }}
 {% endblock %}

@@ -5,7 +5,7 @@
 {% block body %}
     <h1>🛠️ Bereiche</h1>
 
-    <table class="table">
+    <table>
         <thead>
             <tr>
                 <th>Name</th>
@@ -24,5 +24,5 @@
         </tbody>
     </table>
 
-    <a href="{{ path('app_area_new') }}">➕ Neuer Bereich</a>
+    <a href="{{ path('app_area_new') }}" class="action">➕ Neuer Bereich</a>
 {% endblock %}

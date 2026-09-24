@@ -8,7 +8,7 @@
             Du bist aktuell Mitglied im FabLab Altmühlfranken. 🎉<br>
         {% else %}
             Du bist aktuell kein Mitglied im FabLab Altmühlfranken.<br>
-            Wenn du das ändern möchtest findest du <a href="https://fablab-altmuehlfranken.de/mitglied-werden/">hier</a> den Mitgliedsantrag.<br>
+            Wenn du das ändern möchtest findest du <a href="https://fablab-altmuehlfranken.de/mitglied-werden/" class="action">hier</a> den Mitgliedsantrag.<br>
         {% endif %}
     </p>
 
@@ -33,7 +33,7 @@
                 Sobald dein Ausweis fertig ist, senden wir dir eine Mail an: <b>{{ app.user.mail }}</b>
             {% endif %}
         {% else %}
-            Eine physische Ausweiskarte kannst du <a href="{{ path('order_card') }}">hier</a> beantragen.
+            Eine physische Ausweiskarte kannst du <a href="{{ path('order_card') }}" class="action">hier</a> beantragen.
         {% endif %}
     </p>
 {% endblock %}

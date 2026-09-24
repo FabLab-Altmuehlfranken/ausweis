@@ -26,16 +26,16 @@
                         <code>{{ order.cardId }}</code>
                     {% endif %}
                     {% if order.isPrintOrdered %}
-                        <a href="{{ path('assign_card_id_to_order', {id: order.id}) }}">✏️</a>
+                        <a href="{{ path('assign_card_id_to_order', {id: order.id}) }}" class="action">✏️</a>
                     {% endif %}
                 </td>
                 <td>{{ order.createdAt.format('Y-m-d H:i:s') }}</td>
                 <td>
                     {% if order.readyForPickUp %}
-                        <a href="{{ path('deliver_card_order', {id: order.id}) }}">🤝 Aushändigen</a>
+                        <a href="{{ path('deliver_card_order', {id: order.id}) }}" class="action">🤝 Aushändigen</a>
                         <br>
                     {% endif %}
-                    <a href="{{ path('delete_card_order', {id: order.id}) }}">🗑️ Löschen</a>
+                    <a href="{{ path('delete_card_order', {id: order.id}) }}" class="action">🗑️ Löschen</a>
                 </td>
             </tr>
         {% endfor %}

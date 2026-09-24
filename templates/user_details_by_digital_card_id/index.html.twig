@@ -21,7 +21,7 @@
             </thead>
             <tbody>
                 {% for area in areas %}
-                    {% set assignments = app.user.privilegesInArea(area) %}
+                    {% set assignments = app.user.privilegeAssignmentsInArea(area) %}
                     {% if assignments is not empty %}
                         <tr>
                             <td>{{ area.name }}</td>
@@ -63,9 +63,9 @@
             Physischer Ausweis:
             {% if user.cardOrder %}
                 {% if user.cardOrder.readyForPickUp %}
-                    <a href="{{ path('deliver_card_order', {id: user.cardOrder.id}) }}">🤝 Ausweis aushändigen</a>
+                    <a href="{{ path('deliver_card_order', {id: user.cardOrder.id}) }}" class="action">🤝 Ausweis aushändigen</a>
                 {% elseif user.cardOrder.isPrintOrdered %}
-                    <a href="{{ path('assign_card_id_to_order', {id: user.cardOrder.id}) }}">✏️ Ausweis zuordnen</a>
+                    <a href="{{ path('assign_card_id_to_order', {id: user.cardOrder.id}) }}" class="action">✏️ Ausweis zuordnen</a>
                 {% else %}
                     ⏳ beantragt
                 {% endif %}
