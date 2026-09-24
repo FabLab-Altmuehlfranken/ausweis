@@ -20,7 +20,7 @@
                         {% for privilege in instruction.privileges %}
                             <li>
                                 <a href="{{ path('app_privilege_show', {'id': privilege.id}) }}">
-                                    {{ privilege.area.name }}: {{ privilege.name }}
+                                    {{ privilege.displayName }}
                                 </a>
                             </li>
                         {% endfor %}

@@ -21,7 +21,7 @@ class PrivilegesGrantType extends AbstractType
             ->add('privileges', EntityType::class, [
                 'class' => Privilege::class,
                 'choices' => $options['choices'],
-                'choice_label' => fn (Privilege $p): string => $p->area->name.': '.$p->name,
+                'choice_label' => 'displayName',
                 'multiple' => true,
                 'expanded' => true,
                 'label' => 'Neue Berechtigungen',

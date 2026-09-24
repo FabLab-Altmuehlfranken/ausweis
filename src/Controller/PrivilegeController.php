@@ -79,7 +79,7 @@ final class PrivilegeController extends AbstractController
     {
         $areaId = $privilege->area->id;
         if ($this->isCsrfTokenValid('delete_privilege'.$privilege->id, $request->getPayload()->getString('_token'))) {
-            $name = $privilege->area->name.': '.$privilege->name;
+            $name = $privilege->getDisplayName();
 
             $entityManager->remove($privilege);
             $entityManager->flush();

@@ -22,7 +22,7 @@ class PrivilegesRevokeType extends AbstractType
             ->add('privilegeAssignments', EntityType::class, [
                 'class' => PrivilegeAssignment::class,
                 'choices' => $options['choices'],
-                'choice_label' => fn (PrivilegeAssignment $a): string => $a->privilege->area->name.': '.$a->privilege->name,
+                'choice_label' => 'privilege.displayName',
                 'multiple' => true,
                 'expanded' => true,
                 'label' => 'Berechtigungen abwählen zum Entziehen',

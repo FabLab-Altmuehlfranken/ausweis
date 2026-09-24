@@ -74,4 +74,9 @@ class Privilege
 
         return $this;
     }
+
+    public function getDisplayName(): string
+    {
+        return $this->area->name.': '.$this->name;
+    }
 }
