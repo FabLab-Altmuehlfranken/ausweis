@@ -31,6 +31,12 @@ class AppFixtures extends Fixture
         $this->assignPrivilege($users, $privileges['multiColorUsage'], $manager, [0, 1]);
         $this->assignPrivilege($users, $privileges['canCut'], $manager, [8, 9]);
 
+        $burned = new User('burned42', '', '');
+        $manager->persist($burned);
+        $this->assignPrivilege([$burned], $privileges['workshopInstructions'], $manager, [0]);
+        $this->assignPrivilege([$burned], $privileges['printerUsage'], $manager, [0]);
+        $this->assignPrivilege([$burned], $privileges['canCut'], $manager, [0]);
+
         $manager->flush();
     }
 
