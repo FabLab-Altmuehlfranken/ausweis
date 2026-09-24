@@ -120,10 +120,19 @@ fieldset {
     margin: 8px 0;
 }
 
+details > summary {
+    cursor: pointer;
+}
+
 details.qr-code {
+    margin: 16px 0;
+
     summary {
-        cursor: pointer;
         font-weight: bold;
         color: blue;
     }
+}
+
+ul.summary-details-list {
+    list-style-type: none;
 }

@@ -11,6 +11,45 @@
         <img src="{{ qrCode.dataUri }}">
     </details>
 
+    {% if is_granted('ROLE_ADMIN') or (is_granted('ROLE_USER') and app.user.digitalCardId == user.digitalCardId) %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Bereich</th>
+                    <th>🔑 Berechtigungen</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for area in areas %}
+                    {% set assignments = app.user.privilegesInArea(area) %}
+                    {% if assignments is not empty %}
+                        <tr>
+                            <td>{{ area.name }}</td>
+                            <td>
+                                <ul class="summary-details-list">
+                                    {% for assignment in assignments %}
+                                        <li>
+                                            <details>
+                                                <summary>
+                                                    {{ assignment.privilege.name }}
+                                                    <span class="muted">
+                                                        - {{ assignment.timestamp.format('d.m.Y') }}
+                                                    </span>
+                                                </summary>
+
+                                                {{ assignment.privilege.description }}
+                                            </details>
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+                            </td>
+                        </tr>
+                    {% endif %}
+                {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
+
     {% if is_granted('ROLE_ADMIN') %}
         <fieldset>
             <legend>Admin-Area</legend>
@@ -18,6 +57,8 @@
             Name: <b>{{ user.displayName }}</b>
             <br>
             Mitglied: {{ user.isMember ? '✅' : '❌' }}
+            <br>
+            Admin: {{ user.isAdmin ? '✅' : '❌' }}
             <br>
             Physischer Ausweis:
             {% if user.cardOrder %}

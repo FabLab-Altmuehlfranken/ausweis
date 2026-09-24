@@ -155,4 +155,15 @@ class User implements UserInterface
     {
         return in_array($role, $this->getRoles(), true);
     }
+
+    /**
+     * @return Collection<int, PrivilegeAssignment>
+     */
+    public function getPrivilegesInArea(Area $area): Collection
+    {
+        return $this->privilegeAssignments->filter(
+            fn (PrivilegeAssignment $a) => $a->privilege->area === $area,
+        );
+
+    }
 }
