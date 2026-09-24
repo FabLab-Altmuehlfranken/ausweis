@@ -81,10 +81,10 @@ final class InstructionController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_instruction_delete', methods: ['POST'])]
+    #[Route('/{id}/delete', name: 'app_instruction_delete', methods: ['POST'])]
     public function delete(Request $request, Instruction $instruction, EntityManagerInterface $entityManager): RedirectResponse
     {
-        if ($this->isCsrfTokenValid('delete'.$instruction->id, $request->getPayload()->getString('_token'))) {
+        if ($this->isCsrfTokenValid('delete_instruction'.$instruction->id, $request->getPayload()->getString('_token'))) {
             $name = $instruction->name;
 
             $entityManager->remove($instruction);

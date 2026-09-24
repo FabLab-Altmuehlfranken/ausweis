@@ -78,10 +78,10 @@ final class AreaController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_area_delete', methods: ['POST'])]
+    #[Route('/{id}/delete', name: 'app_area_delete', methods: ['POST'])]
     public function delete(Request $request, Area $area, EntityManagerInterface $entityManager): RedirectResponse
     {
-        if ($this->isCsrfTokenValid('delete'.$area->id, $request->getPayload()->getString('_token'))) {
+        if ($this->isCsrfTokenValid('delete_area'.$area->id, $request->getPayload()->getString('_token'))) {
             $name = $area->name;
 
             $entityManager->remove($area);

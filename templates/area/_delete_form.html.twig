@@ -1,4 +1,4 @@
 <form method="post" action="{{ path('app_area_delete', {'id': area.id}) }}" onsubmit="return confirm('Möchtest du den Bereich \'{{ area.name }}\' wirklich löschen?');">
-    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ area.id) }}">
+    <input type="hidden" name="_token" value="{{ csrf_token('delete_area' ~ area.id) }}">
     <button class="btn">🗑 Löschen</button>
 </form>
