@@ -43,7 +43,6 @@ final class PrivilegeController extends AbstractController
         }
 
         return $this->render('privilege/new.html.twig', [
-            'privilege' => $privilege,
             'form' => $form,
         ]);
     }
@@ -71,7 +70,6 @@ final class PrivilegeController extends AbstractController
         }
 
         return $this->render('privilege/edit.html.twig', [
-            'privilege' => $privilege,
             'form' => $form,
         ]);
     }

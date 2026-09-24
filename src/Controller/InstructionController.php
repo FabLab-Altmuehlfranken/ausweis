@@ -48,7 +48,6 @@ final class InstructionController extends AbstractController
         }
 
         return $this->render('instruction/new.html.twig', [
-            'instruction' => $instruction,
             'form' => $form,
         ]);
     }
@@ -76,7 +75,6 @@ final class InstructionController extends AbstractController
         }
 
         return $this->render('instruction/edit.html.twig', [
-            'instruction' => $instruction,
             'form' => $form,
         ]);
     }

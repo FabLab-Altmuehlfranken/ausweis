@@ -45,7 +45,6 @@ final class AreaController extends AbstractController
         }
 
         return $this->render('area/new.html.twig', [
-            'area' => $area,
             'form' => $form,
         ]);
     }
