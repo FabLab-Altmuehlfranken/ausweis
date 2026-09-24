@@ -23,7 +23,7 @@ class AssignPrivilegesType extends AbstractType
                 'choice_label' => 'displayName',
                 'multiple' => true,
                 'expanded' => true,
-                'label' => 'Teilnehmer',
+                'label' => 'Eingewiesene Personen',
             ])
         ;
     }

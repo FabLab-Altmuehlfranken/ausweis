@@ -3,7 +3,30 @@
 {% block title %}Teilnahme Bestätigen{% endblock %}
 
 {% block body %}
-    <h1>🎓 Teilnahme an Einweisung Bestätigen</h1>
+    <h1>🏅 Teilnahme Bestätigen</h1>
+
+    <table class="table">
+        <tbody>
+        <tr>
+            <th>Einweisung</th>
+            <td>{{ instruction.name }}</td>
+        </tr>
+        <tr>
+            <th>🔑 erworbene<br>Berechtigungen</th>
+            <td>
+                <ul>
+                    {% for privilege in instruction.privileges %}
+                        <li>
+                            <a href="{{ path('app_privilege_show', {'id': privilege.id}) }}">
+                                {{ privilege.area.name }}: {{ privilege.name }}
+                            </a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </td>
+        </tr>
+        </tbody>
+    </table>
 
     {{ include('instruction/_form.html.twig') }}
 {% endblock %}

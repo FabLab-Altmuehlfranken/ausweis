@@ -116,12 +116,13 @@ final class InstructionController extends AbstractController
 
             $entityManager->flush();
 
-            $this->addFlash('success', 'Teilnahme erfolgreich bestätigt und Berechtigungen zugewiesen.');
+            $this->addFlash('success', 'Berechtigungen erfolgreich vergeben.');
 
             return $this->redirectToRoute('app_instruction_show', ['id' => $instruction->id], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('instruction/assign_prigileges.html.twig', [
+            'instruction' => $instruction,
             'form' => $form,
         ]);
     }
