@@ -128,6 +128,11 @@ details > summary {
     cursor: pointer;
 }
 
+details > div {
+    margin-left: 4px;
+    font-size: 0.9em;
+}
+
 details.qr-code {
     margin: 16px 0;
 
