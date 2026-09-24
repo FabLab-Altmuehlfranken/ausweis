@@ -22,6 +22,7 @@ class Area
 
     #[ORM\Column(length: 255)]
     #[Assert\NotBlank]
+    #[Assert\Length(min: 3)]
     public private(set) string $name;
 
     /**

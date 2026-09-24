@@ -23,6 +23,7 @@ class Privilege
 
     #[ORM\Column(length: 255)]
     #[Assert\NotBlank]
+    #[Assert\Length(min: 3)]
     public private(set) string $name;
 
     #[ORM\ManyToOne(inversedBy: 'privileges')]
@@ -32,6 +33,7 @@ class Privilege
 
     #[ORM\Column(type: Types::TEXT)]
     #[Assert\NotBlank]
+    #[Assert\Length(min: 10)]
     public private(set) string $description;
 
     /**
