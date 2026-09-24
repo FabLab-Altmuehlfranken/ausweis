@@ -11,7 +11,13 @@
         <img src="{{ qrCode.dataUri }}">
     </details>
 
-    {% if is_granted('ROLE_ADMIN') or (is_granted('ROLE_USER') and app.user.digitalCardId == user.digitalCardId) %}
+    {% if
+        user.privilegeAssignments is not empty
+        and (
+            is_granted('ROLE_ADMIN')
+            or (is_granted('ROLE_USER') and app.user.digitalCardId == user.digitalCardId)
+        )
+    %}
         <table>
             <thead>
                 <tr>
