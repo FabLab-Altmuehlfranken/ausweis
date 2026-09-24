@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Berechtigungen Zuweisen{% endblock %}
+
+{% block body %}
+    <h1>🚫 Berechtigungen Zuweisen</h1>
+
+    Benutzer: <b>
+        <a href="{{ path('user_details_by_digital_card_id', {'uuid': user.digitalCardId}) }}">
+        {{ user.displayName }}
+        </a>
+    </b>
+
+    {{ include('privilege_assignment/_form.html.twig') }}
+{% endblock %}

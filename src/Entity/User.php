@@ -28,7 +28,7 @@ class User implements UserInterface
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    private int $id;
+    public private(set) int $id;
 
     /**
      * @var list<string> The user roles
@@ -159,11 +159,20 @@ class User implements UserInterface
     /**
      * @return Collection<int, PrivilegeAssignment>
      */
-    public function getPrivilegesInArea(Area $area): Collection
+    public function getPrivilegeAssignmentsInArea(Area $area): Collection
     {
         return $this->privilegeAssignments->filter(
-            fn (PrivilegeAssignment $a) => $a->privilege->area === $area,
+            fn (PrivilegeAssignment $a): bool => $a->privilege->area === $area,
         );
+    }
 
+    /**
+     * @return Collection<int, Privilege>
+     */
+    public function getPrivileges(): Collection
+    {
+        return $this->privilegeAssignments->map(
+            fn (PrivilegeAssignment $a): Privilege => $a->privilege,
+        );
     }
 }
