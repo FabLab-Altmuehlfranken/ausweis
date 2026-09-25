@@ -63,6 +63,5 @@ final class DeliverCardOrderController extends AbstractController
         );
 
         $this->addFlash('success', 'Ausweis wurde erfolgreich zugewiesen und kann jetzt an <b>'.$order->user->displayName.'</b> ausgehändigt werden.');
-        $this->addFlash('info', 'Antrag von <b>'.$user->displayName.'</b> erfolgreich gelöscht.');
     }
 }

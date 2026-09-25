@@ -17,7 +17,7 @@ a.action, button.action {
     padding: 4px 12px;
 }
 .flash-success:before {
-    content: '✅';
+    content: '✅ ';
     margin-right: 4px;
 }
 
@@ -27,7 +27,7 @@ a.action, button.action {
     padding: 4px 12px;
 }
 .flash-info:before {
-    content: 'ℹ️';
+    content: 'ℹ️ ';
     margin-right: 4px;
 }
 
@@ -37,7 +37,7 @@ a.action, button.action {
     padding: 4px 12px;
 }
 .flash-error:before {
-    content: '❌';
+    content: '❌ ';
     margin-right: 4px;
 }
 
