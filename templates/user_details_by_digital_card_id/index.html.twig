@@ -1,6 +1,10 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
+    <p>
+        Ausweis-ID: <code>{{ user.digitalCardId }}</code>
+    </p>
+
     <details class="qr-code">
         <summary>QR-Code anzeigen</summary>
 
@@ -100,8 +104,4 @@
             <a href="{{ path('app_privilegeassignment_revoke', {user: user.id}) }}" class="action">🚫 Berechtigungen Entziehen</a>
         {% endif %}
     {% endif %}
-
-    <p>
-        Ausweis-ID: <code>{{ user.digitalCardId }}</code>
-    </p>
 {% endblock %}
