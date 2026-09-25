@@ -127,7 +127,7 @@ final class ExportCardOrdersController extends AbstractController
     private function setPrintOrdered(array $orders): void
     {
         $this->entityManager->wrapInTransaction(
-            function (EntityManagerInterface $entityManager) use ($orders) {
+            function (EntityManagerInterface $entityManager) use ($orders): void {
                 array_map(
                     static fn (CardOrder $order) => $order->setPrintOrdered(),
                     $orders,

@@ -54,7 +54,7 @@ final class PrivilegeAssignmentController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->wrapInTransaction(
-                function (EntityManagerInterface $entityManager) use ($dto, $user) {
+                function (EntityManagerInterface $entityManager) use ($dto, $user): void {
                     foreach ($dto->privileges as $privilege) {
                         new PrivilegeAssignment()
                             ->setUser($user)

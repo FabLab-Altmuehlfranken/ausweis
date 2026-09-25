@@ -103,7 +103,7 @@ final class InstructionController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->wrapInTransaction(
-                function (EntityManagerInterface $entityManager) use ($instruction, $dto) {
+                function (EntityManagerInterface $entityManager) use ($instruction, $dto): void {
                     foreach ($instruction->privileges as $privilege) {
                         foreach ($dto->users as $user) {
                             $privilegeAssignment = $user->privilegeAssignments->findFirst(
