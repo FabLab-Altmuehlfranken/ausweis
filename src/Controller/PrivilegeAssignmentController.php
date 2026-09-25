@@ -33,10 +33,14 @@ final class PrivilegeAssignmentController extends AbstractController
         $userPrivilegeIds = $user->getPrivileges()
             ->map(fn (Privilege $p): int => $p->id)
             ->toArray();
-        $missingPrivileges = array_filter(
-            $allPrivileges,
-            static fn (Privilege $privilege): bool => !in_array($privilege->id, $userPrivilegeIds, true),
-        );
+
+        $missingPrivileges = [];
+        foreach ($allPrivileges as $privilege) {
+            if (!in_array($privilege->id, $userPrivilegeIds, true)) {
+                $missingPrivileges[$privilege->getDisplayName()] = $privilege;
+            }
+        }
+        ksort($missingPrivileges, SORT_FLAG_CASE | SORT_NATURAL);
 
         if ([] === $missingPrivileges) {
             $this->addFlash('info', 'Der Benutzer hat schon alle Berechtigungen.');

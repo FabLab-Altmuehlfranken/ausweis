@@ -82,6 +82,7 @@ final class ExportCardOrdersController extends AbstractController
             $qrCodes[$username] = $this->qrCodeGenerator->generate($digitalCardId)
                 ->getString();
         }
+        ksort($qrCodes, SORT_NATURAL | SORT_FLAG_CASE);
 
         return $qrCodes;
     }
@@ -126,10 +127,12 @@ final class ExportCardOrdersController extends AbstractController
     private function setPrintOrdered(array $orders): void
     {
         $this->entityManager->wrapInTransaction(
-            fn (EntityManagerInterface $entityManager) => array_map(
-                static fn (CardOrder $order) => $order->setPrintOrdered(),
-                $orders,
-            ),
+            function (EntityManagerInterface $entityManager) use ($orders) {
+                array_map(
+                    static fn (CardOrder $order) => $order->setPrintOrdered(),
+                    $orders,
+                );
+            },
         );
     }
 
