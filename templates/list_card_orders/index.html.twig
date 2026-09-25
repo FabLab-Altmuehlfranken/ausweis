@@ -44,7 +44,7 @@
     {% if orders|filter(o => not o.isPrintOrdered) is not empty %}
         <p>
             <form method="POST" action="{{ path('export_card_orders') }}">
-                <button type="submit" class="action" title="Generiert eine Mail mit einem Export aller Anträge, für die noch kein Druck beauftragt wurde.">🖨️ Druck beauftragen</button>
+                <button class="action" title="Generiert eine Mail mit einem Export aller Anträge, für die noch kein Druck beauftragt wurde.">🖨️ Druck beauftragen</button>
             </form>
         </p>
     {% endif %}
