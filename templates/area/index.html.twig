@@ -5,24 +5,28 @@
 {% block body %}
     <h1>🛠️ Bereiche</h1>
 
-    <table>
-        <thead>
-            <tr>
-                <th>Name</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for area in areas %}
-            <tr>
-                <td>
-                    <a href="{{ path('app_area_show', {'id': area.id}) }}">
-                        {{ area.name }}
-                    </a>
-                </td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+    {% if areas is not empty %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Name</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for area in areas %}
+                <tr>
+                    <td>
+                        <a href="{{ path('app_area_show', {'id': area.id}) }}">
+                            {{ area.name }}
+                        </a>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p class="flash-info">Es wurden noch keine Bereiche angelegt.</p>
+    {% endif %}
 
     <a href="{{ path('app_area_new') }}" class="action">➕ Neuer Bereich</a>
 {% endblock %}

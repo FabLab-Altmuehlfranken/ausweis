@@ -5,24 +5,28 @@
 {% block body %}
     <h1>🎓 Einweisungen</h1>
 
-    <table>
-        <thead>
-            <tr>
-                <th>Name</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for instruction in instructions %}
-            <tr>
-                <td>
-                    <a href="{{ path('app_instruction_show', {'id': instruction.id}) }}">
-                        {{ instruction.name }}
-                    </a>
-                </td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+    {% if instructions is not empty %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Name</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for instruction in instructions %}
+                <tr>
+                    <td>
+                        <a href="{{ path('app_instruction_show', {'id': instruction.id}) }}">
+                            {{ instruction.name }}
+                        </a>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p class="flash-info">Es wurden noch keine Einweisungen angelegt.</p>
+    {% endif %}
 
     <a href="{{ path('app_instruction_new') }}" class="action">➕ Neue Einweisung</a>
 {% endblock %}

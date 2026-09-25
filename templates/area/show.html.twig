@@ -20,26 +20,30 @@
 
     <h2>🔑 Berechtigungen</h2>
 
-    <table>
-        <thead>
-            <tr>
-                <th>Name</th>
-                <th>Beschreibung</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for privilege in area.privileges %}
+    {% if area.privileges is not empty %}
+        <table>
+            <thead>
                 <tr>
-                    <td>
-                        <a href="{{ path('app_privilege_show', {'id': privilege.id}) }}">
-                            {{ privilege.name }}
-                        </a>
-                    </td>
-                    <td>{{ privilege.description }}</td>
+                    <th>Name</th>
+                    <th>Beschreibung</th>
                 </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                {% for privilege in area.privileges %}
+                    <tr>
+                        <td>
+                            <a href="{{ path('app_privilege_show', {'id': privilege.id}) }}">
+                                {{ privilege.name }}
+                            </a>
+                        </td>
+                        <td>{{ privilege.description }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p class="flash-info">Es wurden noch keine Berechtigungen angelegt.</p>
+    {% endif %}
 
     <a href="{{ path('app_privilege_new', {'area': area.id}) }}" class="action">➕ Neue Berechtigung</a>
 {% endblock %}
