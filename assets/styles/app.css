@@ -77,19 +77,20 @@ table.nowrap {
 
 header {
     font-weight: bold;
+    margin-top: 8px;
+    margin-bottom: 8px;
 
     a.logo {
         span {
             font-size: 2rem;
-            vertical-align: top;
+            vertical-align: center;
             color: black;
         }
 
         img {
             vertical-align: center;
             height: 3em;
-            padding-right: 8px;
-            padding-bottom: 8px;
+            margin-right: 8px;
         }
     }
 
@@ -101,7 +102,7 @@ header {
 nav > a {
     vertical-align: center;
     font-weight: bold;
-    padding-right: 16px;
+    margin-right: 16px;
 }
 
 form .form-select, form .form-control {
