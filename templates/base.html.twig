@@ -30,19 +30,17 @@
                     <span>Ausweis</span>
                 </a>
 
-                <a href="{{ logout_path() }}" class="logout">Ausloggen</a>
+                {% if is_granted('IS_AUTHENTICATED') %}
+                    <a href="{{ logout_path() }}" class="logout">Ausloggen</a>
+                {% endif %}
             </header>
 
             <nav>
-                {% if is_granted('IS_AUTHENTICATED') %}
-                    {% if app.user.isAdmin %}
-                        <a href="{{ path('list_card_orders') }}">Ausweisanträge</a>
-                        <a href="{{ path('app_area_index') }}">Berechtigungen</a>
-                        <a href="{{ path('app_instruction_index') }}">Einweisungen</a>
-                        <a href="{{ path('app_user_index') }}">Benutzer</a>
-                    {% endif %}
-
-
+                {% if is_granted('ROLE_ADMIN') %}
+                    <a href="{{ path('list_card_orders') }}">Ausweisanträge</a>
+                    <a href="{{ path('app_area_index') }}">Berechtigungen</a>
+                    <a href="{{ path('app_instruction_index') }}">Einweisungen</a>
+                    <a href="{{ path('app_user_index') }}">Benutzer</a>
                 {% endif %}
             </nav>
 
