@@ -59,7 +59,7 @@ a.action, button.action {
 table {
     border-collapse: collapse;
     min-width: 100%;
-    margin: 8px 0;
+    margin: 16px 0;
 
     th {
         padding: 8px;
