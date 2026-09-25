@@ -5,8 +5,11 @@ declare(strict_types=1);
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Override;
+use SortDirection;
 use Symfony\Bridge\Doctrine\Types\UuidType;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Uid\Uuid;
@@ -25,7 +28,7 @@ class User implements UserInterface
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    private int $id;
+    public private(set) int $id;
 
     /**
      * @var list<string> The user roles
@@ -42,6 +45,13 @@ class User implements UserInterface
     #[ORM\Column(nullable: true)]
     public private(set) ?string $cardId = null;
 
+    /**
+     * @var Collection<int, PrivilegeAssignment>
+     */
+    #[ORM\OneToMany(targetEntity: PrivilegeAssignment::class, mappedBy: 'user', orphanRemoval: true)]
+    #[ORM\OrderBy(['timestamp' => SortDirection::Descending])]
+    public private(set) Collection $privilegeAssignments;
+
     public function __construct(
         #[Assert\Length(min: 3)]
         #[ORM\Column(length: 180)]
@@ -52,6 +62,7 @@ class User implements UserInterface
         public private(set) string $mail,
     ) {
         $this->digitalCardId = Uuid::v4();
+        $this->privilegeAssignments = new ArrayCollection();
     }
 
     #[Override]
@@ -143,5 +154,25 @@ class User implements UserInterface
     private function hasRole(string $role): bool
     {
         return in_array($role, $this->getRoles(), true);
+    }
+
+    /**
+     * @return Collection<int, PrivilegeAssignment>
+     */
+    public function getPrivilegeAssignmentsInArea(Area $area): Collection
+    {
+        return $this->privilegeAssignments->filter(
+            fn (PrivilegeAssignment $a): bool => $a->privilege->area === $area,
+        );
+    }
+
+    /**
+     * @return Collection<int, Privilege>
+     */
+    public function getPrivileges(): Collection
+    {
+        return $this->privilegeAssignments->map(
+            fn (PrivilegeAssignment $a): Privilege => $a->privilege,
+        );
     }
 }

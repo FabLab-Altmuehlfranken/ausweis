@@ -31,3 +31,6 @@ Sent mails can be inspected at http://localhost:8025/
 
     # Apply migrations to the database
     docker compose run --rm app bin/console doctrine:migrations:migrate -n
+
+    # Load Fixtures for easier manual tests
+    docker compose run --rm app bin/console doctrine:fixtures:load -n

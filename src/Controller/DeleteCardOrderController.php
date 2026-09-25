@@ -50,6 +50,6 @@ final class DeleteCardOrderController extends AbstractController
         $entityManager->remove($order);
         $entityManager->flush();
 
-        $this->addFlash('info', 'Antrag von <b>'.$userName.'</b> erfolgreich gelöscht.');
+        $this->addFlash('success', 'Antrag von <b>'.$userName.'</b> erfolgreich gelöscht.');
     }
 }

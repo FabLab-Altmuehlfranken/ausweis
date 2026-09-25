@@ -2,10 +2,23 @@ body {
     background-color: lightgray;
 }
 
+a {
+    text-decoration: none;
+    color: blue;
+}
+
+a.action, button.action {
+    font-weight: bold;
+}
+
 .flash-success {
     background-color: lightgreen;
     border-radius: 8px;
     padding: 4px 12px;
+}
+.flash-success:before {
+    content: '✅ ';
+    margin-right: 4px;
 }
 
 .flash-info {
@@ -13,11 +26,19 @@ body {
     border-radius: 8px;
     padding: 4px 12px;
 }
+.flash-info:before {
+    content: 'ℹ️ ';
+    margin-right: 4px;
+}
 
 .flash-error {
-    background-color: palevioletred;
+    background-color: lightpink;
     border-radius: 8px;
     padding: 4px 12px;
+}
+.flash-error:before {
+    content: '❌ ';
+    margin-right: 4px;
 }
 
 .login {
@@ -37,7 +58,8 @@ body {
 
 table {
     border-collapse: collapse;
-    white-space: nowrap;
+    min-width: 100%;
+    margin: 16px 0;
 
     th {
         padding: 8px;
@@ -55,18 +77,85 @@ table {
     tr:nth-child(even) {
         background-color: whitesmoke;
     }
+
+    tr:nth-child(odd) {
+        background-color: gainsboro;
+    }
 }
 
-nav {
-    a {
-        vertical-align: middle;
-        font-weight: bold;
-        padding-right: 16px;
+table.nowrap {
+    white-space: nowrap;
+}
+
+header {
+    font-weight: bold;
+    margin-top: 8px;
+    padding-bottom: 8px;
+
+    a.logo {
+        span {
+            font-size: 2rem;
+            vertical-align: center;
+            color: black;
+        }
 
         img {
-            vertical-align: middle;
+            vertical-align: center;
             height: 3em;
-            padding-right: 8px;
+            margin-right: 8px;
         }
     }
+
+    a.logout {
+        float: right;
+    }
+}
+
+nav > a {
+    vertical-align: center;
+    font-weight: bold;
+    margin-right: 16px;
+}
+
+form .form-select, form .form-control {
+    min-width: 50%;
+}
+
+form > button {
+    margin: 16px 0;
+}
+
+form textarea {
+    min-height: 5rem;
+}
+
+span.muted {
+    font-size: .8em;
+    color: dimgrey;
+}
+
+fieldset {
+    margin: 8px 0;
+}
+
+details > summary {
+    cursor: pointer;
+}
+
+details > div {
+    margin-left: 4px;
+    font-size: 0.9em;
+}
+
+details.qr-code {
+    margin: 16px 0;
+
+    summary {
+        font-weight: bold;
+        color: blue;
+    }
+}
+
+ul.summary-details-list {
+    list-style-type: none;
 }

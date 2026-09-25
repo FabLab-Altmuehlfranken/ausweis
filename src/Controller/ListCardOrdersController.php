@@ -22,7 +22,7 @@ final class ListCardOrdersController extends AbstractController
 
     public function __invoke(): Response
     {
-        $orders = $this->repository->findAll();
+        $orders = $this->repository->findBy([], orderBy: ['createdAt' => 'ASC']);
 
         return $this->render('list_card_orders/index.html.twig', [
             'orders' => $orders,

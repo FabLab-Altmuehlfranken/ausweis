@@ -15,27 +15,32 @@
             {% block importmap %}{{ importmap('app') }}{% endblock %}
         {% endblock %}
 
-        {% set frankenphpHotReload = app.request.server.get('FRANKENPHP_HOT_RELOAD') %}
-        {% if frankenphpHotReload %}
-            <meta name="frankenphp-hot-reload:url" content="{{ frankenphpHotReload }}">
+        {% set frankenphp_hot_reload = app.request.server.get('FRANKENPHP_HOT_RELOAD') %}
+        {% if frankenphp_hot_reload %}
+            <meta name="frankenphp-hot-reload:url" content="{{ frankenphp_hot_reload }}">
             <script src="https://cdn.jsdelivr.net/npm/idiomorph"></script>
             <script src="https://cdn.jsdelivr.net/npm/frankenphp-hot-reload/+esm" type="module"></script>
         {% endif %}
     </head>
     <body>
         {% if app.current_route !== 'hwi_oauth_connect' %}
-            <nav>
-                <a href="{{ path('homepage') }}">
+            <header>
+                <a href="{{ path('homepage') }}" class="logo">
                     <img src="{{ asset('images/logo.png') }}">
-                    Ausweis
+                    <span>Ausweis</span>
                 </a>
 
                 {% if is_granted('IS_AUTHENTICATED') %}
-                    {% if app.user.isAdmin %}
-                        <a href="{{ path('list_card_orders') }}">Ausweisanträge</a>
-                    {% endif %}
+                    <a href="{{ logout_path() }}" class="logout">Ausloggen</a>
+                {% endif %}
+            </header>
 
-                    <a href="{{ logout_path() }}">Ausloggen</a>
+            <nav>
+                {% if is_granted('ROLE_ADMIN') %}
+                    <a href="{{ path('list_card_orders') }}">Ausweisanträge</a>
+                    <a href="{{ path('app_area_index') }}">Berechtigungen</a>
+                    <a href="{{ path('app_instruction_index') }}">Einweisungen</a>
+                    <a href="{{ path('app_user_index') }}">Benutzer</a>
                 {% endif %}
             </nav>
 

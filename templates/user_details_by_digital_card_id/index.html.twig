@@ -5,32 +5,103 @@
         Ausweis-ID: <code>{{ user.digitalCardId }}</code>
     </p>
 
-    {% if is_granted('ROLE_ADMIN') %}
-        <fieldset>
-            <legend>Admin-Area</legend>
-
-            Name: <b>{{ user.displayName }}</b>
-            <br>
-            Mitglied: {{ user.isMember ? '✅' : '❌' }}
-            <br>
-            Physischer Ausweis:
-            {% if user.cardOrder %}
-                {% if user.cardOrder.readyForPickUp %}
-                    <a href="{{ path('deliver_card_order', {id: user.cardOrder.id}) }}">🤝 Ausweis aushändigen</a>
-                {% elseif user.cardOrder.isPrintOrdered %}
-                    <a href="{{ path('assign_card_id_to_order', {id: user.cardOrder.id}) }}">✏️ Ausweis zuordnen</a>
-                {% else %}
-                    ⏳ beantragt
-                {% endif %}
-            {% else %}
-                {{ user.cardId ? '✅' : '❌' }}
-            {% endif %}
-        </fieldset>
-    {% endif %}
-
-    <details>
+    <details class="qr-code">
         <summary>QR-Code anzeigen</summary>
 
         <img src="{{ qrCode.dataUri }}">
     </details>
+
+    {% if is_granted('ROLE_ADMIN') %}
+        <h2>👤 Benutzer</h2>
+
+        <table>
+            <tbody>
+            <tr>
+                <th>Name</th>
+                <td>{{ user.displayName }}</td>
+            </tr>
+            <tr>
+                <th>Mitglied</th>
+                <td class="center">{{ user.isMember ? '✅' : '❌' }}</td>
+            </tr>
+            <tr>
+                <th>Admin</th>
+                <td class="center">{{ user.isAdmin ? '✅' : '❌' }}</td>
+            </tr>
+            <tr>
+                <th>Ausweis</th>
+                {% if user.cardOrder %}
+                    {% if user.cardOrder.readyForPickUp %}
+                        <td>
+                            <a href="{{ path('deliver_card_order', {id: user.cardOrder.id}) }}" class="action">🤝 Ausweis aushändigen</a>
+                        </td>
+                    {% elseif user.cardOrder.isPrintOrdered %}
+                        <td>
+                            <a href="{{ path('assign_card_id_to_order', {id: user.cardOrder.id}) }}" class="action">✏️ Ausweis zuordnen</a>
+                        </td>
+                    {% else %}
+                        <td class="center">⏳ beantragt</td>
+                    {% endif %}
+                {% else %}
+                    <td class="center">{{ user.cardId ? '✅' : '❌' }}</td>
+                {% endif %}
+            </tr>
+            </tbody>
+        </table>
+    {% endif %}
+
+    {% if
+        user.privilegeAssignments is not empty
+        and (
+            is_granted('ROLE_ADMIN')
+            or (is_granted('ROLE_USER') and app.user.digitalCardId == user.digitalCardId)
+        )
+    %}
+        <h2>🔑 Berechtigungen</h2>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Bereich</th>
+                    <th>Berechtigungen</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for area in areas %}
+                    {% set assignments = user.privilegeAssignmentsInArea(area) %}
+                    {% if assignments is not empty %}
+                        <tr>
+                            <td>{{ area.name }}</td>
+                            <td>
+                                <ul class="summary-details-list">
+                                    {% for assignment in assignments %}
+                                        <li>
+                                            <details>
+                                                <summary>
+                                                    {{ assignment.privilege.name }}
+                                                    <span class="muted">
+                                                        - {{ assignment.timestamp.format('d.m.Y') }}
+                                                    </span>
+                                                </summary>
+
+                                                <div>{{ assignment.privilege.description }}</div>
+                                            </details>
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+                            </td>
+                        </tr>
+                    {% endif %}
+                {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
+
+    {% if is_granted('ROLE_ADMIN') %}
+        <a href="{{ path('app_privilegeassignment_grant', {user: user.id}) }}" class="action">🔑 Berechtigungen Zuweisen</a>
+        {% if user.privilegeAssignments is not empty %}
+            <br>
+            <a href="{{ path('app_privilegeassignment_revoke', {user: user.id}) }}" class="action">🚫 Berechtigungen Entziehen</a>
+        {% endif %}
+    {% endif %}
 {% endblock %}
