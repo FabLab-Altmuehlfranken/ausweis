@@ -1,10 +1,6 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <p>
-        Ausweis-ID: <code>{{ user.digitalCardId }}</code>
-    </p>
-
     <details class="qr-code">
         <summary>QR-Code anzeigen</summary>
 
@@ -12,6 +8,8 @@
     </details>
 
     {% if is_granted('ROLE_ADMIN') %}
+        <h2>👤 Benutzer</h2>
+
         <table>
             <tbody>
             <tr>
@@ -55,11 +53,13 @@
             or (is_granted('ROLE_USER') and app.user.digitalCardId == user.digitalCardId)
         )
     %}
+        <h2>🔑 Berechtigungen</h2>
+
         <table>
             <thead>
                 <tr>
-                    <th>🛠️ Bereich</th>
-                    <th>🔑 Berechtigungen</th>
+                    <th>Bereich</th>
+                    <th>Berechtigungen</th>
                 </tr>
             </thead>
             <tbody>
@@ -100,4 +100,8 @@
             <a href="{{ path('app_privilegeassignment_revoke', {user: user.id}) }}" class="action">🚫 Berechtigungen Entziehen</a>
         {% endif %}
     {% endif %}
+
+    <p>
+        Ausweis-ID: <code>{{ user.digitalCardId }}</code>
+    </p>
 {% endblock %}
