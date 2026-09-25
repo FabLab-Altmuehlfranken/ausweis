@@ -49,14 +49,16 @@ final class PrivilegeAssignmentController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            foreach ($dto->privileges as $privilege) {
-                new PrivilegeAssignment()
-                    ->setUser($user)
-                    ->setPrivilege($privilege)
-                    |> $entityManager->persist(...);
-            }
-
-            $entityManager->flush();
+            $entityManager->wrapInTransaction(
+                function (EntityManagerInterface $entityManager) use ($dto, $user) {
+                    foreach ($dto->privileges as $privilege) {
+                        new PrivilegeAssignment()
+                            ->setUser($user)
+                            ->setPrivilege($privilege)
+                            |> $entityManager->persist(...);
+                    }
+                },
+            );
 
             $this->addFlash('success', 'Berechtigungen erfolgreich zugewiesen.');
 
@@ -76,7 +78,6 @@ final class PrivilegeAssignmentController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            dump($user->privilegeAssignments);
             $entityManager->flush();
 
             $this->addFlash('success', 'Berechtigungen erfolgreich entzogen.');

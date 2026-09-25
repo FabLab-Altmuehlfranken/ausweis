@@ -102,17 +102,19 @@ final class InstructionController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            foreach ($instruction->privileges as $privilege) {
-                foreach ($dto->users as $user) {
-                    $privilegeAssignment = $user->privilegeAssignments->findFirst(
-                        fn (int $k, PrivilegeAssignment $v): bool => $v->privilege->id === $privilege->id,
-                    ) ?? new PrivilegeAssignment()->setUser($user)->setPrivilege($privilege);
-                    $privilegeAssignment->renewAssignment();
-                    $entityManager->persist($privilegeAssignment);
-                }
-            }
-
-            $entityManager->flush();
+            $entityManager->wrapInTransaction(
+                function (EntityManagerInterface $entityManager) use ($instruction, $dto) {
+                    foreach ($instruction->privileges as $privilege) {
+                        foreach ($dto->users as $user) {
+                            $privilegeAssignment = $user->privilegeAssignments->findFirst(
+                                fn (int $k, PrivilegeAssignment $v): bool => $v->privilege->id === $privilege->id,
+                            ) ?? new PrivilegeAssignment()->setUser($user)->setPrivilege($privilege);
+                            $privilegeAssignment->renewAssignment();
+                            $entityManager->persist($privilegeAssignment);
+                        }
+                    }
+                },
+            );
 
             $this->addFlash('success', 'Berechtigungen erfolgreich vergeben.');
 
