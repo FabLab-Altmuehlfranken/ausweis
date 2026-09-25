@@ -27,7 +27,7 @@
             </thead>
             <tbody>
                 {% for area in areas %}
-                    {% set assignments = app.user.privilegeAssignmentsInArea(area) %}
+                    {% set assignments = user.privilegeAssignmentsInArea(area) %}
                     {% if assignments is not empty %}
                         <tr>
                             <td>{{ area.name }}</td>
