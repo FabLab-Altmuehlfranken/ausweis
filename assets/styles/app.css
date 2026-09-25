@@ -16,17 +16,29 @@ a.action, button.action {
     border-radius: 8px;
     padding: 4px 12px;
 }
+.flash-success:before {
+    content: '✅';
+    margin-right: 4px;
+}
 
 .flash-info {
     background-color: lightblue;
     border-radius: 8px;
     padding: 4px 12px;
 }
+.flash-info:before {
+    content: 'ℹ️';
+    margin-right: 4px;
+}
 
 .flash-error {
-    background-color: palevioletred;
+    background-color: lightpink;
     border-radius: 8px;
     padding: 4px 12px;
+}
+.flash-error:before {
+    content: '❌';
+    margin-right: 4px;
 }
 
 .login {
