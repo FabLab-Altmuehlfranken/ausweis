@@ -7,7 +7,7 @@ a {
     color: blue;
 }
 
-a.action {
+a.action, button.action {
     font-weight: bold;
 }
 
