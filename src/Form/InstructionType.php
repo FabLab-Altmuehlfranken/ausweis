@@ -7,6 +7,7 @@ namespace App\Form;
 use App\Entity\Instruction;
 use App\Entity\Privilege;
 use App\Repository\PrivilegeRepository;
+use Doctrine\ORM\QueryBuilder;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -23,7 +24,7 @@ class InstructionType extends AbstractType
             ->add('name')
             ->add('privileges', EntityType::class, [
                 'class' => Privilege::class,
-                'query_builder' => fn (PrivilegeRepository $r) => $r->createQueryBuilder('p')
+                'query_builder' => fn (PrivilegeRepository $r): QueryBuilder => $r->createQueryBuilder('p')
                     ->join('p.area', 'a')
                     ->orderBy('a.name')
                     ->addOrderBy('p.name'),

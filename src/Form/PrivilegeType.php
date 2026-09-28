@@ -7,6 +7,7 @@ namespace App\Form;
 use App\Entity\Area;
 use App\Entity\Privilege;
 use App\Repository\AreaRepository;
+use Doctrine\ORM\QueryBuilder;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -22,7 +23,7 @@ class PrivilegeType extends AbstractType
         $builder
             ->add('area', EntityType::class, [
                 'class' => Area::class,
-                'query_builder' => fn (AreaRepository $r) => $r->createQueryBuilder('a')
+                'query_builder' => fn (AreaRepository $r): QueryBuilder => $r->createQueryBuilder('a')
                     ->orderBy('a.name'),
                 'choice_label' => 'name',
                 'label' => 'Bereich',
