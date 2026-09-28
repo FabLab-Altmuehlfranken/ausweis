@@ -78,7 +78,10 @@ final class PrivilegeAssignmentController extends AbstractController
     #[Route('/{user}/revoke', name: 'app_privilegeassignment_revoke', methods: ['GET', 'POST'])]
     public function revoke(Request $request, User $user, EntityManagerInterface $entityManager): Response
     {
-        $assignedPrivileges = $user->privilegeAssignments->toArray();
+        $assignedPrivileges = [];
+        foreach ($user->privilegeAssignments->toArray() as $privilegeAssignment) {
+            $assignedPrivileges[$privilegeAssignment->privilege->getDisplayName()] = $privilegeAssignment;
+        }
         ksort($assignedPrivileges, SORT_FLAG_CASE | SORT_NATURAL);
 
         $form = $this->createForm(PrivilegesRevokeType::class, $user, ['choices' => $assignedPrivileges]);
