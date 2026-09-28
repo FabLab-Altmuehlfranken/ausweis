@@ -28,7 +28,6 @@ class Privilege
 
     #[ORM\ManyToOne(inversedBy: 'privileges')]
     #[ORM\JoinColumn(nullable: false)]
-    #[Assert\Valid]
     public private(set) Area $area;
 
     #[ORM\Column(type: Types::TEXT)]

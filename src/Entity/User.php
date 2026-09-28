@@ -43,6 +43,8 @@ class User implements UserInterface
     public private(set) Uuid $digitalCardId;
 
     #[ORM\Column(nullable: true)]
+    #[Assert\Regex('/^[0-9A-F]{2}(:[0-9A-F]{2}){3}((:[0-9A-F]{2}){3})?$/')]
+    #[Assert\NotBlank(allowNull: true)]
     public private(set) ?string $cardId = null;
 
     /**
