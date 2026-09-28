@@ -7,7 +7,6 @@ namespace App\Form;
 use App\Entity\Instruction;
 use App\Entity\Privilege;
 use App\Repository\PrivilegeRepository;
-use SortDirection;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
