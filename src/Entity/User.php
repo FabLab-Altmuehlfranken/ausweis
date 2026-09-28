@@ -22,8 +22,9 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\UniqueConstraint(fields: ['cardId'])]
 class User implements UserInterface
 {
-    public const string MEMBER_ROLE = 'ROLE_MEMBER';
-    public const string ADMIN_ROLE = 'ROLE_ADMIN';
+    public const string ROLE_MEMBER = 'ROLE_MEMBER';
+    public const string ROLE_ADMIN = 'ROLE_ADMIN';
+    public const string ROLE_INSTRUCTOR = 'ROLE_INSTRUCTOR';
 
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -145,12 +146,12 @@ class User implements UserInterface
 
     public function isMember(): bool
     {
-        return $this->hasRole(self::MEMBER_ROLE);
+        return $this->hasRole(self::ROLE_MEMBER);
     }
 
     public function isAdmin(): bool
     {
-        return $this->hasRole(self::ADMIN_ROLE);
+        return $this->hasRole(self::ROLE_ADMIN);
     }
 
     private function hasRole(string $role): bool

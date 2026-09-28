@@ -15,7 +15,7 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[Route('/card_orders/{id}/deliver', name: 'deliver_card_order')]
-#[IsGranted(User::ADMIN_ROLE)]
+#[IsGranted(User::ROLE_ADMIN)]
 final class DeliverCardOrderController extends AbstractController
 {
     public function __construct(

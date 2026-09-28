@@ -12,7 +12,7 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[Route('/card_orders', name: 'list_card_orders')]
-#[IsGranted(User::ADMIN_ROLE)]
+#[IsGranted(User::ROLE_ADMIN)]
 final class ListCardOrdersController extends AbstractController
 {
     public function __construct(

@@ -19,7 +19,7 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[Route('/privilege_assignments')]
-#[IsGranted(User::ADMIN_ROLE)]
+#[IsGranted(User::ROLE_INSTRUCTOR)]
 final class PrivilegeAssignmentController extends AbstractController
 {
     #[Route('/{user}/grant', name: 'app_privilegeassignment_grant', methods: ['GET', 'POST'])]

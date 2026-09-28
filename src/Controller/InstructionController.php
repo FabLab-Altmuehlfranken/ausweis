@@ -20,7 +20,7 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[Route('/instructions')]
-#[IsGranted(User::ADMIN_ROLE)]
+#[IsGranted(User::ROLE_INSTRUCTOR)]
 final class InstructionController extends AbstractController
 {
     #[Route(name: 'app_instruction_index', methods: ['GET'])]

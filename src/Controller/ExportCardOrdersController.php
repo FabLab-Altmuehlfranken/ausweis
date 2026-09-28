@@ -23,7 +23,7 @@ use ZipArchive;
 
 use const FILTER_VALIDATE_INT;
 
-#[IsGranted(User::ADMIN_ROLE)]
+#[IsGranted(User::ROLE_ADMIN)]
 final class ExportCardOrdersController extends AbstractController
 {
     public function __construct(

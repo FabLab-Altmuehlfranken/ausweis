@@ -17,7 +17,7 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[Route('/privileges')]
-#[IsGranted(User::ADMIN_ROLE)]
+#[IsGranted(User::ROLE_INSTRUCTOR)]
 final class PrivilegeController extends AbstractController
 {
     #[Route('/new/{area}', name: 'app_privilege_new', methods: ['GET', 'POST'])]

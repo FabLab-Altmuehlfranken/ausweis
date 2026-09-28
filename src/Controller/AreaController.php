@@ -17,7 +17,7 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[Route('/areas')]
-#[IsGranted(User::ADMIN_ROLE)]
+#[IsGranted(User::ROLE_INSTRUCTOR)]
 final class AreaController extends AbstractController
 {
     #[Route(name: 'app_area_index', methods: ['GET'])]

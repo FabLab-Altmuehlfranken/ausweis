@@ -36,11 +36,13 @@
             </header>
 
             <nav>
-                {% if is_granted('ROLE_ADMIN') %}
-                    <a href="{{ path('list_card_orders') }}">Ausweisanträge</a>
-                    <a href="{{ path('app_area_index') }}">Berechtigungen</a>
+                {% if is_granted('ROLE_INSTRUCTOR') %}
                     <a href="{{ path('app_instruction_index') }}">Einweisungen</a>
+                    <a href="{{ path('app_area_index') }}">Berechtigungen</a>
+                {% endif %}
+                {% if is_granted('ROLE_ADMIN') %}
                     <a href="{{ path('app_user_index') }}">Benutzer</a>
+                    <a href="{{ path('list_card_orders') }}">Ausweisanträge</a>
                 {% endif %}
             </nav>
 
