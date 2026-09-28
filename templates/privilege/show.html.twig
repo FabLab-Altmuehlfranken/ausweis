@@ -23,23 +23,6 @@
                 <th>Beschreibung</th>
                 <td>{{ privilege.description }}</td>
             </tr>
-            <tr>
-                <th>Zugewiesen an</th>
-                <td>
-                    <ul>
-                        {% for assignment in privilege.privilegeAssignments %}
-                            <li>
-                                <a href="{{ path('user_details_by_digital_card_id', {'uuid': assignment.user.digitalCardId}) }}">
-                                    {{ assignment.user.displayName }}
-                                </a>
-                                <span class="muted">
-                                    - {{ assignment.timestamp.format('d.m.Y') }}
-                                </span>
-                            </li>
-                        {% endfor %}
-                    </ul>
-                </td>
-            </tr>
         </tbody>
     </table>
 
