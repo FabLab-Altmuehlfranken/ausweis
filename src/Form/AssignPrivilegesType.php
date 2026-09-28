@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Form;
 
 use App\Entity\User;
+use App\Repository\UserRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -20,6 +21,8 @@ class AssignPrivilegesType extends AbstractType
         $builder
             ->add('users', EntityType::class, [
                 'class' => User::class,
+                'query_builder' => fn (UserRepository $r) => $r->createQueryBuilder('u')
+                    ->orderBy('u.displayName'),
                 'choice_label' => 'displayName',
                 'multiple' => true,
                 'expanded' => true,
