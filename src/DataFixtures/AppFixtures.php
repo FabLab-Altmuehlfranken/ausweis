@@ -80,7 +80,12 @@ class AppFixtures extends Fixture
 
         $cardOrder = new CardOrder($users[7]);
         $cardOrder->setPrintOrdered();
-        $cardOrder->setCardId('AA:BB:CC:DD:07');
+        $cardOrder->setCardId('AA:BB:CC:07');
+        $manager->persist($cardOrder);
+
+        $cardOrder = new CardOrder($users[8]);
+        $cardOrder->setPrintOrdered();
+        $cardOrder->setCardId('AA:BB:CC:DD:EE:FF:08');
         $manager->persist($cardOrder);
     }
 
@@ -90,7 +95,7 @@ class AppFixtures extends Fixture
     public function setCardIds(array $users): void
     {
         for ($i = 0; $i < 5; ++$i) {
-            $users[$i]->setCardId('AA:BB:CC:DD:0'.$i);
+            $users[$i]->setCardId('AA:BB:CC:0'.$i);
         }
     }
 
