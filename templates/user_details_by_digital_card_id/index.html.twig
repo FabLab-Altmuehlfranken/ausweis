@@ -81,12 +81,18 @@
                                             <details>
                                                 <summary>
                                                     {{ assignment.privilege.name }}
-                                                    <span class="muted">
-                                                        - {{ assignment.timestamp.format('d.m.Y') }}
-                                                    </span>
                                                 </summary>
-
-                                                <div>{{ assignment.privilege.description }}</div>
+                                                <div>
+                                                    {{ assignment.privilege.description }}
+                                                    <br>
+                                                    <span class="muted">
+                                                        {{ assignment.timestamp.format('d.m.Y') }},
+                                                        {{ assignment.assignedBy.displayName }}
+                                                        {% if assignment.instruction is not null %}
+                                                            ({{ assignment.instruction.name }})
+                                                        {% endif %}
+                                                    </span>
+                                                </div>
                                             </details>
                                         </li>
                                     {% endfor %}

@@ -130,7 +130,7 @@ form textarea {
 }
 
 span.muted {
-    font-size: .8em;
+    font-size: .9em;
     color: dimgrey;
 }
 
@@ -143,8 +143,8 @@ details > summary {
 }
 
 details > div {
-    margin-left: 4px;
-    font-size: 0.9em;
+    margin-left: 20px;
+    font-size: .8em;
 }
 
 details.qr-code {
