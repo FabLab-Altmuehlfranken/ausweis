@@ -28,6 +28,14 @@ class PrivilegeAssignment
     #[ORM\JoinColumn(nullable: false)]
     public private(set) Privilege $privilege;
 
+    #[ORM\ManyToOne]
+    #[ORM\JoinColumn(nullable: false)]
+    public private(set) User $assignedBy;
+
+    #[ORM\ManyToOne]
+    #[ORM\JoinColumn(onDelete: 'SET NULL')]
+    public private(set) ?Instruction $instruction = null;
+
     public function __construct()
     {
         $this->timestamp = new DateTimeImmutable();
@@ -50,5 +58,19 @@ class PrivilegeAssignment
     public function renewAssignment(): void
     {
         $this->timestamp = new DateTimeImmutable();
+    }
+
+    public function setAssignedBy(User $assignedBy): static
+    {
+        $this->assignedBy = $assignedBy;
+
+        return $this;
+    }
+
+    public function setInstruction(?Instruction $instruction): static
+    {
+        $this->instruction = $instruction;
+
+        return $this;
     }
 }

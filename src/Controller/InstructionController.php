@@ -97,19 +97,24 @@ final class InstructionController extends AbstractController
     #[Route('/{id}/assign_prigileves', name: 'app_instruction_assign_privileges', methods: ['GET', 'POST'])]
     public function assignPrivileges(Request $request, Instruction $instruction, EntityManagerInterface $entityManager): Response
     {
+        $instructor = $this->getUser();
+        assert($instructor instanceof User);
+
         $dto = new AssignPrivilegesDTO();
         $form = $this->createForm(AssignPrivilegesType::class, $dto);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->wrapInTransaction(
-                function (EntityManagerInterface $entityManager) use ($instruction, $dto): void {
+                function (EntityManagerInterface $entityManager) use ($instruction, $dto, $instructor): void {
                     foreach ($instruction->privileges as $privilege) {
                         foreach ($dto->users as $user) {
                             $privilegeAssignment = $user->privilegeAssignments->findFirst(
                                 fn (int $k, PrivilegeAssignment $v): bool => $v->privilege->id === $privilege->id,
                             ) ?? new PrivilegeAssignment()->setUser($user)->setPrivilege($privilege);
-                            $privilegeAssignment->renewAssignment();
+                            $privilegeAssignment->setAssignedBy($instructor)
+                                ->setInstruction($instruction)
+                                ->renewAssignment();
                             $entityManager->persist($privilegeAssignment);
                         }
                     }

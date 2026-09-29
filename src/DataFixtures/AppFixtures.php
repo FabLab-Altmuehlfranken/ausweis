@@ -22,29 +22,32 @@ class AppFixtures extends Fixture
         $this->setCardIds($users);
         $this->addCardOrders($manager, $users);
 
-        $this->addAdminUser($manager);
+        $admin = $this->addAdminUser($manager);
 
         $privileges = $this->addAreasWithPrivileges($manager);
+        $instructions = $this->addInstructions($manager, $privileges);
 
-        $this->assignPrivilege($users, $privileges['workshopInstructions'], $manager, [0, 1, 2, 8, 9]);
-        $this->assignPrivilege($users, $privileges['printerUsage'], $manager, [0, 1, 2]);
-        $this->assignPrivilege($users, $privileges['multiColorUsage'], $manager, [0, 1]);
-        $this->assignPrivilege($users, $privileges['canCut'], $manager, [8, 9]);
+        $this->assignPrivilege($users, $privileges['workshopInstructions'], $manager, [0, 1, 2, 8, 9], $admin);
+        $this->assignPrivilege($users, $privileges['printerUsage'], $manager, [0, 1, 2], $admin, $instructions['3d']);
+        $this->assignPrivilege($users, $privileges['multiColorUsage'], $manager, [0, 1], $admin, $instructions['3d_advanced']);
+        $this->assignPrivilege($users, $privileges['canCut'], $manager, [8, 9], $admin);
 
         $burned = new User('burned42', '', '');
         $manager->persist($burned);
-        $this->assignPrivilege([$burned], $privileges['workshopInstructions'], $manager, [0]);
-        $this->assignPrivilege([$burned], $privileges['printerUsage'], $manager, [0]);
-        $this->assignPrivilege([$burned], $privileges['canCut'], $manager, [0]);
+        $this->assignPrivilege([$burned], $privileges['workshopInstructions'], $manager, [0], $admin);
+        $this->assignPrivilege([$burned], $privileges['printerUsage'], $manager, [0], $admin);
+        $this->assignPrivilege([$burned], $privileges['canCut'], $manager, [0], $admin);
 
         $manager->flush();
     }
 
-    public function addAdminUser(ObjectManager $manager): void
+    public function addAdminUser(ObjectManager $manager): User
     {
         $admin = new User('the.admin', 'The Admin', 'admin@example.com')
             ->setRoles(['USER', 'ADMIN']);
         $manager->persist($admin);
+
+        return $admin;
     }
 
     /**
@@ -100,11 +103,15 @@ class AppFixtures extends Fixture
         Privilege $privilege,
         ObjectManager $manager,
         array $keys,
+        User $assignedBy,
+        ?Instruction $instruction = null,
     ): void {
         foreach ($keys as $i) {
             $privilegeAssignment = new PrivilegeAssignment()
                 ->setUser($users[$i])
-                ->setPrivilege($privilege);
+                ->setPrivilege($privilege)
+                ->setAssignedBy($assignedBy)
+                ->setInstruction($instruction);
             $manager->persist($privilegeAssignment);
         }
     }
@@ -149,6 +156,16 @@ class AppFixtures extends Fixture
             ->setDescription('Darf den Lasercutter verwenden');
         $manager->persist($privileges['canCut']);
 
+        return $privileges;
+    }
+
+    /**
+     * @param Privilege[] $privileges
+     *
+     * @return Instruction[]
+     */
+    public function addInstructions(ObjectManager $manager, array $privileges): array
+    {
         $printer3DWorkshop = new Instruction()
             ->setName('3D-Drucker Einsteiger-Workshop')
             ->setPrivileges(new ArrayCollection([$privileges['printerUsage']]));
@@ -159,6 +176,9 @@ class AppFixtures extends Fixture
             ->setPrivileges(new ArrayCollection([$privileges['multiColorUsage'], $privileges['printerUsage']]));
         $manager->persist($printer3DWorkshopAdvanced);
 
-        return $privileges;
+        return [
+            '3d' => $printer3DWorkshop,
+            '3d_advanced' => $printer3DWorkshopAdvanced,
+        ];
     }
 }

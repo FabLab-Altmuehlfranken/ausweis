@@ -29,6 +29,9 @@ final class PrivilegeAssignmentController extends AbstractController
         EntityManagerInterface $entityManager,
         PrivilegeRepository $privilegeRepository,
     ): Response {
+        $instructor = $this->getUser();
+        assert($instructor instanceof User);
+
         $allPrivileges = $privilegeRepository->findAll();
         $userPrivilegeIds = $user->getPrivileges()
             ->map(fn (Privilege $p): int => $p->id)
@@ -54,10 +57,11 @@ final class PrivilegeAssignmentController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->wrapInTransaction(
-                function (EntityManagerInterface $entityManager) use ($dto, $user): void {
+                function (EntityManagerInterface $entityManager) use ($dto, $user, $instructor): void {
                     foreach ($dto->privileges as $privilege) {
                         new PrivilegeAssignment()
                             ->setUser($user)
+                            ->setAssignedBy($instructor)
                             ->setPrivilege($privilege)
                             |> $entityManager->persist(...);
                     }
