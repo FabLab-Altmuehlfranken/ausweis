@@ -55,6 +55,13 @@ class User implements UserInterface
     #[ORM\OrderBy(['timestamp' => SortDirection::Descending])]
     public private(set) Collection $privilegeAssignments;
 
+    /**
+     * @var Collection<int, AreaBan>
+     */
+    #[ORM\OneToMany(targetEntity: AreaBan::class, mappedBy: 'user', orphanRemoval: true)]
+    #[ORM\OrderBy(['createdAt' => SortDirection::Descending])]
+    private Collection $areaBans;
+
     public function __construct(
         #[Assert\Length(min: 3)]
         #[ORM\Column(length: 180)]
@@ -66,6 +73,7 @@ class User implements UserInterface
     ) {
         $this->digitalCardId = Uuid::v4();
         $this->privilegeAssignments = new ArrayCollection();
+        $this->areaBans = new ArrayCollection();
     }
 
     #[Override]
