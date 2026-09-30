@@ -27,6 +27,13 @@ final class UserDetailsByDigitalCardIdController extends AbstractController
     ): Response {
         $qrCode = $this->qrCodeGenerator->generate($user->digitalCardId);
 
+        if (
+            $this->isGranted(User::ROLE_INSTRUCTOR)
+            && !$user->getAreaBans()->isEmpty()
+        ) {
+            $this->addFlash('warning', 'Verbot für einige Bereiche ausgesprochen, bitte beachten!');
+        }
+
         return $this->render('user_details_by_digital_card_id/index.html.twig', [
             'user' => $user,
             'areas' => $this->areaRepository->findBy([], orderBy: ['name' => 'ASC']),
