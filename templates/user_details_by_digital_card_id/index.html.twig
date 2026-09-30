@@ -53,8 +53,10 @@
     {% endif %}
 
     {% if
-        user.privilegeAssignments is not empty
-        and (
+        (
+            user.privilegeAssignments is not empty
+            or user.areaBans is not empty
+        ) and (
             is_granted('ROLE_INSTRUCTOR')
             or (is_granted('ROLE_USER') and app.user.digitalCardId == user.digitalCardId)
         )
@@ -71,32 +73,53 @@
             <tbody>
                 {% for area in areas %}
                     {% set assignments = user.privilegeAssignmentsInArea(area) %}
-                    {% if assignments is not empty %}
+                    {% set ban = user.areaBan(area) %}
+                    {% if assignments is not empty or ban is not null %}
                         <tr>
                             <td>{{ area.name }}</td>
                             <td>
-                                <ul class="summary-details-list">
-                                    {% for assignment in assignments|sort((a, b) => a.privilege.name <=> b.privilege.name) %}
-                                        <li>
-                                            <details>
-                                                <summary>
-                                                    {{ assignment.privilege.name }}
-                                                </summary>
-                                                <div>
-                                                    {{ assignment.privilege.description }}
-                                                    <br>
-                                                    <span class="muted">
-                                                        {{ assignment.timestamp.format('d.m.Y') }},
-                                                        {{ assignment.assignedBy.displayName }}
-                                                        {% if assignment.instruction is not null %}
-                                                            ({{ assignment.instruction.name }})
+                                {% if ban %}
+                                    <details class="area-ban">
+                                        <summary>🚷 Verbot erteilt</summary>
+
+                                        {% if is_granted('ROLE_INSTRUCTOR') %}
+                                            <div>
+                                                <span class="muted">
+                                                    {{ ban.createdAt.format('d.m.Y') }},
+                                                    {{ ban.bannedBy.displayName }}
+                                                </span>
+                                            </div>
+                                        {% endif %}
+                                    </details>
+                                {% endif %}
+
+                                {% if assignments is not empty %}
+                                    <ul class="summary-details-list">
+                                        {% for assignment in assignments|sort((a, b) => a.privilege.name <=> b.privilege.name) %}
+                                            <li>
+                                                <details>
+                                                    <summary>
+                                                        {{ assignment.privilege.name }}
+                                                    </summary>
+                                                    <div>
+                                                        {{ assignment.privilege.description }}
+
+                                                        {% if is_granted('ROLE_INSTRUCTOR') %}
+                                                            <br>
+                                                            <span class="muted">
+                                                                {{ assignment.timestamp.format('d.m.Y') }},
+                                                                {{ assignment.assignedBy.displayName }}
+                                                                {% if assignment.instruction is not null %}
+                                                                    ({{ assignment.instruction.name }})
+                                                                {% endif %}
+                                                            </span>
                                                         {% endif %}
-                                                    </span>
-                                                </div>
-                                            </details>
-                                        </li>
-                                    {% endfor %}
-                                </ul>
+                                                    </div>
+                                                </details>
+                                            </li>
+                                        {% endfor %}
+                                    </ul>
+                                {% endif %}
                             </td>
                         </tr>
                     {% endif %}
@@ -110,6 +133,13 @@
         {% if user.privilegeAssignments is not empty %}
             <br>
             <a href="{{ path('app_privilegeassignment_revoke', {user: user.id}) }}" class="action">🚫 Berechtigungen Entziehen</a>
+        {% endif %}
+
+        <br>
+        <a href="{{ path('app_areaban_create', {user: user.id}) }}" class="action">🚷 Verbot für einen Bereich aussprechen</a>
+        {% if user.areaBans is not empty %}
+            <br>
+            <a href="{{ path('app_areaban_revoke', {user: user.id}) }}" class="action">↩️ Verbot für einen Bereich aufheben</a>
         {% endif %}
     {% endif %}
 {% endblock %}
