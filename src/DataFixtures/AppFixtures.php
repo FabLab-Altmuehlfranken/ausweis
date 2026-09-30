@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\DataFixtures;
 
 use App\Entity\Area;
+use App\Entity\AreaBan;
 use App\Entity\CardOrder;
 use App\Entity\Instruction;
 use App\Entity\Privilege;
@@ -18,13 +19,16 @@ class AppFixtures extends Fixture
 {
     public function load(ObjectManager $manager): void
     {
+        $areas = $this->addAreas($manager);
+
         $users = $this->addUsers($manager, 10);
         $this->setCardIds($users);
         $this->addCardOrders($manager, $users);
 
         $admin = $this->addAdminUser($manager);
+        $this->addBadBoy($manager, $areas, $admin);
 
-        $privileges = $this->addAreasWithPrivileges($manager);
+        $privileges = $this->addAreasWithPrivileges($manager, $areas);
         $instructions = $this->addInstructions($manager, $privileges);
 
         $this->assignPrivilege($users, $privileges['workshopInstructions'], $manager, [0, 1, 2, 8, 9], $admin);
@@ -122,41 +126,56 @@ class AppFixtures extends Fixture
     }
 
     /**
+     * @return Area[]
+     */
+    public function addAreas(ObjectManager $manager): array
+    {
+        $areas = [];
+
+        $areas['fablab'] = new Area()
+            ->setName('FabLab');
+        $manager->persist($areas['fablab']);
+
+        $areas['printer3D'] = new Area()
+            ->setName('3D-Drucker');
+        $manager->persist($areas['printer3D']);
+
+        $areas['lasercutter'] = new Area()
+            ->setName('Lasercutter');
+        $manager->persist($areas['lasercutter']);
+
+        return $areas;
+    }
+
+    /**
+     * @param Area[] $areas
+     *
      * @return Privilege[]
      */
-    public function addAreasWithPrivileges(ObjectManager $manager): array
+    public function addAreasWithPrivileges(ObjectManager $manager, array $areas): array
     {
         $privileges = [];
 
-        $fablab = new Area()->setName('FabLab');
-        $manager->persist($fablab);
-
         $privileges['workshopInstructions'] = new Privilege()
-            ->setArea($fablab)
+            ->setArea($areas['fablab'])
             ->setName('Werkstatt-Einweisung')
             ->setDescription('Allgemeine Werkstattanweisung gelesen und verstanden');
         $manager->persist($privileges['workshopInstructions']);
 
-        $printer3D = new Area()->setName('3D-Drucker');
-        $manager->persist($printer3D);
-
         $privileges['printerUsage'] = new Privilege()
-            ->setArea($printer3D)
+            ->setArea($areas['printer3D'])
             ->setName('Druck selbstständig starten')
             ->setDescription('Druck darf ohne Rücksprache mit einem Betreuer gestartet werden');
         $manager->persist($privileges['printerUsage']);
 
         $privileges['multiColorUsage'] = new Privilege()
-            ->setArea($printer3D)
+            ->setArea($areas['printer3D'])
             ->setName('Multi-Color Fachwissen vorhanden')
             ->setDescription('Kenntnis über Umgang mit Multi-Color vorhanden');
         $manager->persist($privileges['multiColorUsage']);
 
-        $lasercutter = new Area()->setName('Lasercutter');
-        $manager->persist($lasercutter);
-
         $privileges['canCut'] = new Privilege()
-            ->setArea($lasercutter)
+            ->setArea($areas['lasercutter'])
             ->setName('Verwendung Lasercutter')
             ->setDescription('Darf den Lasercutter verwenden');
         $manager->persist($privileges['canCut']);
@@ -185,5 +204,23 @@ class AppFixtures extends Fixture
             '3d' => $printer3DWorkshop,
             '3d_advanced' => $printer3DWorkshopAdvanced,
         ];
+    }
+
+    /**
+     * @param Area[] $areas
+     */
+    private function addBadBoy(ObjectManager $manager, array $areas, User $bannedBy): void
+    {
+        $badBoy = new User('bad.boy', 'Bad Boy', 'bad.boy@example.com')
+            ->setRoles(['USER']);
+        $manager->persist($badBoy);
+
+        foreach ($areas as $area) {
+            new AreaBan()
+                ->setUser($badBoy)
+                ->setBannedBy($bannedBy)
+                ->setArea($area)
+                |> $manager->persist(...);
+        }
     }
 }
