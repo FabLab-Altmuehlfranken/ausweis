@@ -39,14 +39,17 @@ final class PrivilegeAssignmentController extends AbstractController
 
         $missingPrivileges = [];
         foreach ($allPrivileges as $privilege) {
-            if (!in_array($privilege->id, $userPrivilegeIds, true)) {
+            if (
+                !in_array($privilege->id, $userPrivilegeIds, true)
+                && !$user->isBannedFromArea($privilege->area)
+            ) {
                 $missingPrivileges[$privilege->getDisplayName()] = $privilege;
             }
         }
         ksort($missingPrivileges, SORT_FLAG_CASE | SORT_NATURAL);
 
         if ([] === $missingPrivileges) {
-            $this->addFlash('info', 'Der Benutzer hat schon alle Berechtigungen.');
+            $this->addFlash('info', 'Der Benutzer hat schon alle verfügbaren Berechtigungen.');
 
             return $this->redirectToRoute('user_details_by_digital_card_id', ['uuid' => $user->digitalCardId], Response::HTTP_SEE_OTHER);
         }

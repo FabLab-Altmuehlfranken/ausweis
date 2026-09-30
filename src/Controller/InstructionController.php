@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\Entity\Area;
 use App\Entity\Instruction;
+use App\Entity\Privilege;
 use App\Entity\PrivilegeAssignment;
 use App\Entity\User;
 use App\Form\AssignPrivilegesDTO;
@@ -100,7 +102,10 @@ final class InstructionController extends AbstractController
         $instructor = $this->getUser();
         assert($instructor instanceof User);
 
-        $dto = new AssignPrivilegesDTO();
+        $privilegeAreas = $instruction->privileges->map(
+            fn (Privilege $privilege): Area => $privilege->area,
+        );
+        $dto = new AssignPrivilegesDTO($privilegeAreas);
         $form = $this->createForm(AssignPrivilegesType::class, $dto);
         $form->handleRequest($request);
 

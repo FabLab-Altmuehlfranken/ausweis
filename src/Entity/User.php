@@ -186,4 +186,24 @@ class User implements UserInterface
             fn (PrivilegeAssignment $a): Privilege => $a->privilege,
         );
     }
+
+    /**
+     * @return Collection<int, AreaBan>
+     */
+    public function getAreaBans(): Collection
+    {
+        return $this->areaBans;
+    }
+
+    public function getAreaBan(Area $area): ?AreaBan
+    {
+        return $this->areaBans->findFirst(
+            static fn (int $key, AreaBan $areaBan): bool => $areaBan->area === $area,
+        );
+    }
+
+    public function isBannedFromArea(Area $area): bool
+    {
+        return $this->getAreaBan($area) instanceof AreaBan;
+    }
 }
