@@ -12,7 +12,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
- * @template-extends AbstractType<AssignPrivilegesDTO>
+ * @template-extends AbstractType<User>
  */
 class PrivilegesRevokeType extends AbstractType
 {

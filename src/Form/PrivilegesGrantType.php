@@ -11,7 +11,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
- * @template-extends AbstractType<AssignPrivilegesDTO>
+ * @template-extends AbstractType<PrivilegesGrantDTO>
  */
 class PrivilegesGrantType extends AbstractType
 {
