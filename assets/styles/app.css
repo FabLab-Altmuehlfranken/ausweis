@@ -41,6 +41,17 @@ a.action, button.action {
     margin-right: 4px;
 }
 
+.flash-warning {
+    background-color: lightyellow;
+    border-radius: 8px;
+    padding: 4px 12px;
+}
+.flash-warning:before {
+    content: '⚠️ ';
+    margin-right: 4px;
+}
+
+
 .login {
     text-align: center;
     padding: 64px;
