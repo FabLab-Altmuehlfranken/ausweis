@@ -51,6 +51,9 @@ a.action, button.action {
     margin-right: 4px;
 }
 
+.area-ban-hint {
+    cursor: pointer;
+}
 
 .login {
     text-align: center;
