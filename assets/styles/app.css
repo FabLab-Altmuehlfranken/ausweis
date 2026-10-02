@@ -137,6 +137,10 @@ nav > a {
     margin-right: 16px;
 }
 
+button {
+    cursor: pointer;
+}
+
 form .form-select, form .form-control {
     min-width: 50%;
 }
