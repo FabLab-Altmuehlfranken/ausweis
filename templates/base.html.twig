@@ -1,5 +1,7 @@
+{% set is_dark_mode_enabled = app.request.cookies.int('dark_mode') %}
+
 <!DOCTYPE html>
-<html lang="de">
+<html lang="de" class="{{ is_dark_mode_enabled ? 'dark-mode' }}">
     <head>
         <meta charset="UTF-8">
         <title>{% block title %}Ausweis - FabLab Altmühlfranken{% endblock %}</title>
@@ -33,6 +35,9 @@
                 {% if is_granted('IS_AUTHENTICATED') %}
                     <a href="{{ logout_path() }}" class="logout">Ausloggen</a>
                 {% endif %}
+                <button data-controller="dark-mode" data-action="dark-mode#toggle" class="dark-mode-toggle">
+                    🌓
+                </button>
             </header>
 
             <nav>

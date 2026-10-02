@@ -1,10 +1,55 @@
+:root {
+    color-scheme: light;
+
+    --color-background: lightgrey;
+    --color-background-success: lightgreen;
+    --color-background-info: lightblue;
+    --color-background-error: lightpink;
+    --color-background-warning: lightyellow;
+
+    --color-text: black;
+    --color-text-muted: dimgrey;
+    --color-link: mediumblue;
+
+    --color-table-header: darkgrey;
+    --color-table-zebra-even: whitesmoke;
+    --color-table-zebra-odd: gainsboro;
+
+    --color-border: var(--color-text-muted);
+}
+
+.dark-mode {
+    color-scheme: dark;
+
+    --color-background: #0f0f0f;
+    --color-background-success: #003300;
+    --color-background-info: #00003b;
+    --color-background-error: #4d1612;
+    --color-background-warning: #502800;
+
+    --color-text: whitesmoke;
+    --color-text-muted: darkgrey;
+    --color-link: #12a3c5;
+
+    --color-table-header: #3c3c3c;
+    --color-table-zebra-even: #1f1f1f;
+    --color-table-zebra-odd: #1a1a1a;
+
+    --color-border: var(--color-table-header);
+}
+
+body, a, span, th, td, tr, fieldset, p, details {
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
 body {
-    background-color: lightgray;
+    color: var(--color-text);
+    background-color: var(--color-background);
 }
 
 a {
     text-decoration: none;
-    color: blue;
+    color: var(--color-link);
 }
 
 a.action, button.action {
@@ -12,7 +57,7 @@ a.action, button.action {
 }
 
 .flash-success {
-    background-color: lightgreen;
+    background-color: var(--color-background-success);
     border-radius: 8px;
     padding: 4px 12px;
 }
@@ -22,7 +67,7 @@ a.action, button.action {
 }
 
 .flash-info {
-    background-color: lightblue;
+    background-color: var(--color-background-info);
     border-radius: 8px;
     padding: 4px 12px;
 }
@@ -32,7 +77,7 @@ a.action, button.action {
 }
 
 .flash-error {
-    background-color: lightpink;
+    background-color: var(--color-background-error);
     border-radius: 8px;
     padding: 4px 12px;
 }
@@ -42,7 +87,7 @@ a.action, button.action {
 }
 
 .flash-warning {
-    background-color: lightyellow;
+    background-color: var(--color-background-warning);
     border-radius: 8px;
     padding: 4px 12px;
 }
@@ -52,7 +97,7 @@ a.action, button.action {
 }
 
 .area-ban {
-    background-color: lightpink;
+    background-color: var(--color-background-error);
     border-radius: 8px;
     padding: 4px 12px;
 }
@@ -83,7 +128,7 @@ table {
 
     th {
         padding: 8px;
-        background-color: darkgray;
+        background-color: var(--color-table-header);
     }
 
     td {
@@ -95,11 +140,11 @@ table {
     }
 
     tr:nth-child(even) {
-        background-color: whitesmoke;
+        background-color: var(--color-table-zebra-even);
     }
 
     tr:nth-child(odd) {
-        background-color: gainsboro;
+        background-color: var(--color-table-zebra-odd);
     }
 }
 
@@ -116,7 +161,7 @@ header {
         span {
             font-size: 2rem;
             vertical-align: center;
-            color: black;
+            color: var(--color-text);
         }
 
         img {
@@ -128,6 +173,11 @@ header {
 
     a.logout {
         float: right;
+    }
+
+    button.dark-mode-toggle {
+        float: right;
+        margin-right: 16px;
     }
 }
 
@@ -155,7 +205,7 @@ form textarea {
 
 span.muted {
     font-size: .9em;
-    color: dimgrey;
+    color: var(--color-text-muted);
 }
 
 fieldset {
@@ -174,9 +224,14 @@ details > div {
 details.qr-code {
     margin: 16px 0;
 
+    img {
+        background-color: white;
+        padding: 8px;
+    }
+
     summary {
         font-weight: bold;
-        color: blue;
+        color: var(--color-link);
     }
 }
 
