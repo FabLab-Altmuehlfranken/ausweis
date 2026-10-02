@@ -35,7 +35,7 @@
                 {% if is_granted('IS_AUTHENTICATED') %}
                     <a href="{{ logout_path() }}" class="logout">Ausloggen</a>
                 {% endif %}
-                <button data-controller="dark-mode" data-action="dark-mode#toggle" class="dark-mode-toggle">
+                <button {{ stimulus_controller('dark-mode')}} {{ stimulus_action('dark-mode', 'toggle')}} class="dark-mode-toggle">
                     🌓
                 </button>
             </header>
