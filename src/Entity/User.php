@@ -162,6 +162,11 @@ class User implements UserInterface
         return $this->hasRole(self::ROLE_ADMIN);
     }
 
+    public function isInstructor(): bool
+    {
+        return $this->hasrole(self::ROLE_INSTRUCTOR);
+    }
+
     private function hasRole(string $role): bool
     {
         return in_array($role, $this->getRoles(), true);

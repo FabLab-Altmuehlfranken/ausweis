@@ -24,6 +24,10 @@
                     <th>Mitglied</th>
                     <td class="center">{{ user.isMember ? '✅' : '❌' }}</td>
                 </tr>
+                <tr>
+                    <th>Betreuer</th>
+                    <td class="center">{{ user.isInstructor ? '✅' : '❌' }}</td>
+                </tr>
                 {% if is_granted('ROLE_ADMIN') %}
                     <tr>
                         <th>Admin</th>
