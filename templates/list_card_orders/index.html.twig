@@ -5,42 +5,50 @@
 {% block body %}
     <h1>📋 Zu bearbeitende Anträge</h1>
 
-    <table>
-        <tr>
-            <th>🧑 Name</th>
-            <th>🖨️ Druck beauftragt?</th>
-            <th>🪪 Ausweis-ID</th>
-            <th>⏳ beantragt am</th>
-            <th></th>
-        </tr>
-        {% for order in orders %}
+    {% if orders is not empty %}
+        <table class="nowrap">
             <tr>
-                <td>{{ order.user.displayName }}</td>
-                <td class="center">{{ order.isPrintOrdered ? '✅' : '❌' }}</td>
-                <td class="center">
-                    {% if order.cardId %}
-                        <code>{{ order.cardId }}</code>
-                    {% endif %}
-                    {% if order.isPrintOrdered %}
-                        <a href="{{ path('assign_card_id_to_order', {id: order.id}) }}">✏️</a>
-                    {% endif %}
-                </td>
-                <td>{{ order.createdAt.format('Y-m-d H:i:s') }}</td>
-                <td>
-                    {% if order.readyForPickUp %}
-                        <a href="{{ path('deliver_card_order', {id: order.id}) }}">🤝 Aushändigen</a>
-                        <br>
-                    {% endif %}
-                    <a href="{{ path('delete_card_order', {id: order.id}) }}">🗑️ Löschen</a>
-                </td>
+                <th>👥 Name</th>
+                <th>🖨️ Druck beauftragt?</th>
+                <th>🪪 Ausweis-ID</th>
+                <th>⏳ beantragt am</th>
+                <th></th>
             </tr>
-        {% endfor %}
-    </table>
+            {% for order in orders %}
+                <tr>
+                    <td>
+                        <a href="{{ path('user_details_by_digital_card_id', {'uuid': order.user.digitalCardId}) }}">
+                            {{ order.user.displayName }}
+                        </a>
+                    </td>
+                    <td class="center">{{ order.isPrintOrdered ? '✅' : '❌' }}</td>
+                    <td class="center">
+                        {% if order.cardId %}
+                            <code>{{ order.cardId }}</code>
+                        {% endif %}
+                        {% if order.isPrintOrdered %}
+                            <a href="{{ path('assign_card_id_to_order', {id: order.id}) }}" class="action">✏️</a>
+                        {% endif %}
+                    </td>
+                    <td>{{ order.createdAt.format('Y-m-d H:i:s') }}</td>
+                    <td>
+                        {% if order.readyForPickUp %}
+                            <a href="{{ path('deliver_card_order', {id: order.id}) }}" class="action">🤝 Aushändigen</a>
+                            <br>
+                        {% endif %}
+                        <a href="{{ path('delete_card_order', {id: order.id}) }}" class="action">🗑️ Löschen</a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+    {% else %}
+        <p class="flash-info">Es liegen keine Ausweisanträge vor.</p>
+    {% endif %}
 
     {% if orders|filter(o => not o.isPrintOrdered) is not empty %}
         <p>
             <form method="POST" action="{{ path('export_card_orders') }}">
-                <input type="submit" value="🖨️ Druck beauftragen" title="Generiert eine Mail mit einem Export aller Anträge, für die noch kein Druck beauftragt wurde.">
+                <button class="action" title="Generiert eine Mail mit einem Export aller Anträge, für die noch kein Druck beauftragt wurde.">🖨️ Druck beauftragen</button>
             </form>
         </p>
     {% endif %}

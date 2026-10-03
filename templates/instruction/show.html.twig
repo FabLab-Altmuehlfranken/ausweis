@@ -1,0 +1,36 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Einweisung{% endblock %}
+
+{% block body %}
+    <h1>🎓 Einweisung</h1>
+
+    <a href="{{ path('app_instruction_assign_privileges', {'id': instruction.id}) }}" class="action">🏅 Teilnahme bestätigen</a>
+
+    <table>
+        <tbody>
+            <tr>
+                <th>Name</th>
+                <td>{{ instruction.name }}</td>
+            </tr>
+            <tr>
+                <th>🔑 Berechtigungen</th>
+                <td>
+                    <ul>
+                        {% for privilege in instruction.privileges %}
+                            <li>
+                                <a href="{{ path('app_privilege_show', {'id': privilege.id}) }}">
+                                    {{ privilege.displayName }}
+                                </a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_instruction_edit', {'id': instruction.id}) }}" class="action">✏️ Bearbeiten</a>
+
+    {{ include('instruction/_delete_form.html.twig') }}
+{% endblock %}

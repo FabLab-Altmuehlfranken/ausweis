@@ -1,23 +1,109 @@
+:root {
+    color-scheme: light;
+
+    --color-background: lightgrey;
+    --color-background-success: lightgreen;
+    --color-background-info: lightblue;
+    --color-background-error: lightpink;
+    --color-background-warning: lightyellow;
+
+    --color-text: black;
+    --color-text-muted: dimgrey;
+    --color-link: mediumblue;
+
+    --color-table-header: darkgrey;
+    --color-table-zebra-even: whitesmoke;
+    --color-table-zebra-odd: gainsboro;
+
+    --color-border: var(--color-text-muted);
+}
+
+.dark-mode {
+    color-scheme: dark;
+
+    --color-background: #0f0f0f;
+    --color-background-success: #003300;
+    --color-background-info: #00003b;
+    --color-background-error: #4d1612;
+    --color-background-warning: #502800;
+
+    --color-text: whitesmoke;
+    --color-text-muted: darkgrey;
+    --color-link: #12a3c5;
+
+    --color-table-header: #3c3c3c;
+    --color-table-zebra-even: #1f1f1f;
+    --color-table-zebra-odd: #1a1a1a;
+
+    --color-border: var(--color-table-header);
+}
+
+body, a, span, th, td, tr, fieldset, p, details {
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
 body {
-    background-color: lightgray;
+    color: var(--color-text);
+    background-color: var(--color-background);
+}
+
+a {
+    text-decoration: none;
+    color: var(--color-link);
+}
+
+a.action, button.action {
+    font-weight: bold;
 }
 
 .flash-success {
-    background-color: lightgreen;
+    background-color: var(--color-background-success);
     border-radius: 8px;
     padding: 4px 12px;
+}
+.flash-success:before {
+    content: '✅ ';
+    margin-right: 4px;
 }
 
 .flash-info {
-    background-color: lightblue;
+    background-color: var(--color-background-info);
+    border-radius: 8px;
+    padding: 4px 12px;
+}
+.flash-info:before {
+    content: 'ℹ️ ';
+    margin-right: 4px;
+}
+
+.flash-error {
+    background-color: var(--color-background-error);
+    border-radius: 8px;
+    padding: 4px 12px;
+}
+.flash-error:before {
+    content: '❌ ';
+    margin-right: 4px;
+}
+
+.flash-warning {
+    background-color: var(--color-background-warning);
+    border-radius: 8px;
+    padding: 4px 12px;
+}
+.flash-warning:before {
+    content: '⚠️ ';
+    margin-right: 4px;
+}
+
+.area-ban {
+    background-color: var(--color-background-error);
     border-radius: 8px;
     padding: 4px 12px;
 }
 
-.flash-error {
-    background-color: palevioletred;
-    border-radius: 8px;
-    padding: 4px 12px;
+.area-ban-hint {
+    cursor: pointer;
 }
 
 .login {
@@ -37,11 +123,12 @@ body {
 
 table {
     border-collapse: collapse;
-    white-space: nowrap;
+    min-width: 100%;
+    margin: 16px 0;
 
     th {
         padding: 8px;
-        background-color: darkgray;
+        background-color: var(--color-table-header);
     }
 
     td {
@@ -53,20 +140,103 @@ table {
     }
 
     tr:nth-child(even) {
-        background-color: whitesmoke;
+        background-color: var(--color-table-zebra-even);
+    }
+
+    tr:nth-child(odd) {
+        background-color: var(--color-table-zebra-odd);
     }
 }
 
-nav {
-    a {
-        vertical-align: middle;
-        font-weight: bold;
-        padding-right: 16px;
+table.nowrap {
+    white-space: nowrap;
+}
+
+header {
+    font-weight: bold;
+    margin-top: 8px;
+    padding-bottom: 8px;
+
+    a.logo {
+        span {
+            font-size: 2rem;
+            vertical-align: center;
+            color: var(--color-text);
+        }
 
         img {
-            vertical-align: middle;
+            vertical-align: center;
             height: 3em;
-            padding-right: 8px;
+            margin-right: 8px;
         }
     }
+
+    a.logout {
+        float: right;
+    }
+
+    button.dark-mode-toggle {
+        float: right;
+        margin-right: 16px;
+    }
+}
+
+nav > a {
+    vertical-align: center;
+    font-weight: bold;
+    margin-right: 16px;
+}
+
+button {
+    cursor: pointer;
+}
+
+form .form-select, form .form-control {
+    min-width: 50%;
+}
+
+form > button {
+    margin: 16px 0;
+}
+
+form textarea {
+    min-height: 5rem;
+}
+
+span.muted {
+    font-size: .9em;
+    color: var(--color-text-muted);
+}
+
+fieldset {
+    margin: 8px 0;
+}
+
+details > summary {
+    cursor: pointer;
+}
+
+details > div {
+    margin-left: 20px;
+    font-size: .8em;
+}
+
+details.qr-code {
+    margin: 16px 0;
+
+    img {
+        background-color: white;
+        padding: 8px;
+    }
+
+    summary {
+        font-weight: bold;
+        color: var(--color-link);
+    }
+}
+
+ul.summary-details-list {
+    list-style-type: none;
+    padding-left: 12px;
+    margin: 0;
 }

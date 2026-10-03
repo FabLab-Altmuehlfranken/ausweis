@@ -15,7 +15,7 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[Route('/card_orders/{id}/delete', name: 'delete_card_order')]
-#[IsGranted(User::ADMIN_ROLE)]
+#[IsGranted(User::ROLE_ADMIN)]
 final class DeleteCardOrderController extends AbstractController
 {
     public function __construct(
@@ -50,6 +50,6 @@ final class DeleteCardOrderController extends AbstractController
         $entityManager->remove($order);
         $entityManager->flush();
 
-        $this->addFlash('info', 'Antrag von <b>'.$userName.'</b> erfolgreich gelöscht.');
+        $this->addFlash('success', 'Antrag von <b>'.$userName.'</b> erfolgreich gelöscht.');
     }
 }

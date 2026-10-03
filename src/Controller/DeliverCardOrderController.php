@@ -15,7 +15,7 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[Route('/card_orders/{id}/deliver', name: 'deliver_card_order')]
-#[IsGranted(User::ADMIN_ROLE)]
+#[IsGranted(User::ROLE_ADMIN)]
 final class DeliverCardOrderController extends AbstractController
 {
     public function __construct(
@@ -54,13 +54,14 @@ final class DeliverCardOrderController extends AbstractController
         $user = $order->user;
 
         $user->setCardId($order->cardId);
-        $entityManager->persist($user);
+        $entityManager->wrapInTransaction(
+            static function (EntityManagerInterface $entityManager) use ($user, $order): void {
+                $entityManager->persist($user);
 
-        $entityManager->remove($order);
-
-        $entityManager->flush();
+                $entityManager->remove($order);
+            },
+        );
 
         $this->addFlash('success', 'Ausweis wurde erfolgreich zugewiesen und kann jetzt an <b>'.$order->user->displayName.'</b> ausgehändigt werden.');
-        $this->addFlash('info', 'Antrag von <b>'.$user->displayName.'</b> erfolgreich gelöscht.');
     }
 }

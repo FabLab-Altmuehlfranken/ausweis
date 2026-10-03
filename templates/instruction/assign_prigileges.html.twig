@@ -1,0 +1,32 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Einweisung Bestätigen{% endblock %}
+
+{% block body %}
+    <h1>🏅 Einweisung Bestätigen</h1>
+
+    <table>
+        <tbody>
+        <tr>
+            <th>Einweisung</th>
+            <td>{{ instruction.name }}</td>
+        </tr>
+        <tr>
+            <th>🔑 erworbene<br>Berechtigungen</th>
+            <td>
+                <ul>
+                    {% for privilege in instruction.privileges %}
+                        <li>
+                            <a href="{{ path('app_privilege_show', {'id': privilege.id}) }}">
+                                {{ privilege.displayName }}
+                            </a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    {{ include('instruction/_form.html.twig') }}
+{% endblock %}
