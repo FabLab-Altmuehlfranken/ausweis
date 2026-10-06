@@ -133,10 +133,10 @@
     {% endif %}
 
     {% if is_granted('ROLE_INSTRUCTOR') %}
-        <a href="{{ path('app_privilegeassignment_grant', {user: user.id}) }}" class="action">🔑 Berechtigungen Zuweisen</a>
+        <a href="{{ path('app_privilegeassignment_grant', {user: user.id}) }}" class="action">🔑 Berechtigungen zuweisen</a>
         {% if user.privilegeAssignments is not empty %}
             <br>
-            <a href="{{ path('app_privilegeassignment_revoke', {user: user.id}) }}" class="action">🚫 Berechtigungen Entziehen</a>
+            <a href="{{ path('app_privilegeassignment_revoke', {user: user.id}) }}" class="action">🚫 Berechtigungen entziehen</a>
         {% endif %}
 
         <br>
