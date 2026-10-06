@@ -109,7 +109,7 @@ class User implements UserInterface
      *
      * @return list<non-empty-string>
      */
-    protected function formatKeycloakRoles(array $roles): array
+    private function formatKeycloakRoles(array $roles): array
     {
         \Webmozart\Assert\Assert::allStringNotEmpty($roles);
 
@@ -148,21 +148,6 @@ class User implements UserInterface
     public function hasOpenCardOrder(): bool
     {
         return $this->cardOrder instanceof CardOrder;
-    }
-
-    public function isMember(): bool
-    {
-        return $this->hasRole(self::ROLE_MEMBER);
-    }
-
-    public function isAdmin(): bool
-    {
-        return $this->hasRole(self::ROLE_ADMIN);
-    }
-
-    private function hasRole(string $role): bool
-    {
-        return in_array($role, $this->getRoles(), true);
     }
 
     /**

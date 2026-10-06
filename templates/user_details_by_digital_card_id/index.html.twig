@@ -22,7 +22,7 @@
                 </tr>
                 <tr>
                     <th>Mitglied</th>
-                    <td class="center">{{ user.isMember ? '✅' : '❌' }}</td>
+                    <td class="center">{{ is_granted_for_user(user, 'ROLE_MEMBER') ? '✅' : '❌' }}</td>
                 </tr>
                 <tr>
                     <th>Betreuer</th>
@@ -31,7 +31,7 @@
                 {% if is_granted('ROLE_ADMIN') %}
                     <tr>
                         <th>Admin</th>
-                        <td class="center">{{ user.isAdmin ? '✅' : '❌' }}</td>
+                        <td class="center">{{ is_granted_for_user(user, 'ROLE_ADMIN') ? '✅' : '❌' }}</td>
                     </tr>
                     <tr>
                         <th>Ausweis</th>
