@@ -57,13 +57,8 @@
     {% endif %}
 
     {% if
-        (
-            user.privilegeAssignments is not empty
-            or user.areaBans is not empty
-        ) and (
-            is_granted('ROLE_INSTRUCTOR')
-            or (is_granted('ROLE_USER') and app.user.digitalCardId == user.digitalCardId)
-        )
+        user.privilegeAssignments is not empty
+        or user.areaBans is not empty
     %}
         <h2>🔑 Berechtigungen</h2>
 
