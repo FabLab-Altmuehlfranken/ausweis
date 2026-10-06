@@ -4,7 +4,7 @@
     <h1>Hallo {{ app.user.displayName }} 👋</h1>
 
     <p>
-        {% if app.user.isMember %}
+        {% if is_granted('ROLE_MEMBER') %}
             Du bist aktuell Mitglied im FabLab Altmühlfranken. 🎉<br>
         {% else %}
             Du bist aktuell kein Mitglied im FabLab Altmühlfranken.<br>

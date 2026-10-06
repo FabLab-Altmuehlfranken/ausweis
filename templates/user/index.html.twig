@@ -34,7 +34,7 @@
                     {% endif %}
                 </td>
                 <td class="center">
-                    {% if user.member %}
+                    {% if is_granted_for_user(user, 'ROLE_MEMBER') %}
                         ✅
                     {% endif %}
                 </td>
@@ -44,7 +44,7 @@
                     {% endif %}
                 </td>
                 <td class="center">
-                    {% if user.admin %}
+                    {% if is_granted_for_user(user, 'ROLE_ADMIN') %}
                         ✅
                     {% endif %}
                 </td>
