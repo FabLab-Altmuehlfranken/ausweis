@@ -23,7 +23,7 @@ use ZipArchive;
 
 use const FILTER_VALIDATE_INT;
 
-#[IsGranted(User::ADMIN_ROLE)]
+#[IsGranted(User::ROLE_ADMIN)]
 final class ExportCardOrdersController extends AbstractController
 {
     public function __construct(
@@ -82,6 +82,7 @@ final class ExportCardOrdersController extends AbstractController
             $qrCodes[$username] = $this->qrCodeGenerator->generate($digitalCardId)
                 ->getString();
         }
+        ksort($qrCodes, SORT_NATURAL | SORT_FLAG_CASE);
 
         return $qrCodes;
     }
@@ -125,12 +126,14 @@ final class ExportCardOrdersController extends AbstractController
      */
     private function setPrintOrdered(array $orders): void
     {
-        array_map(
-            static fn (CardOrder $order) => $order->setPrintOrdered(),
-            $orders,
+        $this->entityManager->wrapInTransaction(
+            function (EntityManagerInterface $entityManager) use ($orders): void {
+                array_map(
+                    static fn (CardOrder $order) => $order->setPrintOrdered(),
+                    $orders,
+                );
+            },
         );
-
-        $this->entityManager->flush();
     }
 
     /**

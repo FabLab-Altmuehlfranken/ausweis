@@ -5,8 +5,11 @@ declare(strict_types=1);
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Override;
+use SortDirection;
 use Symfony\Bridge\Doctrine\Types\UuidType;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Uid\Uuid;
@@ -19,13 +22,14 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\UniqueConstraint(fields: ['cardId'])]
 class User implements UserInterface
 {
-    public const string MEMBER_ROLE = 'ROLE_MEMBER';
-    public const string ADMIN_ROLE = 'ROLE_ADMIN';
+    public const string ROLE_MEMBER = 'ROLE_MEMBER';
+    public const string ROLE_ADMIN = 'ROLE_ADMIN';
+    public const string ROLE_INSTRUCTOR = 'ROLE_INSTRUCTOR';
 
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    private int $id;
+    public private(set) int $id;
 
     /**
      * @var list<string> The user roles
@@ -40,7 +44,23 @@ class User implements UserInterface
     public private(set) Uuid $digitalCardId;
 
     #[ORM\Column(nullable: true)]
+    #[Assert\Regex('/^[0-9A-F]{2}(:[0-9A-F]{2}){3}((:[0-9A-F]{2}){3})?$/')]
+    #[Assert\NotBlank(allowNull: true)]
     public private(set) ?string $cardId = null;
+
+    /**
+     * @var Collection<int, PrivilegeAssignment>
+     */
+    #[ORM\OneToMany(targetEntity: PrivilegeAssignment::class, mappedBy: 'user', orphanRemoval: true)]
+    #[ORM\OrderBy(['timestamp' => SortDirection::Descending])]
+    public private(set) Collection $privilegeAssignments;
+
+    /**
+     * @var Collection<int, AreaBan>
+     */
+    #[ORM\OneToMany(targetEntity: AreaBan::class, mappedBy: 'user', orphanRemoval: true)]
+    #[ORM\OrderBy(['createdAt' => SortDirection::Descending])]
+    private Collection $areaBans;
 
     public function __construct(
         #[Assert\Length(min: 3)]
@@ -52,6 +72,8 @@ class User implements UserInterface
         public private(set) string $mail,
     ) {
         $this->digitalCardId = Uuid::v4();
+        $this->privilegeAssignments = new ArrayCollection();
+        $this->areaBans = new ArrayCollection();
     }
 
     #[Override]
@@ -91,12 +113,10 @@ class User implements UserInterface
     {
         \Webmozart\Assert\Assert::allStringNotEmpty($roles);
 
-        return array_values(
-            array_map(
-                static fn (string $role): string => 'ROLE_'.strtoupper($role),
-                $roles,
-            ),
-        );
+        return array_map(
+            static fn (string $role): string => 'ROLE_'.strtoupper($role),
+            $roles,
+        ) |> array_values(...);
     }
 
     public function setCardId(?string $cardId): static
@@ -132,16 +152,56 @@ class User implements UserInterface
 
     public function isMember(): bool
     {
-        return $this->hasRole(self::MEMBER_ROLE);
+        return $this->hasRole(self::ROLE_MEMBER);
     }
 
     public function isAdmin(): bool
     {
-        return $this->hasRole(self::ADMIN_ROLE);
+        return $this->hasRole(self::ROLE_ADMIN);
     }
 
     private function hasRole(string $role): bool
     {
         return in_array($role, $this->getRoles(), true);
+    }
+
+    /**
+     * @return Collection<int, PrivilegeAssignment>
+     */
+    public function getPrivilegeAssignmentsInArea(Area $area): Collection
+    {
+        return $this->privilegeAssignments->filter(
+            fn (PrivilegeAssignment $a): bool => $a->privilege->area === $area,
+        );
+    }
+
+    /**
+     * @return Collection<int, Privilege>
+     */
+    public function getPrivileges(): Collection
+    {
+        return $this->privilegeAssignments->map(
+            fn (PrivilegeAssignment $a): Privilege => $a->privilege,
+        );
+    }
+
+    /**
+     * @return Collection<int, AreaBan>
+     */
+    public function getAreaBans(): Collection
+    {
+        return $this->areaBans;
+    }
+
+    public function getAreaBan(Area $area): ?AreaBan
+    {
+        return $this->areaBans->findFirst(
+            static fn (int $key, AreaBan $areaBan): bool => $areaBan->area === $area,
+        );
+    }
+
+    public function isBannedFromArea(Area $area): bool
+    {
+        return $this->getAreaBan($area) instanceof AreaBan;
     }
 }

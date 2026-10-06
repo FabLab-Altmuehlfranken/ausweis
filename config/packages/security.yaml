@@ -45,6 +45,9 @@ security:
         - { path: ^/user_details/, roles: PUBLIC_ACCESS }
         - { path: ^/, roles: ROLE_USER }
 
+    role_hierarchy:
+        ROLE_ADMIN: [ROLE_INSTRUCTOR]
+
 when@test:
     security:
         password_hashers:

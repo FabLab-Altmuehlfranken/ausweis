@@ -1,0 +1,55 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Benutzer{% endblock %}
+
+{% block body %}
+    <h1>👥 Benutzer</h1>
+
+    <table>
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>Ausweis?</th>
+            <th>Mitglied?</th>
+            <th>Betreuer?</th>
+            <th>Admin?</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for user in users %}
+            <tr>
+                <td>
+                    <a href="{{ path('user_details_by_digital_card_id', {'uuid': user.digitalCardId}) }}">
+                        {{ user.displayName }}
+                    </a>
+                    {% if user.areaBans is not empty %}
+                        <span class="area-ban-hint" title="Verbot für einige Bereiche ausgesprochen">🚷</span>
+                    {% endif %}
+                </td>
+                <td class="center">
+                    {% if user.cardId %}
+                        ✅
+                    {% elseif user.cardOrder %}
+                        ⏳
+                    {% endif %}
+                </td>
+                <td class="center">
+                    {% if user.member %}
+                        ✅
+                    {% endif %}
+                </td>
+                <td class="center">
+                    {% if is_granted_for_user(user, 'ROLE_INSTRUCTOR') %}
+                        ✅
+                    {% endif %}
+                </td>
+                <td class="center">
+                    {% if user.admin %}
+                        ✅
+                    {% endif %}
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

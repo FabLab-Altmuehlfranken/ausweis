@@ -5,32 +5,140 @@
         Ausweis-ID: <code>{{ user.digitalCardId }}</code>
     </p>
 
-    {% if is_granted('ROLE_ADMIN') %}
-        <fieldset>
-            <legend>Admin-Area</legend>
-
-            Name: <b>{{ user.displayName }}</b>
-            <br>
-            Mitglied: {{ user.isMember ? '✅' : '❌' }}
-            <br>
-            Physischer Ausweis:
-            {% if user.cardOrder %}
-                {% if user.cardOrder.readyForPickUp %}
-                    <a href="{{ path('deliver_card_order', {id: user.cardOrder.id}) }}">🤝 Ausweis aushändigen</a>
-                {% elseif user.cardOrder.isPrintOrdered %}
-                    <a href="{{ path('assign_card_id_to_order', {id: user.cardOrder.id}) }}">✏️ Ausweis zuordnen</a>
-                {% else %}
-                    ⏳ beantragt
-                {% endif %}
-            {% else %}
-                {{ user.cardId ? '✅' : '❌' }}
-            {% endif %}
-        </fieldset>
-    {% endif %}
-
-    <details>
+    <details class="qr-code">
         <summary>QR-Code anzeigen</summary>
 
         <img src="{{ qrCode.dataUri }}">
     </details>
+
+    {% if is_granted('ROLE_INSTRUCTOR') %}
+        <h2>👤 Benutzer</h2>
+
+        <table>
+            <tbody>
+                <tr>
+                    <th>Name</th>
+                    <td>{{ user.displayName }}</td>
+                </tr>
+                <tr>
+                    <th>Mitglied</th>
+                    <td class="center">{{ user.isMember ? '✅' : '❌' }}</td>
+                </tr>
+                <tr>
+                    <th>Betreuer</th>
+                    <td class="center">{{ is_granted_for_user(user, 'ROLE_INSTRUCTOR') ? '✅' : '❌' }}</td>
+                </tr>
+                {% if is_granted('ROLE_ADMIN') %}
+                    <tr>
+                        <th>Admin</th>
+                        <td class="center">{{ user.isAdmin ? '✅' : '❌' }}</td>
+                    </tr>
+                    <tr>
+                        <th>Ausweis</th>
+                        {% if user.cardOrder %}
+                            {% if user.cardOrder.readyForPickUp %}
+                                <td>
+                                    <a href="{{ path('deliver_card_order', {id: user.cardOrder.id}) }}" class="action">🤝 Ausweis aushändigen</a>
+                                </td>
+                            {% elseif user.cardOrder.isPrintOrdered %}
+                                <td>
+                                    <a href="{{ path('assign_card_id_to_order', {id: user.cardOrder.id}) }}" class="action">✏️ Ausweis zuordnen</a>
+                                </td>
+                            {% else %}
+                                <td class="center">⏳ beantragt</td>
+                            {% endif %}
+                        {% else %}
+                            <td class="center">{{ user.cardId ? '✅' : '❌' }}</td>
+                        {% endif %}
+                    </tr>
+                {% endif %}
+            </tbody>
+        </table>
+    {% endif %}
+
+    {% if
+        user.privilegeAssignments is not empty
+        or user.areaBans is not empty
+    %}
+        <h2>🔑 Berechtigungen</h2>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Bereich</th>
+                    <th>Berechtigungen</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for area in areas %}
+                    {% set assignments = user.privilegeAssignmentsInArea(area) %}
+                    {% set ban = user.areaBan(area) %}
+                    {% if assignments is not empty or ban is not null %}
+                        <tr>
+                            <td>{{ area.name }}</td>
+                            <td>
+                                {% if ban %}
+                                    <details class="area-ban">
+                                        <summary>🚷 Verbot erteilt</summary>
+
+                                        {% if is_granted('ROLE_INSTRUCTOR') %}
+                                            <div>
+                                                <span class="muted">
+                                                    {{ ban.createdAt.format('d.m.Y') }},
+                                                    {{ ban.bannedBy.displayName }}
+                                                </span>
+                                            </div>
+                                        {% endif %}
+                                    </details>
+                                {% endif %}
+
+                                {% if assignments is not empty %}
+                                    <ul class="summary-details-list">
+                                        {% for assignment in assignments|sort((a, b) => a.privilege.name <=> b.privilege.name) %}
+                                            <li>
+                                                <details>
+                                                    <summary>
+                                                        {{ assignment.privilege.name }}
+                                                    </summary>
+                                                    <div>
+                                                        {{ assignment.privilege.description }}
+
+                                                        {% if is_granted('ROLE_INSTRUCTOR') %}
+                                                            <br>
+                                                            <span class="muted">
+                                                                {{ assignment.timestamp.format('d.m.Y') }},
+                                                                {{ assignment.assignedBy.displayName }}
+                                                                {% if assignment.instruction is not null %}
+                                                                    ({{ assignment.instruction.name }})
+                                                                {% endif %}
+                                                            </span>
+                                                        {% endif %}
+                                                    </div>
+                                                </details>
+                                            </li>
+                                        {% endfor %}
+                                    </ul>
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% endif %}
+                {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
+
+    {% if is_granted('ROLE_INSTRUCTOR') %}
+        <a href="{{ path('app_privilegeassignment_grant', {user: user.id}) }}" class="action">🔑 Berechtigungen zuweisen</a>
+        {% if user.privilegeAssignments is not empty %}
+            <br>
+            <a href="{{ path('app_privilegeassignment_revoke', {user: user.id}) }}" class="action">🚫 Berechtigungen entziehen</a>
+        {% endif %}
+
+        <br>
+        <a href="{{ path('app_areaban_create', {user: user.id}) }}" class="action">🚷 Verbot für einen Bereich aussprechen</a>
+        {% if user.areaBans is not empty %}
+            <br>
+            <a href="{{ path('app_areaban_revoke', {user: user.id}) }}" class="action">↩️ Verbot für einen Bereich aufheben</a>
+        {% endif %}
+    {% endif %}
 {% endblock %}
