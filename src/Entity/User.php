@@ -113,12 +113,10 @@ class User implements UserInterface
     {
         \Webmozart\Assert\Assert::allStringNotEmpty($roles);
 
-        return array_values(
-            array_map(
-                static fn (string $role): string => 'ROLE_'.strtoupper($role),
-                $roles,
-            ),
-        );
+        return array_map(
+            static fn (string $role): string => 'ROLE_'.strtoupper($role),
+            $roles,
+        ) |> array_values(...);
     }
 
     public function setCardId(?string $cardId): static
